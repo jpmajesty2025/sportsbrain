@@ -1,0 +1,36 @@
+# Railway-optimized docker-compose for production deployment
+version: '3.8'
+
+services:
+  # Backend API - This will be deployed as a Railway service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.railway
+    ports:
+      - "8000:8000"
+    environment:
+      # These will be set in Railway's environment variables
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - NEO4J_URI=${NEO4J_URI}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - MILVUS_HOST=${MILVUS_HOST}
+      - ENVIRONMENT=production
+      - DEBUG=false
+    restart: unless-stopped
+
+  # Frontend - This will be deployed as a separate Railway service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.railway
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
+      - NODE_ENV=production
+    restart: unless-stopped
