@@ -9,11 +9,18 @@ RUN echo "=== Build context files ===" && ls -la /tmp/debug
 # Copy package files (from frontend directory context)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --omit=dev
+# Install dependencies (including dev dependencies needed for build)
+RUN npm ci
 
 # Copy source code (from frontend directory context)
 COPY . .
+
+# Debug build environment
+RUN echo "=== NPM version ===" && npm --version
+RUN echo "=== Node version ===" && node --version
+RUN echo "=== Package.json scripts ===" && cat package.json | grep -A 5 '"scripts"'
+RUN echo "=== Node modules bin ===" && ls -la node_modules/.bin/ | head -10
+RUN echo "=== Check react-scripts ===" && ls -la node_modules/react-scripts/ || echo "react-scripts not found"
 
 # Build the application
 RUN npm run build
