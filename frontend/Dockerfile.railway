@@ -3,19 +3,19 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY frontend/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production
 
 # Copy source code
-COPY frontend/ .
+COPY . .
 
 # Build the application
 RUN npm run build
 
 # Copy nginx config to build stage
-COPY frontend/nginx.railway.conf ./nginx.railway.conf
+COPY nginx.railway.conf ./nginx.railway.conf
 
 # Production stage
 FROM nginx:alpine
