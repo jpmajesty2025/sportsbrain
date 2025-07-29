@@ -2,17 +2,17 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Debug: List available files in build context
-RUN echo "=== Build context contents ===" && ls -la
+# Debug: Check what's available in build context from root
+RUN echo "=== Root build context ===" && ls -la /
 
-# Copy package files
-COPY package*.json ./
+# Copy package files from frontend directory
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm ci --omit=dev
 
-# Copy source code
-COPY . .
+# Copy source code from frontend directory
+COPY frontend/ .
 
 # Build the application
 RUN npm run build
