@@ -135,7 +135,7 @@ class AgentMessage(Base):
     session_id = Column(String, ForeignKey("agent_sessions.session_id"), nullable=False)
     role = Column(String, nullable=False)  # user, assistant, system
     content = Column(Text, nullable=False)
-    metadata = Column(JSON)  # Additional message metadata
+    message_metadata = Column(JSON)  # Additional message metadata
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     # Relationships

@@ -79,7 +79,7 @@ export interface AgentMessage {
   session_id: string;
   role: string;
   content: string;
-  metadata?: any;
+  message_metadata?: any;
   created_at: string;
 }
 

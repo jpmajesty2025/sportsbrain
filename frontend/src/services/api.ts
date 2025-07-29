@@ -138,11 +138,11 @@ class ApiService {
     return response.data;
   }
 
-  async sendAgentMessage(sessionId: string, role: string, content: string, metadata?: any): Promise<AgentMessage> {
+  async sendAgentMessage(sessionId: string, role: string, content: string, message_metadata?: any): Promise<AgentMessage> {
     const response: AxiosResponse<AgentMessage> = await this.client.post(`/agents/sessions/${sessionId}/messages`, {
       role,
       content,
-      metadata
+      message_metadata
     });
     return response.data;
   }

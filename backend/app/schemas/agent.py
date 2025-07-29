@@ -23,7 +23,7 @@ class AgentSession(AgentSessionBase):
 class AgentMessageBase(BaseModel):
     role: str
     content: str
-    metadata: Optional[Dict[str, Any]] = None
+    message_metadata: Optional[Dict[str, Any]] = None
 
 class AgentMessageCreate(AgentMessageBase):
     session_id: str
