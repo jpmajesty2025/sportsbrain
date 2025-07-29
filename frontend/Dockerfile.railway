@@ -16,14 +16,11 @@ RUN npm ci
 COPY . .
 
 # Debug build environment
-RUN echo "=== NPM version ===" && npm --version
-RUN echo "=== Node version ===" && node --version
-RUN echo "=== Package.json scripts ===" && cat package.json | grep -A 5 '"scripts"'
-RUN echo "=== Node modules bin ===" && ls -la node_modules/.bin/ | head -10
-RUN echo "=== Check react-scripts ===" && ls -la node_modules/react-scripts/ || echo "react-scripts not found"
+RUN echo "=== Source files ===" && find src -name "*.ts*" | head -10
+RUN echo "=== TypeScript config ===" && cat tsconfig.json
 
 # Build the application
-RUN npm run build
+RUN npm run build 2>&1 | tee /tmp/build.log || (echo "=== BUILD FAILED - Output ===" && cat /tmp/build.log)
 
 # Production stage
 FROM nginx:alpine
