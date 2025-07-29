@@ -4,6 +4,12 @@ from app.core.config import settings
 from app.api import api_router
 from app.db.database import engine
 from app.models import models
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info(f"DATABASE_URL: {settings.DATABASE_URL}")
 
 models.Base.metadata.create_all(bind=engine)
 
