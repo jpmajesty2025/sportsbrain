@@ -24,7 +24,7 @@ class BaseAgent(ABC):
         pass
     
     @abstractmethod
-    async def process_message(self, message: str, context: Dict[str, Any] = None) -> AgentResponse:
+    async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         pass
     
     def add_tool(self, tool: BaseTool):

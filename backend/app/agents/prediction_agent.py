@@ -40,7 +40,7 @@ class PredictionAgent(BaseAgent):
                 verbose=True
             )
     
-    async def process_message(self, message: str, context: Dict[str, Any] = None) -> AgentResponse:
+    async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         if not self.agent_executor:
             return AgentResponse(
                 content="Prediction agent not properly initialized. Please check OpenAI API key.",

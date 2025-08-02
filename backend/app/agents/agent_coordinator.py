@@ -5,7 +5,7 @@ from .prediction_agent import PredictionAgent
 from .chat_agent import ChatAgent
 
 class AgentCoordinator:
-    def __init__(self):
+    def __init__(self) -> None:
         self.agents: Dict[str, BaseAgent] = {
             "analytics": AnalyticsAgent(),
             "prediction": PredictionAgent(),
@@ -13,7 +13,7 @@ class AgentCoordinator:
         }
         self.conversation_history: List[Dict[str, Any]] = []
     
-    async def route_message(self, message: str, agent_type: Optional[str] = None, context: Dict[str, Any] = None) -> AgentResponse:
+    async def route_message(self, message: str, agent_type: Optional[str] = None, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         if agent_type and agent_type in self.agents:
             selected_agent = self.agents[agent_type]
         else:
@@ -67,8 +67,8 @@ class AgentCoordinator:
     def get_conversation_history(self, limit: int = 10) -> List[Dict[str, Any]]:
         return self.conversation_history[-limit:]
     
-    def clear_conversation_history(self):
+    def clear_conversation_history(self) -> None:
         self.conversation_history.clear()
     
-    def add_custom_agent(self, name: str, agent: BaseAgent):
+    def add_custom_agent(self, name: str, agent: BaseAgent) -> None:
         self.agents[name] = agent
