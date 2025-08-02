@@ -188,8 +188,20 @@ jobs:
         # Run Alembic migrations
         alembic upgrade head
 
-    - name: Deploy to Railway
+    - name: Deploy Backend to Railway
       run: |
         railway login --token ${{ secrets.RAILWAY_TOKEN }}
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
-        railway up --detach
+        
+        # Deploy backend service
+        railway service --name sportsbrain
+        railway up --service sportsbrain --detach
+
+    - name: Deploy Frontend to Railway
+      run: |
+        railway login --token ${{ secrets.RAILWAY_TOKEN }}
+        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        
+        # Deploy frontend service
+        railway service --name ideal-gentleness
+        railway up --service ideal-gentleness --detach
