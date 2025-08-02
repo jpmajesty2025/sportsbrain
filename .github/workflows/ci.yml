@@ -183,16 +183,16 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         DATABASE_URL: ${{ secrets.RAILWAY_DATABASE_URL }}
       run: |
-        # Link to Railway project and run migrations
-        railway login --token $RAILWAY_TOKEN
+        # Railway CLI uses RAILWAY_TOKEN environment variable automatically
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Run Alembic migrations
         alembic upgrade head
 
     - name: Deploy Backend to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        railway login --token ${{ secrets.RAILWAY_TOKEN }}
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Deploy backend service
@@ -200,8 +200,9 @@ jobs:
         railway up --service sportsbrain --detach
 
     - name: Deploy Frontend to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        railway login --token ${{ secrets.RAILWAY_TOKEN }}
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Deploy frontend service
