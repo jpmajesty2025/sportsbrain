@@ -31,6 +31,13 @@ class Player(Base):
     birth_date = Column(DateTime)
     nationality = Column(String)
     is_active = Column(Boolean, default=True)
+    
+    # Phase 1A Enhanced Fields
+    college = Column(String)  # Education background
+    playing_style = Column(String)  # Analytical style classification
+    career_start = Column(DateTime)  # Professional career beginning
+    career_end = Column(DateTime)  # Career conclusion if retired (nullable)
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
@@ -48,10 +55,17 @@ class Game(Base):
     away_score = Column(Integer)
     status = Column(String, default="scheduled")  # scheduled, live, completed, postponed
     venue = Column(String)
-    season = Column(String, index=True)
     week = Column(Integer)
     game_type = Column(String)  # regular, playoff, preseason
     weather_conditions = Column(JSON)
+    
+    # Phase 1A Enhanced Fields
+    season_type = Column(String, index=True)  # Renamed from 'season' for clarity
+    season_year = Column(Integer, index=True)  # Extract year separately
+    overtime = Column(Boolean, default=False)  # Overtime indicator
+    pace = Column(Float)  # Game pace metric
+    game_importance = Column(String)  # Context importance (regular, playoff, etc.)
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
@@ -87,6 +101,11 @@ class GameStats(Base):
     # Advanced stats (can be calculated)
     plus_minus = Column(Integer, default=0)
     
+    # Phase 1A Enhanced Fields
+    usage_rate = Column(Float)  # Player usage percentage in game
+    game_score = Column(Float)  # Advanced efficiency metric
+    fantasy_points = Column(Float)  # Platform-specific fantasy scoring
+    
     # Additional stats (JSON for flexibility)
     additional_stats = Column(JSON)
     
@@ -110,6 +129,13 @@ class Team(Base):
     colors = Column(JSON)  # Team colors
     logo_url = Column(String)
     is_active = Column(Boolean, default=True)
+    
+    # Phase 1A Enhanced Fields
+    head_coach = Column(String)  # Current coaching staff
+    pace_factor = Column(Float)  # Team pace rating for matchup analysis
+    offensive_style_rating = Column(Float)  # Offensive approach classification
+    defensive_style_rating = Column(Float)  # Defensive approach classification
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
@@ -140,3 +166,34 @@ class AgentMessage(Base):
     
     # Relationships
     session = relationship("AgentSession")
+
+class PlayerRiskAssessment(Base):
+    __tablename__ = "player_risk_assessment"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey("players.id"), nullable=False)
+    assessment_date = Column(DateTime, nullable=False, index=True)
+    
+    # Availability Risk (high confidence)
+    games_missed_last_30 = Column(Integer, default=0)
+    load_management_frequency = Column(Float)  # % of games rested when healthy
+    injury_recurrence_risk = Column(String)  # Based on injury type patterns
+    
+    # Performance Risk (moderate confidence) 
+    fantasy_point_variance = Column(Float)  # Game-to-game volatility
+    consistency_score = Column(Float)  # % games within 1 std dev
+    rest_vs_b2b_differential = Column(Float)  # Performance drop on back-to-backs
+    
+    # Role Risk (contextual)
+    usage_volatility = Column(Float)  # Target share consistency
+    bench_risk_flag = Column(Boolean, default=False)  # Coach/depth chart concerns
+    
+    # Composite
+    overall_risk_category = Column(String)  # 'low', 'moderate', 'high'
+    confidence_level = Column(Float)  # How much data supports this assessment
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    player = relationship("Player")

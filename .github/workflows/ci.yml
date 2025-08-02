@@ -161,8 +161,35 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Deploy to production
+    - name: Set up Python for migrations
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install backend dependencies for migration
+      working-directory: ./backend
       run: |
-        echo "Deploy to your cloud platform here"
-        echo "This could be AWS ECS, Google Cloud Run, Azure Container Instances, etc."
-        # Add your deployment commands here
+        python -m pip install --upgrade pip
+        pip install alembic psycopg2-binary sqlalchemy
+
+    - name: Install Railway CLI
+      run: npm install -g @railway/cli
+
+    - name: Run database migrations
+      working-directory: ./backend
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        DATABASE_URL: ${{ secrets.RAILWAY_DATABASE_URL }}
+      run: |
+        # Link to Railway project and run migrations
+        railway login --token $RAILWAY_TOKEN
+        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        
+        # Run Alembic migrations
+        alembic upgrade head
+
+    - name: Deploy to Railway
+      run: |
+        railway login --token ${{ secrets.RAILWAY_TOKEN }}
+        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        railway up --detach
