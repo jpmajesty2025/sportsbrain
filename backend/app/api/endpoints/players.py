@@ -72,4 +72,4 @@ async def delete_player(
     
     setattr(player, 'is_active', False)
     db.commit()
-    return {"message": "Player deactivated successfully!"}
+    return {"message": "Player deactivated successfully"}
