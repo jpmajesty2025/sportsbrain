@@ -60,7 +60,7 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
-    if not user:
+    if not user or not isinstance(user, User):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
