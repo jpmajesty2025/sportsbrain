@@ -172,7 +172,7 @@ jobs:
       working-directory: ./backend
       run: |
         python -m pip install --upgrade pip
-        pip install alembic psycopg2-binary sqlalchemy
+        pip install alembic psycopg2-binary sqlalchemy pydantic pydantic-settings python-dotenv
 
     - name: Install Railway CLI
       run: npm install -g @railway/cli
