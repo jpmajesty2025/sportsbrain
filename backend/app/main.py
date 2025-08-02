@@ -26,7 +26,7 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to SportsBrain API"}
+    return {"message": "Welcome to SportsBrain API!"}
 
 @app.get("/health")
 async def health_check():
