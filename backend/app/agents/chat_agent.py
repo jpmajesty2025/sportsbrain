@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from langchain.agents import initialize_agent, AgentType
 from langchain.llms import OpenAI
 from langchain.tools import Tool
