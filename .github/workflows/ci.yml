@@ -183,7 +183,10 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         DATABASE_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
       run: |
-        # Run Alembic migrations against Railway database (public URL)
+        # Mark current database state as baseline (first time only)
+        alembic stamp head || echo "Database already stamped"
+        
+        # Run any new migrations
         alembic upgrade head
         
         # Deploy backend with Railway token
