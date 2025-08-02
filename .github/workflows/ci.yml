@@ -181,8 +181,9 @@ jobs:
       working-directory: ./backend
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        DATABASE_URL: ${{ secrets.RAILWAY_DATABASE_URL }}
       run: |
-        # Run Alembic migrations first
+        # Run Alembic migrations against Railway database
         alembic upgrade head
         
         # Deploy backend with Railway token
