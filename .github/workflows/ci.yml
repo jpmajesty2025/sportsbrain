@@ -138,6 +138,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./backend
+        file: ./backend/Dockerfile.railway
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/sportsbrain-backend:latest
         cache-from: type=gha
@@ -147,6 +148,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./frontend
+        file: ./frontend/Dockerfile.railway
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/sportsbrain-frontend:latest
         cache-from: type=gha
