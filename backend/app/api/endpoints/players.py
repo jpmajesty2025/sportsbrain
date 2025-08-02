@@ -70,6 +70,6 @@ async def delete_player(
     if player is None:
         raise HTTPException(status_code=404, detail="Player not found")
     
-    setattr(player, 'is_active', Fasle)
+    setattr(player, 'is_active', False)
     db.commit()
     return {"message": "Player deactivated successfully!"}
