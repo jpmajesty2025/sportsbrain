@@ -12,7 +12,7 @@ class AgentResponse(BaseModel):
     confidence: Optional[float] = None
 
 class BaseAgent(ABC):
-    def __init__(self, name: str, description: str, tools: List[BaseTool] = None):
+    def __init__(self, name: str, description: str, tools: Optional[List[BaseTool]] = None):
         self.name = name
         self.description = description
         self.tools = tools or []
