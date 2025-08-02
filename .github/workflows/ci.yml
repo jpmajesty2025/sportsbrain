@@ -183,7 +183,8 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         DATABASE_URL: ${{ secrets.RAILWAY_DATABASE_URL }}
       run: |
-        # Railway CLI uses RAILWAY_TOKEN environment variable automatically
+        # Login with environment variable
+        railway login
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Run Alembic migrations
@@ -193,6 +194,7 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
+        railway login
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Deploy backend service
@@ -203,6 +205,7 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
+        railway login
         railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
         
         # Deploy frontend service
