@@ -195,5 +195,5 @@ jobs:
       run: |
         # Trigger redeploy of Railway services to pull latest Docker images
         # Since services are connected to Docker Hub, this will pull the latest images
-        railway redeploy --service sportsbrain
-        railway redeploy --service ideal-gentleness
+        railway up --service sportsbrain
+        railway up --service ideal-gentleness
