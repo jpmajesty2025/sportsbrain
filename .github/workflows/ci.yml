@@ -198,5 +198,5 @@ jobs:
         echo "Triggering Railway deployments..."
         
         # Trigger redeployment of services to pull latest Docker images
-        railway redeploy --service sportsbrain --yes
+        railway redeploy --service sportsbrain-backend --yes
         railway redeploy --service sportsbrain-frontend --yes
