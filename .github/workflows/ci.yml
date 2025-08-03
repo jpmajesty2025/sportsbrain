@@ -157,6 +157,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    container: llpyyz2112/sportsbrain-backend:latest
     if: github.ref == 'refs/heads/master'
     environment: production
 
@@ -198,5 +199,6 @@ jobs:
         echo "Triggering Railway deployments..."
         
         # Trigger redeployment of services to pull latest Docker images
-        railway redeploy --service sportsbrain --yes
-        railway redeploy --service ideal-gentleness --yes
+        railway up
+        #railway redeploy --service sportsbrain --yes
+        #railway redeploy --service sportsbrain-frontend --yes
