@@ -36,7 +36,6 @@ async def health_check():
 async def detailed_health_check():
     """Detailed health check with database and Redis connectivity"""
     from app.db.database import get_db
-    from app.core.redis import redis_client
     import datetime
     
     health_status = {
@@ -57,8 +56,11 @@ async def detailed_health_check():
     
     # Redis check
     try:
-        await redis_client.ping()
+        from app.db.redis_client import redis_client
+        redis_client.ping()  # Synchronous ping for simplicity
         health_status["checks"]["redis"] = "healthy"
+    except ImportError:
+        health_status["checks"]["redis"] = "not_configured"
     except Exception as e:
         health_status["checks"]["redis"] = f"unhealthy: {str(e)}"
         health_status["status"] = "unhealthy"
