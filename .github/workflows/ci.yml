@@ -198,3 +198,5 @@ jobs:
         echo "- ${{ secrets.DOCKER_USERNAME }}/sportsbrain-backend:latest"
         echo "- ${{ secrets.DOCKER_USERNAME }}/sportsbrain-frontend:latest"
         echo "Railway services should automatically deploy if configured with Docker Hub webhooks"
+        railway redeploy --project sportsbrain-phase-1 --service sportsbrain
+        railway redeploy --project sportsbrain-phase-1 --service ideal-gentleness
