@@ -156,7 +156,7 @@ class TestAPIDocumentation:
     
     def test_openapi_docs_accessible(self):
         """Test that OpenAPI docs are accessible"""
-        response = client.get("/api/v1/docs")
+        response = client.get("/docs")  # FastAPI serves docs at /docs by default
         assert response.status_code == 200
         
         # Should return HTML content
@@ -164,12 +164,20 @@ class TestAPIDocumentation:
     
     def test_openapi_json_accessible(self):
         """Test that OpenAPI JSON is accessible"""
-        response = client.get("/api/v1/openapi.json")
+        response = client.get("/api/v1/openapi.json")  # This is correctly configured
         assert response.status_code == 200
         
         data = response.json()
         assert "openapi" in data
         assert "info" in data
+    
+    def test_redoc_docs_accessible(self):
+        """Test that ReDoc documentation is accessible"""
+        response = client.get("/redoc")  # FastAPI also serves ReDoc at /redoc
+        assert response.status_code == 200
+        
+        # Should return HTML content
+        assert "text/html" in response.headers.get("content-type", "")
 
 
 class TestErrorHandling:
@@ -196,18 +204,25 @@ class TestFutureEndpoints:
         # Should return 404 (not found) since not implemented in Phase 1
         assert response.status_code == 404
     
-    def test_community_sentiment_endpoint_not_implemented_yet(self):
-        """Test future community sentiment endpoint not implemented"""
-        response = client.get("/api/v1/community/sentiment/player/1")
+    def test_community_endpoints_not_implemented_yet(self):
+        """Test future community endpoints not implemented"""
+        response = client.get("/api/v1/community/sentiment")
         
-        # Should return 404 (not found) since not implemented in Phase 1
+        # Should return 404 (not found) since community endpoints not implemented in Phase 1
         assert response.status_code == 404
     
-    def test_user_preferences_endpoint_not_implemented_yet(self):
-        """Test future user preferences endpoint not implemented"""
-        response = client.get("/api/v1/users/preferences")
+    def test_analysis_endpoints_not_implemented_yet(self):
+        """Test future analysis endpoints not implemented"""
+        response = client.get("/api/v1/analysis/matchup")
         
-        # Should return 404 (not found) since not implemented in Phase 1
+        # Should return 404 (not found) since analysis endpoints not implemented in Phase 1
+        assert response.status_code == 404
+    
+    def test_user_preferences_subresource_not_implemented_yet(self):
+        """Test future user preferences subresource not implemented"""
+        response = client.get("/api/v1/users/123/preferences")
+        
+        # Should return 404 (not found) since preferences subresource not implemented
         assert response.status_code == 404
 
 
@@ -230,7 +245,7 @@ class TestPerformanceRequirements:
         import time
         
         start_time = time.time()
-        response = client.get("/api/v1/docs")
+        response = client.get("/docs")  # Correct FastAPI docs URL
         response_time = time.time() - start_time
         
         assert response.status_code == 200
