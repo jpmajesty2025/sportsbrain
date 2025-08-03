@@ -24,7 +24,8 @@ class TestAgentFoundation:
         # Create agent session
         session = AgentSession(
             user_id=user.id,
-            session_type="analysis",
+            session_id="test_session_123",
+            agent_type="analysis",
             status="active"
         )
         db_session.add(session)
@@ -32,11 +33,10 @@ class TestAgentFoundation:
         
         # Create agent message
         message = AgentMessage(
-            session_id=session.id,
-            agent_type="TestAgent",
-            message_type="user",
+            session_id=session.session_id,
+            role="user",
             content="Should I start LeBron James tonight?",
-            metadata={"test": True}
+            message_metadata={"test": True}
         )
         db_session.add(message)
         db_session.commit()
@@ -44,7 +44,7 @@ class TestAgentFoundation:
         # Verify the basic flow works
         assert session.user_id == user.id
         assert session.status == "active"
-        assert message.session_id == session.id
+        assert message.session_id == session.session_id
         assert "LeBron" in message.content
     
     def test_mock_agent_coordination_pattern(self):
@@ -149,7 +149,8 @@ class TestAgentFoundation:
         # Start session
         session = AgentSession(
             user_id=user.id,
-            session_type="consultation",
+            session_id="lifecycle_session_456",
+            agent_type="consultation",
             status="active"
         )
         db_session.add(session)
@@ -158,30 +159,26 @@ class TestAgentFoundation:
         # Add multiple messages simulating conversation
         messages = [
             AgentMessage(
-                session_id=session.id,
-                agent_type="UserInput",
-                message_type="user",
+                session_id=session.session_id,
+                role="user",
                 content="Who should I start at point guard?"
             ),
             AgentMessage(
-                session_id=session.id,
-                agent_type="StatsEngine",
-                message_type="agent",
+                session_id=session.session_id,
+                role="assistant",
                 content="Based on recent stats, I recommend Stephen Curry",
-                metadata={"confidence": 0.85}
+                message_metadata={"confidence": 0.85, "agent_type": "StatsEngine"}
             ),
             AgentMessage(
-                session_id=session.id,
-                agent_type="UserInput", 
-                message_type="user",
+                session_id=session.session_id,
+                role="user",
                 content="What about injury risk?"
             ),
             AgentMessage(
-                session_id=session.id,
-                agent_type="RiskAnalyzer",
-                message_type="agent",
+                session_id=session.session_id,
+                role="assistant",
                 content="Curry has low injury risk this week",
-                metadata={"risk_score": 0.2}
+                message_metadata={"risk_score": 0.2, "agent_type": "RiskAnalyzer"}
             )
         ]
         
@@ -196,12 +193,12 @@ class TestAgentFoundation:
         assert session.status == "completed"
         
         # Verify message flow
-        user_messages = [m for m in messages if m.message_type == "user"]
-        agent_messages = [m for m in messages if m.message_type == "agent"]
+        user_messages = [m for m in messages if m.role == "user"]
+        agent_messages = [m for m in messages if m.role == "assistant"]
         
         assert len(user_messages) == 2
         assert len(agent_messages) == 2
-        assert all(m.session_id == session.id for m in messages)
+        assert all(m.session_id == session.session_id for m in messages)
 
 
 class TestAgentDataStructures:
@@ -220,7 +217,8 @@ class TestAgentDataStructures:
         # Test valid session
         valid_session = AgentSession(
             user_id=user.id,
-            session_type="analysis",
+            session_id="validation_session_789",
+            agent_type="analysis",
             status="active"
         )
         db_session.add(valid_session)
@@ -236,7 +234,7 @@ class TestAgentDataStructures:
         db_session.add(user)
         db_session.flush()
         
-        session = AgentSession(user_id=user.id, session_type="test", status="active")
+        session = AgentSession(user_id=user.id, session_id="meta_session_101", agent_type="test", status="active")
         db_session.add(session)
         db_session.flush()
         
@@ -254,17 +252,16 @@ class TestAgentDataStructures:
         }
         
         message = AgentMessage(
-            session_id=session.id,
-            agent_type="AnalyticsAgent",
-            message_type="agent",
+            session_id=session.session_id,
+            role="assistant",
             content="Detailed analysis complete",
-            metadata=complex_metadata
+            message_metadata=complex_metadata
         )
         db_session.add(message)
         db_session.commit()
         
         # Verify metadata persistence and retrieval
         retrieved_message = db_session.query(AgentMessage).filter_by(id=message.id).first()
-        assert retrieved_message.metadata["confidence"] == 0.85
-        assert "nba_api" in retrieved_message.metadata["data_sources"]
-        assert retrieved_message.metadata["nested_data"]["stats"]["ppg"] == 28.5
+        assert retrieved_message.message_metadata["confidence"] == 0.85
+        assert "nba_api" in retrieved_message.message_metadata["data_sources"]
+        assert retrieved_message.message_metadata["nested_data"]["stats"]["ppg"] == 28.5
