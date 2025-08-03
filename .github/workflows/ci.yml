@@ -200,3 +200,24 @@ jobs:
         # Trigger redeployment of services to pull latest Docker images
         railway redeploy --service sportsbrain-backend --yes
         railway redeploy --service sportsbrain-frontend --yes
+
+    - name: Wait for deployment to stabilize
+      run: |
+        echo "Waiting for services to fully restart..."
+        sleep 60
+
+    - name: Verify deployment
+      working-directory: ./backend
+      env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+      run: |
+        echo "Running deployment verification tests..."
+        
+        # Install test dependencies
+        pip install pytest aiohttp
+        
+        # Run deployment verification tests
+        pytest tests/test_deployment.py -v --tb=short
+        
+        echo "✅ Deployment verification completed successfully!"

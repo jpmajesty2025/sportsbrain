@@ -30,4 +30,37 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
+    return {"status": "healthy", "service": "sportsbrain-backend"}
+
+@app.get("/health/detailed")
+async def detailed_health_check():
+    """Detailed health check with database and Redis connectivity"""
+    from app.db.database import get_db
+    from app.core.redis import redis_client
+    import datetime
+    
+    health_status = {
+        "status": "healthy",
+        "service": "sportsbrain-backend",
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "checks": {}
+    }
+    
+    # Database check
+    try:
+        db = next(get_db())
+        db.execute("SELECT 1")
+        health_status["checks"]["database"] = "healthy"
+    except Exception as e:
+        health_status["checks"]["database"] = f"unhealthy: {str(e)}"
+        health_status["status"] = "unhealthy"
+    
+    # Redis check
+    try:
+        await redis_client.ping()
+        health_status["checks"]["redis"] = "healthy"
+    except Exception as e:
+        health_status["checks"]["redis"] = f"unhealthy: {str(e)}"
+        health_status["status"] = "unhealthy"
+    
+    return health_status
