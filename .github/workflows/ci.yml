@@ -189,11 +189,12 @@ jobs:
         # Run any new migrations
         alembic upgrade head
 
-    - name: Trigger Railway Deployment
+    - name: Notify Railway of New Images
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        # Trigger redeploy of Railway services to pull latest Docker images
-        # Since services are connected to Docker Hub, this will pull the latest images
-        railway redeploy --service sportsbrain --yes 
-        railway redeploy --service ideal-gentleness --yes
+        echo "Database migrations completed successfully"
+        echo "Docker images pushed to Docker Hub:"
+        echo "- ${{ secrets.DOCKER_USERNAME }}/sportsbrain-backend:latest"
+        echo "- ${{ secrets.DOCKER_USERNAME }}/sportsbrain-frontend:latest"
+        echo "Railway services should automatically deploy if configured with Docker Hub webhooks"
