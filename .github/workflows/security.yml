@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, develop]
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
+    - cron: '*/5 * * * *'  # Every 5 minutes for testing
 
 jobs:
   security-scan:
