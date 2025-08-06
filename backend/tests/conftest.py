@@ -5,12 +5,41 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.core.config import settings
 from app.db.database import get_db, Base
-from app.models.models import User
+from app.models.models import User, Player, Team, Game, GameStats, AgentSession, AgentMessage
 from app.core.security import get_password_hash
 
-SQLALCHEMY_DATABASE_URL = settings.TEST_DATABASE_URL
+# Use SQLite for testing if PostgreSQL is not available
+import os
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# In CI, use DATABASE_PUBLIC_URL from GitHub secrets
+if os.getenv("CI"):
+    database_url = os.getenv("DATABASE_PUBLIC_URL")
+    if database_url:
+        # Use the Railway PostgreSQL database for tests
+        SQLALCHEMY_DATABASE_URL = database_url
+        engine = create_engine(SQLALCHEMY_DATABASE_URL)
+    else:
+        # Fallback to SQLite if no database URL provided
+        SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+        from sqlalchemy.pool import StaticPool
+        engine = create_engine(
+            SQLALCHEMY_DATABASE_URL,
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
+else:
+    # Local development - use configured test database or SQLite
+    SQLALCHEMY_DATABASE_URL = settings.TEST_DATABASE_URL or "sqlite:///./test.db"
+    if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+        from sqlalchemy.pool import StaticPool
+        engine = create_engine(
+            SQLALCHEMY_DATABASE_URL,
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
+    else:
+        engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="session")
@@ -21,13 +50,29 @@ def db():
 
 @pytest.fixture(scope="function")
 def db_session(db):
-    connection = engine.connect()
-    transaction = connection.begin()
-    session = TestingSessionLocal(bind=connection)
-    yield session
-    session.close()
-    transaction.rollback()
-    connection.close()
+    """Create a new database session for a test."""
+    if "sqlite" in SQLALCHEMY_DATABASE_URL:
+        # SQLite doesn't support nested transactions well
+        session = TestingSessionLocal()
+        yield session
+        session.query(User).delete()
+        session.query(Player).delete()
+        session.query(Team).delete()
+        session.query(Game).delete()
+        session.query(GameStats).delete()
+        session.query(AgentSession).delete()
+        session.query(AgentMessage).delete()
+        session.commit()
+        session.close()
+    else:
+        # PostgreSQL with proper transaction isolation
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = TestingSessionLocal(bind=connection)
+        yield session
+        session.close()
+        transaction.rollback()
+        connection.close()
 
 @pytest.fixture(scope="function")
 def client(db_session):

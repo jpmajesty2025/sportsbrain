@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str = "postgresql://sportsbrain:password@localhost:5432/sportsbrain"
-    TEST_DATABASE_URL: str = "postgresql://sportsbrain:password@localhost:5432/sportsbrain_test"
+    TEST_DATABASE_URL: Optional[str] = None
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
