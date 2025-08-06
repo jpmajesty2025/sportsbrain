@@ -73,7 +73,8 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
       run: |
         pip install alembic
-        alembic upgrade head || echo "Migration failed - continuing with existing schema"
+        echo "Running database migrations..."
+        alembic upgrade head
 
     - name: Run tests
       working-directory: ./backend
