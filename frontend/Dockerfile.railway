@@ -50,3 +50,5 @@ EXPOSE 80
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+# Deployment timestamp: 2025-01-08

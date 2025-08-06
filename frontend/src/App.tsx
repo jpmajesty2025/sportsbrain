@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import Layout from '@/components/Layout/Layout';
-import Login from '@/pages/Login';
-import Dashboard from '@/pages/Dashboard';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Layout from './components/Layout/Layout';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import { CircularProgress, Box } from '@mui/material';
 
 const queryClient = new QueryClient();

@@ -9,10 +9,10 @@ import {
   Chip,
 } from '@mui/material';
 import { Sports, TrendingUp, Chat, Analytics } from '@mui/icons-material';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import apiService from '@/services/api';
-import { Player, Game } from '@/types';
+import apiService from '../services/api';
+import { Player, Game } from '../types';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();

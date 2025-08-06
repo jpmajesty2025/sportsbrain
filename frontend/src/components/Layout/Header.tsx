@@ -10,7 +10,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { AccountCircle, Sports } from '@mui/icons-material';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
