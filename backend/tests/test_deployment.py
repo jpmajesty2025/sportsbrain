@@ -132,7 +132,7 @@ class TestDeployedServices:
             "/",
             "/health", 
             "/health/detailed",
-            "/api/v1/docs",  # OpenAPI docs should be available
+            "/docs",  # OpenAPI docs should be available
         ]
         
         for endpoint in endpoints_to_test:
@@ -179,7 +179,7 @@ class TestServiceIntegration:
         assert frontend_response.status_code == 200
         
         # 3. Backend API docs are accessible (confirms FastAPI is working)
-        docs_response = requests.get(f"{base_urls['backend']}/api/v1/docs", timeout=10)
+        docs_response = requests.get(f"{base_urls['backend']}/docs", timeout=10)
         assert docs_response.status_code == 200
 
 
