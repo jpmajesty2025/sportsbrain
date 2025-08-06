@@ -38,7 +38,9 @@ class TestDeployedServices:
     def test_backend_detailed_health_check(self, base_urls):
         """Test that backend can connect to database and Redis"""
         response = requests.get(f"{base_urls['backend']}/health/detailed", timeout=15)
-        assert response.status_code == 200
+        
+        # More informative error message if endpoint not found
+        assert response.status_code == 200, f"Expected 200, got {response.status_code}. Response: {response.text[:200]}..."
         
         # Only test detailed health if it returns JSON
         if response.headers.get('content-type', '').startswith('application/json'):
