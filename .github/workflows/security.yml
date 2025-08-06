@@ -38,12 +38,12 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install safety
-      run: pip install safety
+    - name: Install pip-audit for Python vulnerability scanning
+      run: pip install pip-audit
 
-    - name: Run safety scan on backend dependencies
+    - name: Run pip-audit on backend dependencies
       working-directory: ./backend
-      run: safety scan
+      run: pip-audit -r requirements.txt --desc
 
     - name: Set up Node.js for security scanning
       uses: actions/setup-node@v4
