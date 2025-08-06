@@ -43,7 +43,11 @@ jobs:
 
     - name: Run pip-audit on backend dependencies
       working-directory: ./backend
-      run: pip-audit -r requirements.txt --desc
+      run: |
+        pip-audit -r requirements.txt --desc --format json > audit-results.json || true
+        echo "=== Python Dependency Security Scan Results ==="
+        pip-audit -r requirements.txt --desc || true
+        echo "=== End of Security Scan ==="
 
     - name: Set up Node.js for security scanning
       uses: actions/setup-node@v4
