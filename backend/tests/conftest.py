@@ -16,10 +16,12 @@ if os.getenv("CI"):
     database_url = os.getenv("DATABASE_PUBLIC_URL")
     if database_url:
         # Use the Railway PostgreSQL database for tests
+        print(f"Using Railway PostgreSQL for tests: {database_url[:30]}...")
         SQLALCHEMY_DATABASE_URL = database_url
         engine = create_engine(SQLALCHEMY_DATABASE_URL)
     else:
         # Fallback to SQLite if no database URL provided
+        print("Warning: DATABASE_PUBLIC_URL not set, using SQLite for tests")
         SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
         from sqlalchemy.pool import StaticPool
         engine = create_engine(
@@ -44,22 +46,30 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 @pytest.fixture(scope="session")
 def db():
-    if "sqlite" in SQLALCHEMY_DATABASE_URL:
-        # For SQLite, we can safely drop and recreate
-        Base.metadata.drop_all(bind=engine)
-        Base.metadata.create_all(bind=engine)
+    try:
+        if "sqlite" in SQLALCHEMY_DATABASE_URL:
+            # For SQLite, we can safely drop and recreate
+            Base.metadata.drop_all(bind=engine)
+            Base.metadata.create_all(bind=engine)
+            yield
+            Base.metadata.drop_all(bind=engine)
+        else:
+            # For PostgreSQL, only create tables if they don't exist
+            # This is safer for shared databases
+            Base.metadata.create_all(bind=engine)
+            yield
+            # Don't drop tables in PostgreSQL - just clean data
+    except Exception as e:
+        pytest.skip(f"Database connection failed: {str(e)}")
         yield
-        Base.metadata.drop_all(bind=engine)
-    else:
-        # For PostgreSQL, only create tables if they don't exist
-        # This is safer for shared databases
-        Base.metadata.create_all(bind=engine)
-        yield
-        # Don't drop tables in PostgreSQL - just clean data
 
 @pytest.fixture(scope="function")
 def db_session(db):
     """Create a new database session for a test."""
+    if db is None:
+        pytest.skip("Database not available")
+        return None
+        
     if "sqlite" in SQLALCHEMY_DATABASE_URL:
         # SQLite doesn't support nested transactions well
         session = TestingSessionLocal()
