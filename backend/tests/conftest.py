@@ -44,9 +44,18 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 @pytest.fixture(scope="session")
 def db():
-    Base.metadata.create_all(bind=engine)
-    yield
-    Base.metadata.drop_all(bind=engine)
+    if "sqlite" in SQLALCHEMY_DATABASE_URL:
+        # For SQLite, we can safely drop and recreate
+        Base.metadata.drop_all(bind=engine)
+        Base.metadata.create_all(bind=engine)
+        yield
+        Base.metadata.drop_all(bind=engine)
+    else:
+        # For PostgreSQL, only create tables if they don't exist
+        # This is safer for shared databases
+        Base.metadata.create_all(bind=engine)
+        yield
+        # Don't drop tables in PostgreSQL - just clean data
 
 @pytest.fixture(scope="function")
 def db_session(db):

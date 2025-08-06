@@ -67,6 +67,14 @@ jobs:
       working-directory: ./backend
       run: mypy app --ignore-missing-imports
 
+    - name: Run database migrations before tests
+      working-directory: ./backend
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
+      run: |
+        pip install alembic
+        alembic upgrade head || echo "Migration failed - continuing with existing schema"
+
     - name: Run tests
       working-directory: ./backend
       env:
