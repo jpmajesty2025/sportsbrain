@@ -113,9 +113,11 @@ def db_session(db):
         session.close()
     else:
         # PostgreSQL with proper transaction isolation
+        print(f"Creating PostgreSQL session, db type: {type(db)}")
         connection = db.connect()  # Use the db parameter (which is the engine)
         transaction = connection.begin()
         session = TestingSessionLocal(bind=connection)
+        print(f"Created session type: {type(session)}")
         yield session
         session.close()
         transaction.rollback()
