@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { AuthTokens, LoginCredentials, RegisterData, User, Player, Game, GameStats, AgentSession, AgentMessage } from '@/types';
+import { AuthTokens, LoginCredentials, RegisterData, User, Player, Game, GameStats, AgentSession, AgentMessage } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
