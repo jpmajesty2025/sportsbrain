@@ -9,11 +9,22 @@ from app.models.models import User, Player, Game, GameStats, Team, AgentSession,
 from app.db.database import get_db
 
 
+def skip_if_no_db(func):
+    """Decorator to ensure database session is available"""
+    def wrapper(self, db_session, *args, **kwargs):
+        if db_session is None:
+            pytest.fail("Database session is None - check database connection")
+        return func(self, db_session, *args, **kwargs)
+    return wrapper
+
+
 class TestUserModel:
     """Test User model functionality"""
     
+    @skip_if_no_db
     def test_user_creation(self, db_session):
         """Test creating a user with required fields"""
+            
         user = User(
             email="test@example.com",
             username="testuser",
@@ -29,6 +40,7 @@ class TestUserModel:
         assert user.is_superuser is False
         assert user.created_at is not None
     
+    @skip_if_no_db
     def test_user_email_uniqueness(self, db_session):
         """Test that user emails must be unique"""
         user1 = User(
@@ -53,6 +65,7 @@ class TestUserModel:
 class TestPlayerModel:
     """Test Player model and Phase 1A enhancements"""
     
+    @skip_if_no_db
     def test_player_creation(self, db_session):
         """Test creating a player with basic fields"""
         player = Player(
@@ -71,6 +84,7 @@ class TestPlayerModel:
         assert player.name == "LeBron James"
         assert player.is_active is True
     
+    @skip_if_no_db
     def test_player_phase1a_enhancements(self, db_session):
         """Test Phase 1A enhanced fields"""
         player = Player(
@@ -93,6 +107,7 @@ class TestPlayerModel:
 class TestGameModel:
     """Test Game model functionality"""
     
+    @skip_if_no_db
     def test_game_creation(self, db_session):
         """Test creating a game"""
         game = Game(
@@ -113,6 +128,7 @@ class TestGameModel:
 class TestGameStatsModel:
     """Test GameStats model and relationships"""
     
+    @skip_if_no_db
     def test_game_stats_creation(self, db_session):
         """Test creating game stats with player relationship"""
         # Create player first
@@ -158,6 +174,7 @@ class TestGameStatsModel:
 class TestAgentModels:
     """Test multi-agent system models"""
     
+    @skip_if_no_db
     def test_agent_session_creation(self, db_session):
         """Test creating an agent session"""
         # Create user first
@@ -180,6 +197,7 @@ class TestAgentModels:
         assert session.user_id == user.id
         assert session.status == "active"
     
+    @skip_if_no_db
     def test_agent_message_creation(self, db_session):
         """Test creating agent messages"""
         # Create user and session
@@ -217,6 +235,7 @@ class TestAgentModels:
 class TestModelValidation:
     """Test data validation and constraints"""
     
+    @skip_if_no_db
     def test_required_fields_validation(self, db_session):
         """Test that required fields are enforced"""
         # User without email should fail
@@ -229,6 +248,7 @@ class TestModelValidation:
         with pytest.raises(IntegrityError):
             db_session.commit()
     
+    @skip_if_no_db
     def test_relationship_integrity(self, db_session):
         """Test foreign key relationships work correctly"""
         # GameStats without valid player_id should fail

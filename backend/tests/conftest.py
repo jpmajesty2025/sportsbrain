@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.core.config import settings
@@ -17,7 +17,14 @@ if os.getenv("CI"):
     if database_url:
         # Use the Railway PostgreSQL database for tests
         print(f"Using Railway PostgreSQL for tests: {database_url[:30]}...")
+        # Railway PostgreSQL requires SSL
         SQLALCHEMY_DATABASE_URL = database_url
+        # Add SSL requirement if not already in URL
+        if "sslmode" not in database_url:
+            if "?" in database_url:
+                SQLALCHEMY_DATABASE_URL = f"{database_url}&sslmode=require"
+            else:
+                SQLALCHEMY_DATABASE_URL = f"{database_url}?sslmode=require"
         engine = create_engine(SQLALCHEMY_DATABASE_URL)
     else:
         # Fallback to SQLite if no database URL provided
@@ -47,6 +54,11 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture(scope="session")
 def db():
     try:
+        # Test the connection first
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT 1"))
+            print(f"Database connection successful: {result.scalar()}")
+        
         if "sqlite" in SQLALCHEMY_DATABASE_URL:
             # For SQLite, we can safely drop and recreate
             Base.metadata.drop_all(bind=engine)
@@ -60,7 +72,11 @@ def db():
             yield
             # Don't drop tables in PostgreSQL - just clean data
     except Exception as e:
-        pytest.skip(f"Database connection failed: {str(e)}")
+        print(f"Database connection error: {type(e).__name__}: {str(e)}")
+        print(f"Database URL: {SQLALCHEMY_DATABASE_URL[:50]}...")
+        import traceback
+        traceback.print_exc()
+        pytest.fail(f"Database connection failed: {str(e)}")
         yield
 
 @pytest.fixture(scope="function")
