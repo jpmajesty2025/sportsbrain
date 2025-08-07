@@ -142,8 +142,9 @@ class TestGameStatsModel:
         game = Game(
             home_team="Warriors",
             away_team="Lakers", 
-            game_date=datetime.now(),
-            season="2024-25"
+            date=datetime.now(),
+            season_type="regular",
+            season_year=2024
         )
         db_session.add(game)
         db_session.flush()
@@ -214,18 +215,18 @@ class TestAgentModels:
         
         session = AgentSession(
             user_id=user.id,
-            session_type="chat",
+            session_id="test-chat-session-456",
+            agent_type="chat",
             status="active"
         )
         db_session.add(session)
         db_session.flush()
         
         message = AgentMessage(
-            session_id=session.id,
-            agent_type="ChatAgent",
-            message_type="user",
+            session_id=session.session_id,
+            role="user",
             content="Who should I start at point guard?",
-            metadata={"context": "weekly_lineup"}
+            message_metadata={"context": "weekly_lineup"}
         )
         db_session.add(message)
         db_session.commit()
