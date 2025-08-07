@@ -11,6 +11,12 @@ from app.core.security import get_password_hash
 # Use SQLite for testing if PostgreSQL is not available
 import os
 
+# Debug output
+print(f"=== CONFTEST.PY LOADED ===")
+print(f"CI env var: {os.getenv('CI')}")
+print(f"DATABASE_PUBLIC_URL exists: {bool(os.getenv('DATABASE_PUBLIC_URL'))}")
+print(f"DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
+
 # In CI, use DATABASE_PUBLIC_URL from GitHub secrets
 if os.getenv("CI"):
     database_url = os.getenv("DATABASE_PUBLIC_URL")
@@ -77,13 +83,14 @@ def db():
         import traceback
         traceback.print_exc()
         pytest.fail(f"Database connection failed: {str(e)}")
-        yield
 
 @pytest.fixture(scope="function")
 def db_session(db):
     """Create a new database session for a test."""
+    print(f"db_session fixture called, db={db}")
+    
     if db is None:
-        pytest.skip("Database not available")
+        pytest.fail("Database fixture returned None - connection failed")
         return None
         
     if "sqlite" in SQLALCHEMY_DATABASE_URL:
