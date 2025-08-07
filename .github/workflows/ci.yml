@@ -9,6 +9,8 @@ on:
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
+    # Skip duplicate runs on PR branches
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     
     services:
       postgres:
@@ -94,6 +96,8 @@ jobs:
 
   frontend-tests:
     runs-on: ubuntu-latest
+    # Skip duplicate runs on PR branches
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
 
     steps:
     - uses: actions/checkout@v4
@@ -130,7 +134,8 @@ jobs:
   build-and-push:
     needs: [backend-tests, frontend-tests]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    # Only run on master branch pushes, skip PR runs
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     steps:
     - uses: actions/checkout@v4
@@ -167,7 +172,8 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    # Only run on master branch pushes, skip PR runs
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment: production
 
     steps:
