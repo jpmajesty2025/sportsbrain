@@ -73,13 +73,13 @@ def db():
             # For SQLite, we can safely drop and recreate
             Base.metadata.drop_all(bind=engine)
             Base.metadata.create_all(bind=engine)
-            yield
+            yield engine
             Base.metadata.drop_all(bind=engine)
         else:
             # For PostgreSQL, only create tables if they don't exist
             # This is safer for shared databases
             Base.metadata.create_all(bind=engine)
-            yield
+            yield engine
             # Don't drop tables in PostgreSQL - just clean data
     except Exception as e:
         print(f"Database connection error: {type(e).__name__}: {str(e)}")
@@ -91,12 +91,13 @@ def db():
 @pytest.fixture(scope="function")
 def db_session(db):
     """Create a new database session for a test."""
-    print(f"db_session fixture called, db={db}")
+    print(f"db_session fixture called, db engine={db}")
     
     if db is None:
         pytest.fail("Database fixture returned None - connection failed")
         return None
-        
+    
+    # db is now the engine from the db fixture    
     if "sqlite" in SQLALCHEMY_DATABASE_URL:
         # SQLite doesn't support nested transactions well
         session = TestingSessionLocal()
