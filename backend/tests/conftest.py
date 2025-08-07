@@ -59,8 +59,12 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 @pytest.fixture(scope="session")
 def db():
+    print(f"=== DB FIXTURE CALLED ===")
+    print(f"Database URL: {SQLALCHEMY_DATABASE_URL[:50]}...")
+    
     try:
         # Test the connection first
+        print("Testing database connection...")
         with engine.connect() as conn:
             result = conn.execute(text("SELECT 1"))
             print(f"Database connection successful: {result.scalar()}")
