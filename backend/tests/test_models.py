@@ -114,8 +114,9 @@ class TestGameModel:
         game = Game(
             home_team="Lakers",
             away_team="Celtics",
-            game_date=datetime.now(),
-            season="2024-25",
+            date=datetime.now(),
+            season_type="regular",
+            season_year=2024,
             status="scheduled"
         )
         db_session.add(game)
@@ -189,7 +190,8 @@ class TestAgentModels:
         
         session = AgentSession(
             user_id=user.id,
-            session_type="analysis",
+            session_id="test-session-123",
+            agent_type="analytics",
             status="active"
         )
         db_session.add(session)
