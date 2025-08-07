@@ -231,8 +231,8 @@ class TestAgentModels:
         db_session.add(message)
         db_session.commit()
         
-        assert message.session_id == session.id
-        assert message.agent_type == "ChatAgent"
+        assert message.session_id == session.session_id
+        assert message.role == "user"
         assert "point guard" in message.content
 
 
