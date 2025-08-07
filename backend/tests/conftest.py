@@ -113,7 +113,7 @@ def db_session(db):
         session.close()
     else:
         # PostgreSQL with proper transaction isolation
-        connection = engine.connect()
+        connection = db.connect()  # Use the db parameter (which is the engine)
         transaction = connection.begin()
         session = TestingSessionLocal(bind=connection)
         yield session
