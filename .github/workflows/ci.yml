@@ -222,12 +222,12 @@ jobs:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
         FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
       run: |
-        echo "Running deployment verification tests..."
+        echo "Running deployment verification..."
         
-        # Install test dependencies
-        pip install pytest aiohttp
+        # Install minimal dependencies
+        pip install requests
         
-        # Run deployment verification tests
-        pytest tests/test_deployment.py -v --tb=short
+        # Run simple deployment verification
+        python verify_deployment.py
         
-        echo "✅ Deployment verification completed successfully!"
+        echo "✅ Deployment verification completed!"
