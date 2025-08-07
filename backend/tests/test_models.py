@@ -12,7 +12,6 @@ from app.db.database import get_db
 def skip_if_no_db(func):
     """Decorator to ensure database session is available"""
     def wrapper(self, db_session, *args, **kwargs):
-        print(f"skip_if_no_db: db_session type = {type(db_session)}")
         if db_session is None:
             pytest.fail("Database session is None - check database connection")
         return func(self, db_session, *args, **kwargs)

@@ -11,18 +11,12 @@ from app.core.security import get_password_hash
 # Use SQLite for testing if PostgreSQL is not available
 import os
 
-# Debug output
-print(f"=== CONFTEST.PY LOADED ===")
-print(f"CI env var: {os.getenv('CI')}")
-print(f"DATABASE_PUBLIC_URL exists: {bool(os.getenv('DATABASE_PUBLIC_URL'))}")
-print(f"DATABASE_URL exists: {bool(os.getenv('DATABASE_URL'))}")
 
 # In CI, use DATABASE_PUBLIC_URL from GitHub secrets
 if os.getenv("CI"):
     database_url = os.getenv("DATABASE_PUBLIC_URL")
     if database_url:
         # Use the Railway PostgreSQL database for tests
-        print(f"Using Railway PostgreSQL for tests: {database_url[:30]}...")
         # Railway PostgreSQL requires SSL
         SQLALCHEMY_DATABASE_URL = database_url
         # Add SSL requirement if not already in URL
@@ -34,7 +28,6 @@ if os.getenv("CI"):
         engine = create_engine(SQLALCHEMY_DATABASE_URL)
     else:
         # Fallback to SQLite if no database URL provided
-        print("Warning: DATABASE_PUBLIC_URL not set, using SQLite for tests")
         SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
         from sqlalchemy.pool import StaticPool
         engine = create_engine(
@@ -59,15 +52,10 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 @pytest.fixture(scope="session")
 def db():
-    print(f"=== DB FIXTURE CALLED ===")
-    print(f"Database URL: {SQLALCHEMY_DATABASE_URL[:50]}...")
-    
     try:
         # Test the connection first
-        print("Testing database connection...")
         with engine.connect() as conn:
             result = conn.execute(text("SELECT 1"))
-            print(f"Database connection successful: {result.scalar()}")
         
         if "sqlite" in SQLALCHEMY_DATABASE_URL:
             # For SQLite, we can safely drop and recreate
@@ -82,8 +70,6 @@ def db():
             yield engine
             # Don't drop tables in PostgreSQL - just clean data
     except Exception as e:
-        print(f"Database connection error: {type(e).__name__}: {str(e)}")
-        print(f"Database URL: {SQLALCHEMY_DATABASE_URL[:50]}...")
         import traceback
         traceback.print_exc()
         pytest.fail(f"Database connection failed: {str(e)}")
@@ -91,8 +77,6 @@ def db():
 @pytest.fixture(scope="function")
 def db_session(db):
     """Create a new database session for a test."""
-    print(f"db_session fixture called, db engine={db}")
-    
     if db is None:
         pytest.fail("Database fixture returned None - connection failed")
         return None
@@ -113,11 +97,9 @@ def db_session(db):
         session.close()
     else:
         # PostgreSQL with proper transaction isolation
-        print(f"Creating PostgreSQL session, db type: {type(db)}")
         connection = db.connect()  # Use the db parameter (which is the engine)
         transaction = connection.begin()
         session = TestingSessionLocal(bind=connection)
-        print(f"Created session type: {type(session)}")
         yield session
         session.close()
         transaction.rollback()
