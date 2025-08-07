@@ -34,6 +34,9 @@ COPY --from=builder /app/build /usr/share/nginx/html
 # Debug: Check what was copied
 RUN ls -la /usr/share/nginx/html/
 
+# Create directory for nginx template
+RUN mkdir -p /etc/nginx/templates
+
 # Create nginx config template for SPA routing
 RUN echo 'server { \
     listen $PORT; \
