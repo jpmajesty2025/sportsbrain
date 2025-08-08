@@ -26,7 +26,7 @@ class VectorDB:
         self.milvus_host = os.getenv("MILVUS_HOST") or settings.MILVUS_HOST
         self.milvus_token = os.getenv("MILVUS_TOKEN") or settings.MILVUS_TOKEN
         
-    def connect(self):
+    def connect(self) -> None:
         """Connect to Zilliz Cloud"""
         try:
             if self.milvus_host and self.milvus_token:
@@ -49,20 +49,21 @@ class VectorDB:
             logger.error(f"Failed to connect to vector database: {e}")
             raise
             
-    def create_collection(self, dim: int = 768):
+    def create_collection(self, collection_name: str, dim: int = 768) -> None:
         """Create collection for player embeddings"""
         # Collection schema will be implemented based on embedding model
         pass
         
-    def insert_embeddings(self, embeddings: List[List[float]], metadata: List[Dict[str, Any]]):
+    def insert_embeddings(self, collection_name: str, embeddings: List[List[float]], metadata: List[Dict[str, Any]]) -> None:
         """Insert player embeddings with metadata"""
         pass
         
-    def search(self, query_embedding: List[float], top_k: int = 10) -> List[Dict[str, Any]]:
+    def search(self, collection_name: str, query_embedding: List[float], top_k: int = 10) -> List[Dict[str, Any]]:
         """Search for similar players/content"""
-        pass
+        # Return empty list for now
+        return []
         
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect from Milvus"""
         connections.disconnect("default")
 
