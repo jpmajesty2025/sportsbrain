@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from .endpoints import auth, users, players, games, agents
-from .v1 import milvus_test
+from .endpoints import auth, users, players, games, agents, milvus_test
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
