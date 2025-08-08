@@ -17,6 +17,7 @@ langchain-openai==0.0.5
 langchain-community==0.0.10
 pymilvus==2.3.4
 neo4j==5.14.1
+mmh3==4.0.1
 pytest==7.4.3
 pytest-asyncio==0.21.1
 pytest-cov==4.1.0
