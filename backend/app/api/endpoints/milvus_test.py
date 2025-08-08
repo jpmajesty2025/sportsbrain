@@ -12,7 +12,7 @@ import random
 router = APIRouter()
 
 
-@router.get("/test/milvus/connection")
+@router.get("/connection")
 async def check_milvus_connection() -> Dict[str, Any]:
     """Test basic Milvus connection"""
     try:
@@ -32,7 +32,7 @@ async def check_milvus_connection() -> Dict[str, Any]:
         vector_db.disconnect()
 
 
-@router.get("/test/milvus/collection/{collection_name}")
+@router.get("/collection/{collection_name}")
 async def check_collection_info(collection_name: str) -> Dict[str, Any]:
     """Get collection information"""
     try:
@@ -73,7 +73,7 @@ async def check_collection_info(collection_name: str) -> Dict[str, Any]:
         vector_db.disconnect()
 
 
-@router.post("/test/milvus/insert")
+@router.post("/insert")
 async def insert_test_data() -> Dict[str, Any]:
     """Insert test data into players collection"""
     try:
@@ -134,7 +134,7 @@ async def insert_test_data() -> Dict[str, Any]:
         vector_db.disconnect()
 
 
-@router.post("/test/milvus/search")
+@router.post("/search")
 async def search_test() -> Dict[str, Any]:
     """Test vector search in players collection"""
     try:
@@ -189,7 +189,7 @@ async def search_test() -> Dict[str, Any]:
         vector_db.disconnect()
 
 
-@router.delete("/test/milvus/cleanup")
+@router.delete("/cleanup")
 async def cleanup_test_data() -> Dict[str, Any]:
     """Remove test data from collections"""
     try:
