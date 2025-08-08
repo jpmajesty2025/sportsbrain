@@ -99,20 +99,20 @@ async def insert_test_data() -> Dict[str, Any]:
         # Create random vector (in real app, this would come from embedding model)
         vector = [random.random() for _ in range(768)]
         
-        # Prepare data for insertion
+        # Prepare data for insertion (order must match schema exactly)
         data = [
             [primary_key],  # primary_key
             [vector],  # vector
             [test_player['text']],  # text
-            [test_player['name']],  # player_name
-            [test_player['position']],  # position
             [{
                 "team": "Test Team",
                 "season": "2023-24",
                 "stats": {"ppg": 20.0, "apg": 8.0},
                 "test_data": True
             }],  # metadata
-            [int(time.time())]  # created_at
+            [int(time.time())],  # created_at
+            [test_player['name']],  # player_name
+            [test_player['position']]  # position
         ]
         
         # Insert data
