@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.get("/test/milvus/connection")
-async def test_milvus_connection() -> Dict[str, Any]:
+async def check_milvus_connection() -> Dict[str, Any]:
     """Test basic Milvus connection"""
     try:
         vector_db.connect()
@@ -33,7 +33,7 @@ async def test_milvus_connection() -> Dict[str, Any]:
 
 
 @router.get("/test/milvus/collection/{collection_name}")
-async def test_collection_info(collection_name: str) -> Dict[str, Any]:
+async def check_collection_info(collection_name: str) -> Dict[str, Any]:
     """Get collection information"""
     try:
         vector_db.connect()
@@ -74,7 +74,7 @@ async def test_collection_info(collection_name: str) -> Dict[str, Any]:
 
 
 @router.post("/test/milvus/insert")
-async def test_insert_data() -> Dict[str, Any]:
+async def insert_test_data() -> Dict[str, Any]:
     """Insert test data into players collection"""
     try:
         vector_db.connect()
@@ -135,7 +135,7 @@ async def test_insert_data() -> Dict[str, Any]:
 
 
 @router.post("/test/milvus/search")
-async def test_search() -> Dict[str, Any]:
+async def search_test() -> Dict[str, Any]:
     """Test vector search in players collection"""
     try:
         vector_db.connect()
