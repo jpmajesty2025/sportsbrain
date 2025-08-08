@@ -12,14 +12,20 @@ class Settings(BaseSettings):
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
     
-    # Milvus
-    MILVUS_HOST: str = "localhost"
-    MILVUS_PORT: int = 19530
+    # Milvus (Zilliz Cloud)
+    MILVUS_HOST: Optional[str] = None  # URI for Zilliz Cloud
+    MILVUS_TOKEN: Optional[str] = None  # API token for Zilliz Cloud
     
-    # Neo4j
-    NEO4J_URI: str = "bolt://localhost:7687"
+    # Milvus Collections
+    MILVUS_PLAYERS_COLLECTION: str = "sportsbrain_players"  # Player profiles & stats (dense)
+    MILVUS_DRAFT_STRATEGIES_COLLECTION: str = "sportsbrain_strategies"  # Draft strategies & analysis (dense)
+    MILVUS_TRADE_NEWS_COLLECTION: str = "sportsbrain_trades"  # Trade news & Reddit posts (hybrid)
+    
+    # Neo4j (Aura)
+    NEO4J_URI: Optional[str] = None
     NEO4J_USERNAME: str = "neo4j"
-    NEO4J_PASSWORD: str = "password"
+    NEO4J_PASSWORD: Optional[str] = None
+    NEO4J_DATABASE: str = "neo4j"
     
     # JWT
     SECRET_KEY: str = "your-secret-key-here"

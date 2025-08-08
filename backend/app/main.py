@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.api import api_router
 from app.db.database import engine
 from app.models import models
+import os
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -65,5 +66,27 @@ async def detailed_health_check():
     except Exception as e:
         health_status["checks"]["redis"] = f"unhealthy: {str(e)}"
         health_status["status"] = "unhealthy"
+    
+    # Milvus/Zilliz check
+    try:
+        from app.db.vector_db import vector_db
+        vector_db.connect()
+        health_status["checks"]["vector_db"] = "healthy"
+        vector_db.disconnect()
+    except Exception as e:
+        health_status["checks"]["vector_db"] = f"unhealthy: {str(e)}"
+        if "MILVUS_HOST" not in os.environ:
+            health_status["checks"]["vector_db"] = "not_configured"
+    
+    # Neo4j check
+    try:
+        from app.db.graph_db import graph_db
+        graph_db.connect()
+        health_status["checks"]["graph_db"] = "healthy"
+        graph_db.disconnect()
+    except Exception as e:
+        health_status["checks"]["graph_db"] = f"unhealthy: {str(e)}"
+        if "NEO4J_URI" not in os.environ:
+            health_status["checks"]["graph_db"] = "not_configured"
     
     return health_status
