@@ -1,0 +1,3445 @@
+{
+  "last_updated": "2024-08-01",
+  "source": "Generated based on typical fantasy basketball patterns",
+  "note": "Top 50 ADPs are semi-realistic, 51+ are estimated",
+  "players": {
+    "Nikola Jokić": {
+      "adp": 1.2,
+      "fantasy_ranking": 1,
+      "keeper_round_value": 1,
+      "position_rank": "G1"
+    },
+    "Giannis Antetokounmpo": {
+      "adp": 2.5,
+      "fantasy_ranking": 2,
+      "keeper_round_value": 1,
+      "position_rank": "G1"
+    },
+    "Luka Dončić": {
+      "adp": 3.8,
+      "fantasy_ranking": 3,
+      "keeper_round_value": 1,
+      "position_rank": "G1"
+    },
+    "Joel Embiid": {
+      "adp": 4.2,
+      "fantasy_ranking": 4,
+      "keeper_round_value": 1,
+      "position_rank": "G1"
+    },
+    "Shai Gilgeous-Alexander": {
+      "adp": 5.1,
+      "fantasy_ranking": 5,
+      "keeper_round_value": 1,
+      "position_rank": "G2"
+    },
+    "Jayson Tatum": {
+      "adp": 8.5,
+      "fantasy_ranking": 8,
+      "keeper_round_value": 1,
+      "position_rank": "G2"
+    },
+    "Damian Lillard": {
+      "adp": 9.3,
+      "fantasy_ranking": 9,
+      "keeper_round_value": 1,
+      "position_rank": "G2"
+    },
+    "Tyrese Haliburton": {
+      "adp": 10.7,
+      "fantasy_ranking": 10,
+      "keeper_round_value": 1,
+      "position_rank": "G3"
+    },
+    "Stephen Curry": {
+      "adp": 12.3,
+      "fantasy_ranking": 12,
+      "keeper_round_value": 1,
+      "position_rank": "G3"
+    },
+    "Anthony Davis": {
+      "adp": 13.8,
+      "fantasy_ranking": 13,
+      "keeper_round_value": 1,
+      "position_rank": "G3"
+    },
+    "LeBron James": {
+      "adp": 15.8,
+      "fantasy_ranking": 15,
+      "keeper_round_value": 1,
+      "position_rank": "G4"
+    },
+    "Domantas Sabonis": {
+      "adp": 16.4,
+      "fantasy_ranking": 16,
+      "keeper_round_value": 1,
+      "position_rank": "G4"
+    },
+    "Trae Young": {
+      "adp": 18.2,
+      "fantasy_ranking": 18,
+      "keeper_round_value": 1,
+      "position_rank": "G4"
+    },
+    "Donovan Mitchell": {
+      "adp": 19.5,
+      "fantasy_ranking": 19,
+      "keeper_round_value": 1,
+      "position_rank": "G4"
+    },
+    "Karl-Anthony Towns": {
+      "adp": 21.3,
+      "fantasy_ranking": 21,
+      "keeper_round_value": 1,
+      "position_rank": "G5"
+    },
+    "Anthony Edwards": {
+      "adp": 22.7,
+      "fantasy_ranking": 22,
+      "keeper_round_value": 1,
+      "position_rank": "G5"
+    },
+    "Devin Booker": {
+      "adp": 24.1,
+      "fantasy_ranking": 24,
+      "keeper_round_value": 2,
+      "position_rank": "G5"
+    },
+    "Kevin Durant": {
+      "adp": 25.8,
+      "fantasy_ranking": 25,
+      "keeper_round_value": 2,
+      "position_rank": "G6"
+    },
+    "Ja Morant": {
+      "adp": 28.5,
+      "fantasy_ranking": 28,
+      "keeper_round_value": 2,
+      "position_rank": "G6",
+      "notes": "Suspension risk factored into ADP"
+    },
+    "De'Aaron Fox": {
+      "adp": 29.2,
+      "fantasy_ranking": 29,
+      "keeper_round_value": 2,
+      "position_rank": "G6"
+    },
+    "Bam Adebayo": {
+      "adp": 31.4,
+      "fantasy_ranking": 31,
+      "keeper_round_value": 2,
+      "position_rank": "G7"
+    },
+    "Jaylen Brown": {
+      "adp": 32.8,
+      "fantasy_ranking": 32,
+      "keeper_round_value": 2,
+      "position_rank": "G7"
+    },
+    "Paul George": {
+      "adp": 35.6,
+      "fantasy_ranking": 35,
+      "keeper_round_value": 2,
+      "position_rank": "G8"
+    },
+    "Kawhi Leonard": {
+      "adp": 37.1,
+      "fantasy_ranking": 37,
+      "keeper_round_value": 3,
+      "position_rank": "G8",
+      "notes": "Injury risk factored into ADP"
+    },
+    "Chet Holmgren": {
+      "adp": 40.2,
+      "fantasy_ranking": 40,
+      "keeper_round_value": 3,
+      "position_rank": "G9",
+      "notes": "Breakout candidate"
+    },
+    "Scottie Barnes": {
+      "adp": 41.8,
+      "fantasy_ranking": 41,
+      "keeper_round_value": 3,
+      "position_rank": "G9"
+    },
+    "Dejounte Murray": {
+      "adp": 43.1,
+      "fantasy_ranking": 43,
+      "keeper_round_value": 3,
+      "position_rank": "G9"
+    },
+    "Kristaps Porziņģis": {
+      "adp": 45.2,
+      "fantasy_ranking": 45,
+      "keeper_round_value": 3,
+      "position_rank": "G10"
+    },
+    "Zion Williamson": {
+      "adp": 46.8,
+      "fantasy_ranking": 46,
+      "keeper_round_value": 3,
+      "position_rank": "G10",
+      "notes": "Injury risk factored into ADP"
+    },
+    "Jaren Jackson Jr.": {
+      "adp": 48.3,
+      "fantasy_ranking": 48,
+      "keeper_round_value": 5,
+      "position_rank": "G10"
+    },
+    "Pascal Siakam": {
+      "adp": 49.7,
+      "fantasy_ranking": 49,
+      "keeper_round_value": 5,
+      "position_rank": "G10"
+    },
+    "Lauri Markkanen": {
+      "adp": 51.2,
+      "fantasy_ranking": 51,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Jalen Brunson": {
+      "adp": 52.6,
+      "fantasy_ranking": 52,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Julius Randle": {
+      "adp": 54.1,
+      "fantasy_ranking": 54,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Nikola Vučević": {
+      "adp": 55.8,
+      "fantasy_ranking": 55,
+      "keeper_round_value": 5,
+      "position_rank": "G12"
+    },
+    "Myles Turner": {
+      "adp": 57.2,
+      "fantasy_ranking": 57,
+      "keeper_round_value": 5,
+      "position_rank": "G12"
+    },
+    "Rudy Gobert": {
+      "adp": 58.9,
+      "fantasy_ranking": 58,
+      "keeper_round_value": 5,
+      "position_rank": "G12"
+    },
+    "Darius Garland": {
+      "adp": 60.3,
+      "fantasy_ranking": 60,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "CJ McCollum": {
+      "adp": 61.7,
+      "fantasy_ranking": 61,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Fred VanVleet": {
+      "adp": 63.2,
+      "fantasy_ranking": 63,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Kyrie Irving": {
+      "adp": 64.8,
+      "fantasy_ranking": 64,
+      "keeper_round_value": 6,
+      "position_rank": "G13",
+      "notes": "Injury risk factored into ADP"
+    },
+    "Evan Mobley": {
+      "adp": 66.3,
+      "fantasy_ranking": 66,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Brandon Ingram": {
+      "adp": 67.9,
+      "fantasy_ranking": 67,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Mikal Bridges": {
+      "adp": 69.4,
+      "fantasy_ranking": 69,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Paolo Banchero": {
+      "adp": 70.8,
+      "fantasy_ranking": 70,
+      "keeper_round_value": 6,
+      "position_rank": "G15",
+      "notes": "Breakout candidate"
+    },
+    "Jrue Holiday": {
+      "adp": 72.3,
+      "fantasy_ranking": 72,
+      "keeper_round_value": 7,
+      "position_rank": "G15"
+    },
+    "Bradley Beal": {
+      "adp": 73.9,
+      "fantasy_ranking": 73,
+      "keeper_round_value": 7,
+      "position_rank": "G15"
+    },
+    "Deandre Ayton": {
+      "adp": 75.4,
+      "fantasy_ranking": 75,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Precious Achiuwa": {
+      "adp": 49.2,
+      "fantasy_ranking": 49,
+      "keeper_round_value": 5,
+      "position_rank": "G10"
+    },
+    "Steven Adams": {
+      "adp": 49.6,
+      "fantasy_ranking": 50,
+      "keeper_round_value": 5,
+      "position_rank": "G10"
+    },
+    "Ochai Agbaji": {
+      "adp": 49.2,
+      "fantasy_ranking": 51,
+      "keeper_round_value": 5,
+      "position_rank": "G10"
+    },
+    "Santi Aldama": {
+      "adp": 50.9,
+      "fantasy_ranking": 52,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Trey Alexander": {
+      "adp": 52.8,
+      "fantasy_ranking": 53,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Nickeil Alexander-Walker": {
+      "adp": 54.3,
+      "fantasy_ranking": 54,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Grayson Allen": {
+      "adp": 54.6,
+      "fantasy_ranking": 55,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Jarrett Allen": {
+      "adp": 53.1,
+      "fantasy_ranking": 56,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Jose Alvarado": {
+      "adp": 54.7,
+      "fantasy_ranking": 57,
+      "keeper_round_value": 5,
+      "position_rank": "G11"
+    },
+    "Kyle Anderson": {
+      "adp": 57.9,
+      "fantasy_ranking": 58,
+      "keeper_round_value": 5,
+      "position_rank": "G12"
+    },
+    "Cole Anthony": {
+      "adp": 58.8,
+      "fantasy_ranking": 59,
+      "keeper_round_value": 5,
+      "position_rank": "G12"
+    },
+    "OG Anunoby": {
+      "adp": 60.4,
+      "fantasy_ranking": 60,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Taran Armstrong": {
+      "adp": 61.9,
+      "fantasy_ranking": 61,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Deni Avdija": {
+      "adp": 60.4,
+      "fantasy_ranking": 62,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Marcus Bagley": {
+      "adp": 63.9,
+      "fantasy_ranking": 63,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Marvin Bagley III": {
+      "adp": 63.4,
+      "fantasy_ranking": 64,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Patrick Baldwin Jr.": {
+      "adp": 63.7,
+      "fantasy_ranking": 65,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "LaMelo Ball": {
+      "adp": 64.9,
+      "fantasy_ranking": 66,
+      "keeper_round_value": 6,
+      "position_rank": "G13"
+    },
+    "Lonzo Ball": {
+      "adp": 67.9,
+      "fantasy_ranking": 67,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Mo Bamba": {
+      "adp": 68.0,
+      "fantasy_ranking": 68,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Desmond Bane": {
+      "adp": 68.0,
+      "fantasy_ranking": 69,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Dalano Banton": {
+      "adp": 67.3,
+      "fantasy_ranking": 70,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Dominick Barlow": {
+      "adp": 68.1,
+      "fantasy_ranking": 71,
+      "keeper_round_value": 6,
+      "position_rank": "G14"
+    },
+    "Harrison Barnes": {
+      "adp": 71.1,
+      "fantasy_ranking": 72,
+      "keeper_round_value": 6,
+      "position_rank": "G15"
+    },
+    "RJ Barrett": {
+      "adp": 73.6,
+      "fantasy_ranking": 73,
+      "keeper_round_value": 7,
+      "position_rank": "G15"
+    },
+    "Charles Bassey": {
+      "adp": 74.9,
+      "fantasy_ranking": 74,
+      "keeper_round_value": 7,
+      "position_rank": "G15"
+    },
+    "Emoni Bates": {
+      "adp": 73.9,
+      "fantasy_ranking": 75,
+      "keeper_round_value": 7,
+      "position_rank": "G15"
+    },
+    "Jamison Battle": {
+      "adp": 76.6,
+      "fantasy_ranking": 76,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Nicolas Batum": {
+      "adp": 77.3,
+      "fantasy_ranking": 77,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Damion Baugh": {
+      "adp": 76.1,
+      "fantasy_ranking": 78,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Malik Beasley": {
+      "adp": 78.7,
+      "fantasy_ranking": 79,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "MarJon Beauchamp": {
+      "adp": 78.2,
+      "fantasy_ranking": 80,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Reece Beekman": {
+      "adp": 81.5,
+      "fantasy_ranking": 81,
+      "keeper_round_value": 7,
+      "position_rank": "G17"
+    },
+    "Saddiq Bey": {
+      "adp": 79.1,
+      "fantasy_ranking": 82,
+      "keeper_round_value": 7,
+      "position_rank": "G16"
+    },
+    "Goga Bitadze": {
+      "adp": 82.4,
+      "fantasy_ranking": 83,
+      "keeper_round_value": 7,
+      "position_rank": "G17"
+    },
+    "Bismack Biyombo": {
+      "adp": 81.9,
+      "fantasy_ranking": 84,
+      "keeper_round_value": 7,
+      "position_rank": "G17"
+    },
+    "Anthony Black": {
+      "adp": 83.3,
+      "fantasy_ranking": 85,
+      "keeper_round_value": 7,
+      "position_rank": "G17"
+    },
+    "Bogdan Bogdanović": {
+      "adp": 85.1,
+      "fantasy_ranking": 86,
+      "keeper_round_value": 8,
+      "position_rank": "G18"
+    },
+    "Bol Bol": {
+      "adp": 85.4,
+      "fantasy_ranking": 87,
+      "keeper_round_value": 8,
+      "position_rank": "G18"
+    },
+    "Adem Bona": {
+      "adp": 87.5,
+      "fantasy_ranking": 88,
+      "keeper_round_value": 8,
+      "position_rank": "G18"
+    },
+    "Brandon Boston": {
+      "adp": 87.1,
+      "fantasy_ranking": 89,
+      "keeper_round_value": 8,
+      "position_rank": "G18"
+    },
+    "Chris Boucher": {
+      "adp": 87.5,
+      "fantasy_ranking": 90,
+      "keeper_round_value": 8,
+      "position_rank": "G18"
+    },
+    "Jamaree Bouyea": {
+      "adp": 91.2,
+      "fantasy_ranking": 91,
+      "keeper_round_value": 8,
+      "position_rank": "G19"
+    },
+    "Tony Bradley": {
+      "adp": 90.4,
+      "fantasy_ranking": 92,
+      "keeper_round_value": 8,
+      "position_rank": "G19"
+    },
+    "Malaki Branham": {
+      "adp": 90.1,
+      "fantasy_ranking": 93,
+      "keeper_round_value": 8,
+      "position_rank": "G19"
+    },
+    "Christian Braun": {
+      "adp": 93.8,
+      "fantasy_ranking": 94,
+      "keeper_round_value": 8,
+      "position_rank": "G19"
+    },
+    "Jalen Bridges": {
+      "adp": 93.8,
+      "fantasy_ranking": 95,
+      "keeper_round_value": 8,
+      "position_rank": "G19"
+    },
+    "Miles Bridges": {
+      "adp": 96.1,
+      "fantasy_ranking": 96,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Oshae Brissett": {
+      "adp": 96.5,
+      "fantasy_ranking": 97,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Malcolm Brogdon": {
+      "adp": 97.8,
+      "fantasy_ranking": 98,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Dillon Brooks": {
+      "adp": 99.8,
+      "fantasy_ranking": 99,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Keion Brooks Jr.": {
+      "adp": 97.4,
+      "fantasy_ranking": 100,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Bruce Brown": {
+      "adp": 99.6,
+      "fantasy_ranking": 101,
+      "keeper_round_value": 9,
+      "position_rank": "G20"
+    },
+    "Kobe Brown": {
+      "adp": 102.0,
+      "fantasy_ranking": 102,
+      "keeper_round_value": 9,
+      "position_rank": "G21"
+    },
+    "Moses Brown": {
+      "adp": 102.2,
+      "fantasy_ranking": 103,
+      "keeper_round_value": 9,
+      "position_rank": "G21"
+    },
+    "Thomas Bryant": {
+      "adp": 104.3,
+      "fantasy_ranking": 104,
+      "keeper_round_value": 9,
+      "position_rank": "G21"
+    },
+    "Kobe Bufkin": {
+      "adp": 105.6,
+      "fantasy_ranking": 105,
+      "keeper_round_value": 9,
+      "position_rank": "G22"
+    },
+    "Alec Burks": {
+      "adp": 106.5,
+      "fantasy_ranking": 106,
+      "keeper_round_value": 9,
+      "position_rank": "G22"
+    },
+    "Jared Butler": {
+      "adp": 104.6,
+      "fantasy_ranking": 107,
+      "keeper_round_value": 9,
+      "position_rank": "G21"
+    },
+    "Jimmy Butler III": {
+      "adp": 106.0,
+      "fantasy_ranking": 108,
+      "keeper_round_value": 9,
+      "position_rank": "G22"
+    },
+    "Matas Buzelis": {
+      "adp": 109.2,
+      "fantasy_ranking": 109,
+      "keeper_round_value": 10,
+      "position_rank": "G22"
+    },
+    "Jamal Cain": {
+      "adp": 110.8,
+      "fantasy_ranking": 110,
+      "keeper_round_value": 10,
+      "position_rank": "G23"
+    },
+    "Kentavious Caldwell-Pope": {
+      "adp": 109.3,
+      "fantasy_ranking": 111,
+      "keeper_round_value": 10,
+      "position_rank": "G22"
+    },
+    "Toumani Camara": {
+      "adp": 110.8,
+      "fantasy_ranking": 112,
+      "keeper_round_value": 10,
+      "position_rank": "G23"
+    },
+    "Clint Capela": {
+      "adp": 113.6,
+      "fantasy_ranking": 113,
+      "keeper_round_value": 10,
+      "position_rank": "G23"
+    },
+    "Branden Carlson": {
+      "adp": 111.7,
+      "fantasy_ranking": 114,
+      "keeper_round_value": 10,
+      "position_rank": "G23"
+    },
+    "Bub Carrington": {
+      "adp": 115.2,
+      "fantasy_ranking": 115,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "Devin Carter": {
+      "adp": 116.4,
+      "fantasy_ranking": 116,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "Jevon Carter": {
+      "adp": 115.5,
+      "fantasy_ranking": 117,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "Wendell Carter Jr.": {
+      "adp": 116.8,
+      "fantasy_ranking": 118,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "D.J. Carton": {
+      "adp": 118.3,
+      "fantasy_ranking": 119,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "Alex Caruso": {
+      "adp": 119.0,
+      "fantasy_ranking": 120,
+      "keeper_round_value": 10,
+      "position_rank": "G24"
+    },
+    "Stephon Castle": {
+      "adp": 121.1,
+      "fantasy_ranking": 121,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Colin Castleton": {
+      "adp": 120.5,
+      "fantasy_ranking": 122,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Julian Champagnie": {
+      "adp": 121.2,
+      "fantasy_ranking": 123,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Justin Champagnie": {
+      "adp": 124.4,
+      "fantasy_ranking": 124,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Ulrich Chomche": {
+      "adp": 123.7,
+      "fantasy_ranking": 125,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Cam Christie": {
+      "adp": 125.2,
+      "fantasy_ranking": 126,
+      "keeper_round_value": 11,
+      "position_rank": "G26"
+    },
+    "Max Christie": {
+      "adp": 124.9,
+      "fantasy_ranking": 127,
+      "keeper_round_value": 11,
+      "position_rank": "G25"
+    },
+    "Josh Christopher": {
+      "adp": 126.3,
+      "fantasy_ranking": 128,
+      "keeper_round_value": 11,
+      "position_rank": "G26"
+    },
+    "Sidy Cissoko": {
+      "adp": 128.7,
+      "fantasy_ranking": 129,
+      "keeper_round_value": 11,
+      "position_rank": "G26"
+    },
+    "Jaylen Clark": {
+      "adp": 130.5,
+      "fantasy_ranking": 130,
+      "keeper_round_value": 11,
+      "position_rank": "G27"
+    },
+    "Brandon Clarke": {
+      "adp": 129.9,
+      "fantasy_ranking": 131,
+      "keeper_round_value": 11,
+      "position_rank": "G26"
+    },
+    "Jordan Clarkson": {
+      "adp": 131.7,
+      "fantasy_ranking": 132,
+      "keeper_round_value": 11,
+      "position_rank": "G27"
+    },
+    "Nic Claxton": {
+      "adp": 130.6,
+      "fantasy_ranking": 133,
+      "keeper_round_value": 11,
+      "position_rank": "G27"
+    },
+    "Donovan Clingan": {
+      "adp": 132.0,
+      "fantasy_ranking": 134,
+      "keeper_round_value": 12,
+      "position_rank": "G27"
+    },
+    "Noah Clowney": {
+      "adp": 132.9,
+      "fantasy_ranking": 135,
+      "keeper_round_value": 12,
+      "position_rank": "G27"
+    },
+    "Amir Coffey": {
+      "adp": 133.5,
+      "fantasy_ranking": 136,
+      "keeper_round_value": 12,
+      "position_rank": "G27"
+    },
+    "Isaiah Collier": {
+      "adp": 137.0,
+      "fantasy_ranking": 137,
+      "keeper_round_value": 12,
+      "position_rank": "G28"
+    },
+    "John Collins": {
+      "adp": 135.9,
+      "fantasy_ranking": 138,
+      "keeper_round_value": 12,
+      "position_rank": "G28"
+    },
+    "Yuri Collins": {
+      "adp": 137.5,
+      "fantasy_ranking": 139,
+      "keeper_round_value": 12,
+      "position_rank": "G28"
+    },
+    "Zach Collins": {
+      "adp": 138.2,
+      "fantasy_ranking": 140,
+      "keeper_round_value": 12,
+      "position_rank": "G28"
+    },
+    "Mike Conley": {
+      "adp": 141.5,
+      "fantasy_ranking": 141,
+      "keeper_round_value": 12,
+      "position_rank": "G29"
+    },
+    "Pat Connaughton": {
+      "adp": 141.2,
+      "fantasy_ranking": 142,
+      "keeper_round_value": 12,
+      "position_rank": "G29"
+    },
+    "Bilal Coulibaly": {
+      "adp": 143.6,
+      "fantasy_ranking": 143,
+      "keeper_round_value": 12,
+      "position_rank": "G29"
+    },
+    "Ricky Council IV": {
+      "adp": 144.6,
+      "fantasy_ranking": 144,
+      "keeper_round_value": 13,
+      "position_rank": "G29"
+    },
+    "Torrey Craig": {
+      "adp": 142.9,
+      "fantasy_ranking": 145,
+      "keeper_round_value": 12,
+      "position_rank": "G29"
+    },
+    "Isaiah Crawford": {
+      "adp": 145.5,
+      "fantasy_ranking": 146,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Jae Crowder": {
+      "adp": 144.8,
+      "fantasy_ranking": 147,
+      "keeper_round_value": 13,
+      "position_rank": "G29"
+    },
+    "Cade Cunningham": {
+      "adp": 148.7,
+      "fantasy_ranking": 148,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Seth Curry": {
+      "adp": 147.1,
+      "fantasy_ranking": 149,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Pacome Dadiet": {
+      "adp": 147.5,
+      "fantasy_ranking": 150,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Dyson Daniels": {
+      "adp": 153.6,
+      "fantasy_ranking": 151,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "N'Faly Dante": {
+      "adp": 150.9,
+      "fantasy_ranking": 152,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Johnny Davis": {
+      "adp": 151.9,
+      "fantasy_ranking": 153,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "JD Davison": {
+      "adp": 153.4,
+      "fantasy_ranking": 154,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "DeMar DeRozan": {
+      "adp": 156.0,
+      "fantasy_ranking": 155,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "RayJ Dennis": {
+      "adp": 157.4,
+      "fantasy_ranking": 156,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Donte DiVincenzo": {
+      "adp": 153.1,
+      "fantasy_ranking": 157,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Moussa Diabaté": {
+      "adp": 150.0,
+      "fantasy_ranking": 158,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Gradey Dick": {
+      "adp": 151.9,
+      "fantasy_ranking": 159,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Ousmane Dieng": {
+      "adp": 155.3,
+      "fantasy_ranking": 160,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Rob Dillingham": {
+      "adp": 158.4,
+      "fantasy_ranking": 161,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Spencer Dinwiddie": {
+      "adp": 152.2,
+      "fantasy_ranking": 162,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Luguentz Dort": {
+      "adp": 152.4,
+      "fantasy_ranking": 163,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Ayo Dosunmu": {
+      "adp": 154.8,
+      "fantasy_ranking": 164,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Jeff Dowtin Jr.": {
+      "adp": 160.7,
+      "fantasy_ranking": 165,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "PJ Dozier": {
+      "adp": 154.9,
+      "fantasy_ranking": 166,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Andre Drummond": {
+      "adp": 153.3,
+      "fantasy_ranking": 167,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "Chris Duarte": {
+      "adp": 160.3,
+      "fantasy_ranking": 168,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Alex Ducas": {
+      "adp": 154.8,
+      "fantasy_ranking": 169,
+      "keeper_round_value": 13,
+      "position_rank": "G30"
+    },
+    "David Duke Jr.": {
+      "adp": 156.2,
+      "fantasy_ranking": 170,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Kris Dunn": {
+      "adp": 163.5,
+      "fantasy_ranking": 171,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Ryan Dunn": {
+      "adp": 160.8,
+      "fantasy_ranking": 172,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Jalen Duren": {
+      "adp": 163.0,
+      "fantasy_ranking": 173,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Tari Eason": {
+      "adp": 157.7,
+      "fantasy_ranking": 174,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Zach Edey": {
+      "adp": 164.8,
+      "fantasy_ranking": 175,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Jesse Edwards": {
+      "adp": 166.9,
+      "fantasy_ranking": 176,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Justin Edwards": {
+      "adp": 161.3,
+      "fantasy_ranking": 177,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Kessler Edwards": {
+      "adp": 162.6,
+      "fantasy_ranking": 178,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Keon Ellis": {
+      "adp": 159.4,
+      "fantasy_ranking": 179,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Tyson Etienne": {
+      "adp": 166.6,
+      "fantasy_ranking": 180,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Drew Eubanks": {
+      "adp": 162.0,
+      "fantasy_ranking": 181,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Tosan Evbuomwan": {
+      "adp": 166.6,
+      "fantasy_ranking": 182,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Danté Exum": {
+      "adp": 166.8,
+      "fantasy_ranking": 183,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Bruno Fernando": {
+      "adp": 167.7,
+      "fantasy_ranking": 184,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Kyle Filipowski": {
+      "adp": 167.6,
+      "fantasy_ranking": 185,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Dorian Finney-Smith": {
+      "adp": 169.9,
+      "fantasy_ranking": 186,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Adam Flagler": {
+      "adp": 168.3,
+      "fantasy_ranking": 187,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trentyn Flowers": {
+      "adp": 165.7,
+      "fantasy_ranking": 188,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Malachi Flynn": {
+      "adp": 166.5,
+      "fantasy_ranking": 189,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Simone Fontecchio": {
+      "adp": 164.9,
+      "fantasy_ranking": 190,
+      "keeper_round_value": 14,
+      "position_rank": "G30"
+    },
+    "Enrique Freeman": {
+      "adp": 168.0,
+      "fantasy_ranking": 191,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Markelle Fultz": {
+      "adp": 169.7,
+      "fantasy_ranking": 192,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Johnny Furphy": {
+      "adp": 171.2,
+      "fantasy_ranking": 193,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Daniel Gafford": {
+      "adp": 172.3,
+      "fantasy_ranking": 194,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Marcus Garrett": {
+      "adp": 170.5,
+      "fantasy_ranking": 195,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Luka Garza": {
+      "adp": 175.3,
+      "fantasy_ranking": 196,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keyonte George": {
+      "adp": 176.7,
+      "fantasy_ranking": 197,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kyshawn George": {
+      "adp": 172.1,
+      "fantasy_ranking": 198,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Taj Gibson": {
+      "adp": 177.6,
+      "fantasy_ranking": 199,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Giddey": {
+      "adp": 178.6,
+      "fantasy_ranking": 200,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Anthony Gill": {
+      "adp": 173.6,
+      "fantasy_ranking": 201,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Collin Gillespie": {
+      "adp": 173.2,
+      "fantasy_ranking": 202,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan Goodwin": {
+      "adp": 171.2,
+      "fantasy_ranking": 203,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Aaron Gordon": {
+      "adp": 175.1,
+      "fantasy_ranking": 204,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Eric Gordon": {
+      "adp": 173.0,
+      "fantasy_ranking": 205,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jazian Gortman": {
+      "adp": 173.9,
+      "fantasy_ranking": 206,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jerami Grant": {
+      "adp": 182.6,
+      "fantasy_ranking": 207,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "AJ Green": {
+      "adp": 180.1,
+      "fantasy_ranking": 208,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Draymond Green": {
+      "adp": 181.1,
+      "fantasy_ranking": 209,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Green": {
+      "adp": 178.3,
+      "fantasy_ranking": 210,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Javonte Green": {
+      "adp": 184.5,
+      "fantasy_ranking": 211,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jeff Green": {
+      "adp": 179.2,
+      "fantasy_ranking": 212,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Green": {
+      "adp": 181.2,
+      "fantasy_ranking": 213,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Quentin Grimes": {
+      "adp": 180.4,
+      "fantasy_ranking": 214,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mouhamed Gueye": {
+      "adp": 186.3,
+      "fantasy_ranking": 215,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Rui Hachimura": {
+      "adp": 180.5,
+      "fantasy_ranking": 216,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "PJ Hall": {
+      "adp": 185.4,
+      "fantasy_ranking": 217,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tim Hardaway Jr.": {
+      "adp": 187.7,
+      "fantasy_ranking": 218,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "James Harden": {
+      "adp": 183.7,
+      "fantasy_ranking": 219,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaden Hardy": {
+      "adp": 185.0,
+      "fantasy_ranking": 220,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Elijah Harkless": {
+      "adp": 189.1,
+      "fantasy_ranking": 221,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ron Harper Jr.": {
+      "adp": 181.4,
+      "fantasy_ranking": 222,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Gary Harris": {
+      "adp": 185.9,
+      "fantasy_ranking": 223,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tobias Harris": {
+      "adp": 187.2,
+      "fantasy_ranking": 224,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Hart": {
+      "adp": 186.4,
+      "fantasy_ranking": 225,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Hartenstein": {
+      "adp": 187.6,
+      "fantasy_ranking": 226,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Sam Hauser": {
+      "adp": 192.1,
+      "fantasy_ranking": 227,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan Hawkins": {
+      "adp": 192.7,
+      "fantasy_ranking": 228,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaxson Hayes": {
+      "adp": 192.5,
+      "fantasy_ranking": 229,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Killian Hayes": {
+      "adp": 191.0,
+      "fantasy_ranking": 230,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Scoot Henderson": {
+      "adp": 185.1,
+      "fantasy_ranking": 231,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Taylor Hendricks": {
+      "adp": 187.1,
+      "fantasy_ranking": 232,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyler Herro": {
+      "adp": 186.1,
+      "fantasy_ranking": 233,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Buddy Hield": {
+      "adp": 188.1,
+      "fantasy_ranking": 234,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Haywood Highsmith": {
+      "adp": 188.7,
+      "fantasy_ranking": 235,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Aaron Holiday": {
+      "adp": 191.4,
+      "fantasy_ranking": 236,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ronald Holland II": {
+      "adp": 189.7,
+      "fantasy_ranking": 237,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Richaun Holmes": {
+      "adp": 191.6,
+      "fantasy_ranking": 238,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "DaRon Holmes II": {
+      "adp": 195.6,
+      "fantasy_ranking": 239,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Hood-Schifino": {
+      "adp": 195.8,
+      "fantasy_ranking": 240,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Al Horford": {
+      "adp": 192.2,
+      "fantasy_ranking": 241,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Talen Horton-Tucker": {
+      "adp": 198.5,
+      "fantasy_ranking": 242,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Caleb Houstan": {
+      "adp": 194.5,
+      "fantasy_ranking": 243,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jett Howard": {
+      "adp": 201.2,
+      "fantasy_ranking": 244,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevin Huerter": {
+      "adp": 194.2,
+      "fantasy_ranking": 245,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jay Huff": {
+      "adp": 196.8,
+      "fantasy_ranking": 246,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ariel Hukporti": {
+      "adp": 202.5,
+      "fantasy_ranking": 247,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "De'Andre Hunter": {
+      "adp": 194.3,
+      "fantasy_ranking": 248,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bones Hyland": {
+      "adp": 199.2,
+      "fantasy_ranking": 249,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Oso Ighodaro": {
+      "adp": 196.7,
+      "fantasy_ranking": 250,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Joe Ingles": {
+      "adp": 202.3,
+      "fantasy_ranking": 251,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Harrison Ingram": {
+      "adp": 196.6,
+      "fantasy_ranking": 252,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jonathan Isaac": {
+      "adp": 202.2,
+      "fantasy_ranking": 253,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaden Ivey": {
+      "adp": 203.7,
+      "fantasy_ranking": 254,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "GG Jackson": {
+      "adp": 197.9,
+      "fantasy_ranking": 255,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Jackson": {
+      "adp": 198.3,
+      "fantasy_ranking": 256,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Quenton Jackson": {
+      "adp": 203.5,
+      "fantasy_ranking": 257,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Reggie Jackson": {
+      "adp": 200.1,
+      "fantasy_ranking": 258,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Andre Jackson Jr.": {
+      "adp": 207.1,
+      "fantasy_ranking": 259,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trayce Jackson-Davis": {
+      "adp": 208.0,
+      "fantasy_ranking": 260,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bronny James": {
+      "adp": 203.6,
+      "fantasy_ranking": 261,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaime Jaquez Jr.": {
+      "adp": 208.7,
+      "fantasy_ranking": 262,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "DaQuan Jeffries": {
+      "adp": 203.8,
+      "fantasy_ranking": 263,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trey Jemison III": {
+      "adp": 206.0,
+      "fantasy_ranking": 264,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Daniss Jenkins": {
+      "adp": 208.9,
+      "fantasy_ranking": 265,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ty Jerome": {
+      "adp": 206.0,
+      "fantasy_ranking": 266,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Joe": {
+      "adp": 205.1,
+      "fantasy_ranking": 267,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "AJ Johnson": {
+      "adp": 211.8,
+      "fantasy_ranking": 268,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cameron Johnson": {
+      "adp": 206.8,
+      "fantasy_ranking": 269,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Johnson": {
+      "adp": 211.0,
+      "fantasy_ranking": 270,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "James Johnson": {
+      "adp": 213.7,
+      "fantasy_ranking": 271,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keldon Johnson": {
+      "adp": 214.4,
+      "fantasy_ranking": 272,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keon Johnson": {
+      "adp": 207.1,
+      "fantasy_ranking": 273,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keshad Johnson": {
+      "adp": 208.7,
+      "fantasy_ranking": 274,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Colby Jones": {
+      "adp": 209.4,
+      "fantasy_ranking": 275,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dillon Jones": {
+      "adp": 214.4,
+      "fantasy_ranking": 276,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Herbert Jones": {
+      "adp": 213.2,
+      "fantasy_ranking": 277,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaac Jones": {
+      "adp": 212.1,
+      "fantasy_ranking": 278,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kai Jones": {
+      "adp": 213.8,
+      "fantasy_ranking": 279,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mason Jones": {
+      "adp": 211.8,
+      "fantasy_ranking": 280,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Spencer Jones": {
+      "adp": 210.2,
+      "fantasy_ranking": 281,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tre Jones": {
+      "adp": 210.5,
+      "fantasy_ranking": 282,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyus Jones": {
+      "adp": 214.3,
+      "fantasy_ranking": 283,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Derrick Jones Jr.": {
+      "adp": 212.7,
+      "fantasy_ranking": 284,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "DeAndre Jordan": {
+      "adp": 217.4,
+      "fantasy_ranking": 285,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cory Joseph": {
+      "adp": 222.2,
+      "fantasy_ranking": 286,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nikola Jović": {
+      "adp": 216.6,
+      "fantasy_ranking": 287,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Johnny Juzang": {
+      "adp": 216.6,
+      "fantasy_ranking": 288,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Yuki Kawamura": {
+      "adp": 217.1,
+      "fantasy_ranking": 289,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kylor Kelley": {
+      "adp": 221.7,
+      "fantasy_ranking": 290,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Luke Kennard": {
+      "adp": 215.2,
+      "fantasy_ranking": 291,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Walker Kessler": {
+      "adp": 224.3,
+      "fantasy_ranking": 292,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Braxton Key": {
+      "adp": 219.9,
+      "fantasy_ranking": 293,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Corey Kispert": {
+      "adp": 222.1,
+      "fantasy_ranking": 294,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Maxi Kleber": {
+      "adp": 222.0,
+      "fantasy_ranking": 295,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bobi Klintman": {
+      "adp": 223.4,
+      "fantasy_ranking": 296,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dalton Knecht": {
+      "adp": 227.5,
+      "fantasy_ranking": 297,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevin Knox II": {
+      "adp": 224.9,
+      "fantasy_ranking": 298,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyler Kolek": {
+      "adp": 219.2,
+      "fantasy_ranking": 299,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Christian Koloko": {
+      "adp": 223.1,
+      "fantasy_ranking": 300,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "John Konchar": {
+      "adp": 221.8,
+      "fantasy_ranking": 301,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Luke Kornet": {
+      "adp": 221.5,
+      "fantasy_ranking": 302,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Vít Krejčí": {
+      "adp": 226.2,
+      "fantasy_ranking": 303,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jonathan Kuminga": {
+      "adp": 228.1,
+      "fantasy_ranking": 304,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kyle Kuzma": {
+      "adp": 223.6,
+      "fantasy_ranking": 305,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jake LaRavia": {
+      "adp": 231.6,
+      "fantasy_ranking": 306,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Zach LaVine": {
+      "adp": 225.4,
+      "fantasy_ranking": 307,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Skal Labissiere": {
+      "adp": 225.8,
+      "fantasy_ranking": 308,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jock Landale": {
+      "adp": 225.1,
+      "fantasy_ranking": 309,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Pelle Larsson": {
+      "adp": 232.4,
+      "fantasy_ranking": 310,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "A.J. Lawson": {
+      "adp": 231.1,
+      "fantasy_ranking": 311,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Caris LeVert": {
+      "adp": 229.5,
+      "fantasy_ranking": 312,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Damion Lee": {
+      "adp": 232.4,
+      "fantasy_ranking": 313,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Alex Len": {
+      "adp": 229.1,
+      "fantasy_ranking": 314,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Malevy Leons": {
+      "adp": 231.4,
+      "fantasy_ranking": 315,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Maxwell Lewis": {
+      "adp": 237.4,
+      "fantasy_ranking": 316,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "E.J. Liddell": {
+      "adp": 235.9,
+      "fantasy_ranking": 317,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dereck Lively II": {
+      "adp": 230.3,
+      "fantasy_ranking": 318,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Chris Livingston": {
+      "adp": 230.5,
+      "fantasy_ranking": 319,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevon Looney": {
+      "adp": 238.3,
+      "fantasy_ranking": 320,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Brook Lopez": {
+      "adp": 233.0,
+      "fantasy_ranking": 321,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevin Love": {
+      "adp": 236.5,
+      "fantasy_ranking": 322,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kyle Lowry": {
+      "adp": 238.3,
+      "fantasy_ranking": 323,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Seth Lundy": {
+      "adp": 238.0,
+      "fantasy_ranking": 324,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trey Lyles": {
+      "adp": 234.2,
+      "fantasy_ranking": 325,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Sandro Mamukelashvili": {
+      "adp": 239.9,
+      "fantasy_ranking": 326,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Terance Mann": {
+      "adp": 238.3,
+      "fantasy_ranking": 327,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tre Mann": {
+      "adp": 233.9,
+      "fantasy_ranking": 328,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Naji Marshall": {
+      "adp": 239.6,
+      "fantasy_ranking": 329,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Caleb Martin": {
+      "adp": 237.4,
+      "fantasy_ranking": 330,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cody Martin": {
+      "adp": 241.3,
+      "fantasy_ranking": 331,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaylen Martin": {
+      "adp": 237.4,
+      "fantasy_ranking": 332,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "KJ Martin": {
+      "adp": 238.2,
+      "fantasy_ranking": 333,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyrese Martin": {
+      "adp": 241.8,
+      "fantasy_ranking": 334,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Garrison Mathews": {
+      "adp": 237.8,
+      "fantasy_ranking": 335,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bennedict Mathurin": {
+      "adp": 245.0,
+      "fantasy_ranking": 336,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Karlo Matković": {
+      "adp": 239.7,
+      "fantasy_ranking": 337,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyrese Maxey": {
+      "adp": 242.7,
+      "fantasy_ranking": 338,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Miles McBride": {
+      "adp": 245.5,
+      "fantasy_ranking": 339,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jared McCain": {
+      "adp": 249.0,
+      "fantasy_ranking": 340,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mac McClung": {
+      "adp": 241.6,
+      "fantasy_ranking": 341,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "T.J. McConnell": {
+      "adp": 247.2,
+      "fantasy_ranking": 342,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevin McCullar Jr.": {
+      "adp": 245.0,
+      "fantasy_ranking": 343,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaden McDaniels": {
+      "adp": 243.6,
+      "fantasy_ranking": 344,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen McDaniels": {
+      "adp": 248.1,
+      "fantasy_ranking": 345,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Doug McDermott": {
+      "adp": 244.7,
+      "fantasy_ranking": 346,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bryce McGowens": {
+      "adp": 246.3,
+      "fantasy_ranking": 347,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan McLaughlin": {
+      "adp": 249.2,
+      "fantasy_ranking": 348,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jack McVeigh": {
+      "adp": 245.9,
+      "fantasy_ranking": 349,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "De'Anthony Melton": {
+      "adp": 248.8,
+      "fantasy_ranking": 350,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Sam Merrill": {
+      "adp": 248.5,
+      "fantasy_ranking": 351,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Vasilije Micić": {
+      "adp": 247.8,
+      "fantasy_ranking": 352,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Khris Middleton": {
+      "adp": 248.4,
+      "fantasy_ranking": 353,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Brandon Miller": {
+      "adp": 256.5,
+      "fantasy_ranking": 354,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Emanuel Miller": {
+      "adp": 252.1,
+      "fantasy_ranking": 355,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan Miller": {
+      "adp": 249.5,
+      "fantasy_ranking": 356,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Leonard Miller": {
+      "adp": 256.0,
+      "fantasy_ranking": 357,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Patty Mills": {
+      "adp": 257.8,
+      "fantasy_ranking": 358,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Shake Milton": {
+      "adp": 257.1,
+      "fantasy_ranking": 359,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Justin Minaya": {
+      "adp": 255.8,
+      "fantasy_ranking": 360,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Riley Minix": {
+      "adp": 257.0,
+      "fantasy_ranking": 361,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Minott": {
+      "adp": 252.6,
+      "fantasy_ranking": 362,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Yves Missi": {
+      "adp": 253.5,
+      "fantasy_ranking": 363,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ajay Mitchell": {
+      "adp": 259.9,
+      "fantasy_ranking": 364,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Davion Mitchell": {
+      "adp": 260.5,
+      "fantasy_ranking": 365,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jonathan Mogbo": {
+      "adp": 259.0,
+      "fantasy_ranking": 366,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Malik Monk": {
+      "adp": 259.0,
+      "fantasy_ranking": 367,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Moses Moody": {
+      "adp": 258.9,
+      "fantasy_ranking": 368,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tazé Moore": {
+      "adp": 254.3,
+      "fantasy_ranking": 369,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Wendell Moore Jr.": {
+      "adp": 255.2,
+      "fantasy_ranking": 370,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Markieff Morris": {
+      "adp": 256.3,
+      "fantasy_ranking": 371,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Monté Morris": {
+      "adp": 265.3,
+      "fantasy_ranking": 372,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trey Murphy III": {
+      "adp": 258.6,
+      "fantasy_ranking": 373,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jamal Murray": {
+      "adp": 257.0,
+      "fantasy_ranking": 374,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keegan Murray": {
+      "adp": 261.9,
+      "fantasy_ranking": 375,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kris Murray": {
+      "adp": 264.9,
+      "fantasy_ranking": 376,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Svi Mykhailiuk": {
+      "adp": 258.1,
+      "fantasy_ranking": 377,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Pete Nance": {
+      "adp": 263.8,
+      "fantasy_ranking": 378,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Larry Nance Jr.": {
+      "adp": 264.4,
+      "fantasy_ranking": 379,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Andrew Nembhard": {
+      "adp": 260.9,
+      "fantasy_ranking": 380,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Aaron Nesmith": {
+      "adp": 267.5,
+      "fantasy_ranking": 381,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tristen Newton": {
+      "adp": 265.6,
+      "fantasy_ranking": 382,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Georges Niang": {
+      "adp": 263.1,
+      "fantasy_ranking": 383,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Daishen Nix": {
+      "adp": 263.8,
+      "fantasy_ranking": 384,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Zeke Nnaji": {
+      "adp": 263.4,
+      "fantasy_ranking": 385,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Miles Norris": {
+      "adp": 269.0,
+      "fantasy_ranking": 386,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaylen Nowell": {
+      "adp": 265.9,
+      "fantasy_ranking": 387,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jusuf Nurkić": {
+      "adp": 270.3,
+      "fantasy_ranking": 388,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Royce O'Neale": {
+      "adp": 268.2,
+      "fantasy_ranking": 389,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jahlil Okafor": {
+      "adp": 269.4,
+      "fantasy_ranking": 390,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Chuma Okeke": {
+      "adp": 269.6,
+      "fantasy_ranking": 391,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Okogie": {
+      "adp": 267.9,
+      "fantasy_ranking": 392,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Onyeka Okongwu": {
+      "adp": 269.8,
+      "fantasy_ranking": 393,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaac Okoro": {
+      "adp": 268.9,
+      "fantasy_ranking": 394,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Quincy Olivari": {
+      "adp": 275.9,
+      "fantasy_ranking": 395,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kelly Olynyk": {
+      "adp": 268.4,
+      "fantasy_ranking": 396,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kelly Oubre Jr.": {
+      "adp": 273.3,
+      "fantasy_ranking": 397,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Chris Paul": {
+      "adp": 271.5,
+      "fantasy_ranking": 398,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cameron Payne": {
+      "adp": 274.7,
+      "fantasy_ranking": 399,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Elfrid Payton": {
+      "adp": 275.4,
+      "fantasy_ranking": 400,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Gary Payton II": {
+      "adp": 274.4,
+      "fantasy_ranking": 401,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Drew Peterson": {
+      "adp": 279.7,
+      "fantasy_ranking": 402,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Julian Phillips": {
+      "adp": 273.6,
+      "fantasy_ranking": 403,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Pickett": {
+      "adp": 273.8,
+      "fantasy_ranking": 404,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Scotty Pippen Jr.": {
+      "adp": 279.7,
+      "fantasy_ranking": 405,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Daeqwon Plowden": {
+      "adp": 276.2,
+      "fantasy_ranking": 406,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mason Plumlee": {
+      "adp": 280.3,
+      "fantasy_ranking": 407,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Brandin Podziemski": {
+      "adp": 279.7,
+      "fantasy_ranking": 408,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jakob Poeltl": {
+      "adp": 282.2,
+      "fantasy_ranking": 409,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan Poole": {
+      "adp": 281.8,
+      "fantasy_ranking": 410,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Craig Porter Jr.": {
+      "adp": 277.9,
+      "fantasy_ranking": 411,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kevin Porter Jr.": {
+      "adp": 283.4,
+      "fantasy_ranking": 412,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Michael Porter Jr.": {
+      "adp": 283.5,
+      "fantasy_ranking": 413,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Bobby Portis": {
+      "adp": 277.1,
+      "fantasy_ranking": 414,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Quinten Post": {
+      "adp": 279.2,
+      "fantasy_ranking": 415,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Micah Potter": {
+      "adp": 286.2,
+      "fantasy_ranking": 416,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dwight Powell": {
+      "adp": 284.6,
+      "fantasy_ranking": 417,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Norman Powell": {
+      "adp": 280.0,
+      "fantasy_ranking": 418,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Taurean Prince": {
+      "adp": 284.0,
+      "fantasy_ranking": 419,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Payton Pritchard": {
+      "adp": 286.3,
+      "fantasy_ranking": 420,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Olivier-Maxence Prosper": {
+      "adp": 286.3,
+      "fantasy_ranking": 421,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Zyon Pullin": {
+      "adp": 286.8,
+      "fantasy_ranking": 422,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trevelin Queen": {
+      "adp": 284.7,
+      "fantasy_ranking": 423,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Neemias Queta": {
+      "adp": 289.5,
+      "fantasy_ranking": 424,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Immanuel Quickley": {
+      "adp": 287.9,
+      "fantasy_ranking": 425,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Lester Quinones": {
+      "adp": 287.6,
+      "fantasy_ranking": 426,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Duop Reath": {
+      "adp": 292.8,
+      "fantasy_ranking": 427,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Austin Reaves": {
+      "adp": 291.0,
+      "fantasy_ranking": 428,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cam Reddish": {
+      "adp": 284.8,
+      "fantasy_ranking": 429,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Paul Reed": {
+      "adp": 287.6,
+      "fantasy_ranking": 430,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Alex Reese": {
+      "adp": 293.1,
+      "fantasy_ranking": 431,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Antonio Reeves": {
+      "adp": 289.6,
+      "fantasy_ranking": 432,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Naz Reid": {
+      "adp": 291.1,
+      "fantasy_ranking": 433,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jared Rhoden": {
+      "adp": 292.3,
+      "fantasy_ranking": 434,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nick Richards": {
+      "adp": 290.1,
+      "fantasy_ranking": 435,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Josh Richardson": {
+      "adp": 295.3,
+      "fantasy_ranking": 436,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Zaccharie Risacher": {
+      "adp": 291.3,
+      "fantasy_ranking": 437,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Liam Robbins": {
+      "adp": 297.4,
+      "fantasy_ranking": 438,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Duncan Robinson": {
+      "adp": 298.3,
+      "fantasy_ranking": 439,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mitchell Robinson": {
+      "adp": 290.2,
+      "fantasy_ranking": 440,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Orlando Robinson": {
+      "adp": 294.1,
+      "fantasy_ranking": 441,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jeremiah Robinson-Earl": {
+      "adp": 299.0,
+      "fantasy_ranking": 442,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "David Roddy": {
+      "adp": 291.8,
+      "fantasy_ranking": 443,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ryan Rollins": {
+      "adp": 298.3,
+      "fantasy_ranking": 444,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jackson Rowe": {
+      "adp": 300,
+      "fantasy_ranking": 445,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Terry Rozier": {
+      "adp": 300,
+      "fantasy_ranking": 446,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Rayan Rupert": {
+      "adp": 296.8,
+      "fantasy_ranking": 447,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "D'Angelo Russell": {
+      "adp": 300,
+      "fantasy_ranking": 448,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Matt Ryan": {
+      "adp": 297.7,
+      "fantasy_ranking": 449,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tidjane Salaün": {
+      "adp": 300,
+      "fantasy_ranking": 450,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Adama Sanogo": {
+      "adp": 299.6,
+      "fantasy_ranking": 451,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Gui Santos": {
+      "adp": 300,
+      "fantasy_ranking": 452,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Alex Sarr": {
+      "adp": 299.0,
+      "fantasy_ranking": 453,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Marcus Sasser": {
+      "adp": 298.4,
+      "fantasy_ranking": 454,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Baylor Scheierman": {
+      "adp": 300,
+      "fantasy_ranking": 455,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dennis Schröder": {
+      "adp": 300,
+      "fantasy_ranking": 456,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Alperen Sengun": {
+      "adp": 298.7,
+      "fantasy_ranking": 457,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Brice Sensabaugh": {
+      "adp": 300,
+      "fantasy_ranking": 458,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Collin Sexton": {
+      "adp": 299.1,
+      "fantasy_ranking": 459,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Landry Shamet": {
+      "adp": 300,
+      "fantasy_ranking": 460,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Terrence Shannon Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 461,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Day'Ron Sharpe": {
+      "adp": 300,
+      "fantasy_ranking": 462,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Shaedon Sharpe": {
+      "adp": 300,
+      "fantasy_ranking": 463,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jamal Shead": {
+      "adp": 300,
+      "fantasy_ranking": 464,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ben Sheppard": {
+      "adp": 300,
+      "fantasy_ranking": 465,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Reed Sheppard": {
+      "adp": 300,
+      "fantasy_ranking": 466,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ben Simmons": {
+      "adp": 300,
+      "fantasy_ranking": 467,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Anfernee Simons": {
+      "adp": 300,
+      "fantasy_ranking": 468,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "KJ Simpson": {
+      "adp": 300,
+      "fantasy_ranking": 469,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jericho Sims": {
+      "adp": 300,
+      "fantasy_ranking": 470,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Marcus Smart": {
+      "adp": 300,
+      "fantasy_ranking": 471,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dru Smith": {
+      "adp": 300,
+      "fantasy_ranking": 472,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Smith": {
+      "adp": 300,
+      "fantasy_ranking": 473,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tolu Smith": {
+      "adp": 300,
+      "fantasy_ranking": 474,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tyler Smith": {
+      "adp": 300,
+      "fantasy_ranking": 475,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jabari Smith Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 476,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nick Smith Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 477,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jeremy Sochan": {
+      "adp": 300,
+      "fantasy_ranking": 478,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cam Spencer": {
+      "adp": 300,
+      "fantasy_ranking": 479,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Pat Spencer": {
+      "adp": 300,
+      "fantasy_ranking": 480,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaden Springer": {
+      "adp": 300,
+      "fantasy_ranking": 481,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Stevens": {
+      "adp": 300,
+      "fantasy_ranking": 482,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Lamar Stevens": {
+      "adp": 300,
+      "fantasy_ranking": 483,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Stewart": {
+      "adp": 300,
+      "fantasy_ranking": 484,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Julian Strawther": {
+      "adp": 300,
+      "fantasy_ranking": 485,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Max Strus": {
+      "adp": 300,
+      "fantasy_ranking": 486,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Suggs": {
+      "adp": 300,
+      "fantasy_ranking": 487,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cole Swider": {
+      "adp": 300,
+      "fantasy_ranking": 488,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jae'Sean Tate": {
+      "adp": 300,
+      "fantasy_ranking": 489,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Terry Taylor": {
+      "adp": 300,
+      "fantasy_ranking": 490,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Garrett Temple": {
+      "adp": 300,
+      "fantasy_ranking": 491,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dalen Terry": {
+      "adp": 300,
+      "fantasy_ranking": 492,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Daniel Theis": {
+      "adp": 300,
+      "fantasy_ranking": 493,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cam Thomas": {
+      "adp": 300,
+      "fantasy_ranking": 494,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Amen Thompson": {
+      "adp": 300,
+      "fantasy_ranking": 495,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ausar Thompson": {
+      "adp": 300,
+      "fantasy_ranking": 496,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ethan Thompson": {
+      "adp": 300,
+      "fantasy_ranking": 497,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Klay Thompson": {
+      "adp": 300,
+      "fantasy_ranking": 498,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tristan Thompson": {
+      "adp": 300,
+      "fantasy_ranking": 499,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "JT Thor": {
+      "adp": 300,
+      "fantasy_ranking": 500,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Matisse Thybulle": {
+      "adp": 300,
+      "fantasy_ranking": 501,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Xavier Tillman": {
+      "adp": 300,
+      "fantasy_ranking": 502,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Drew Timme": {
+      "adp": 300,
+      "fantasy_ranking": 503,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nae'Qwan Tomlin": {
+      "adp": 300,
+      "fantasy_ranking": 504,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nikola Topić": {
+      "adp": 300,
+      "fantasy_ranking": 505,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jacob Toppin": {
+      "adp": 300,
+      "fantasy_ranking": 506,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Obi Toppin": {
+      "adp": 300,
+      "fantasy_ranking": 507,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Armel Traoré": {
+      "adp": 300,
+      "fantasy_ranking": 508,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Luke Travers": {
+      "adp": 300,
+      "fantasy_ranking": 509,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Gary Trent Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 510,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Oscar Tshiebwe": {
+      "adp": 300,
+      "fantasy_ranking": 511,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "P.J. Tucker": {
+      "adp": 300,
+      "fantasy_ranking": 512,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Hunter Tyson": {
+      "adp": 300,
+      "fantasy_ranking": 513,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaylon Tyson": {
+      "adp": 300,
+      "fantasy_ranking": 514,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Stanley Umude": {
+      "adp": 300,
+      "fantasy_ranking": 515,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jonas Valančiūnas": {
+      "adp": 300,
+      "fantasy_ranking": 516,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jarred Vanderbilt": {
+      "adp": 300,
+      "fantasy_ranking": 517,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Devin Vassell": {
+      "adp": 300,
+      "fantasy_ranking": 518,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Gabe Vincent": {
+      "adp": 300,
+      "fantasy_ranking": 519,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tristan Vukcevic": {
+      "adp": 300,
+      "fantasy_ranking": 520,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dean Wade": {
+      "adp": 300,
+      "fantasy_ranking": 521,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Franz Wagner": {
+      "adp": 300,
+      "fantasy_ranking": 522,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Moritz Wagner": {
+      "adp": 300,
+      "fantasy_ranking": 523,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jabari Walker": {
+      "adp": 300,
+      "fantasy_ranking": 524,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jarace Walker": {
+      "adp": 300,
+      "fantasy_ranking": 525,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Lonnie Walker IV": {
+      "adp": 300,
+      "fantasy_ranking": 526,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cason Wallace": {
+      "adp": 300,
+      "fantasy_ranking": 527,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Keaton Wallace": {
+      "adp": 300,
+      "fantasy_ranking": 528,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jordan Walsh": {
+      "adp": 300,
+      "fantasy_ranking": 529,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ja'Kobe Walter": {
+      "adp": 300,
+      "fantasy_ranking": 530,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kel'el Ware": {
+      "adp": 300,
+      "fantasy_ranking": 531,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "P.J. Washington": {
+      "adp": 300,
+      "fantasy_ranking": 532,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "TyTy Washington Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 533,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Lindy Waters III": {
+      "adp": 300,
+      "fantasy_ranking": 534,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Trendon Watford": {
+      "adp": 300,
+      "fantasy_ranking": 535,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Anton Watson": {
+      "adp": 300,
+      "fantasy_ranking": 536,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Peyton Watson": {
+      "adp": 300,
+      "fantasy_ranking": 537,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaylen Wells": {
+      "adp": 300,
+      "fantasy_ranking": 538,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Victor Wembanyama": {
+      "adp": 300,
+      "fantasy_ranking": 539,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Blake Wesley": {
+      "adp": 300,
+      "fantasy_ranking": 540,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Russell Westbrook": {
+      "adp": 300,
+      "fantasy_ranking": 541,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Phillip Wheeler": {
+      "adp": 300,
+      "fantasy_ranking": 542,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Coby White": {
+      "adp": 300,
+      "fantasy_ranking": 543,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Derrick White": {
+      "adp": 300,
+      "fantasy_ranking": 544,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dariq Whitehead": {
+      "adp": 300,
+      "fantasy_ranking": 545,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cam Whitmore": {
+      "adp": 300,
+      "fantasy_ranking": 546,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Aaron Wiggins": {
+      "adp": 300,
+      "fantasy_ranking": 547,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Andrew Wiggins": {
+      "adp": 300,
+      "fantasy_ranking": 548,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Alondes Williams": {
+      "adp": 300,
+      "fantasy_ranking": 549,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Brandon Williams": {
+      "adp": 300,
+      "fantasy_ranking": 550,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cody Williams": {
+      "adp": 300,
+      "fantasy_ranking": 551,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Grant Williams": {
+      "adp": 300,
+      "fantasy_ranking": 552,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Williams": {
+      "adp": 300,
+      "fantasy_ranking": 553,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jaylin Williams": {
+      "adp": 300,
+      "fantasy_ranking": 554,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Kenrich Williams": {
+      "adp": 300,
+      "fantasy_ranking": 555,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Mark Williams": {
+      "adp": 300,
+      "fantasy_ranking": 556,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Nate Williams": {
+      "adp": 300,
+      "fantasy_ranking": 557,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Patrick Williams": {
+      "adp": 300,
+      "fantasy_ranking": 558,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ziaire Williams": {
+      "adp": 300,
+      "fantasy_ranking": 559,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Robert Williams III": {
+      "adp": 300,
+      "fantasy_ranking": 560,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Vince Williams Jr.": {
+      "adp": 300,
+      "fantasy_ranking": 561,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jalen Wilson": {
+      "adp": 300,
+      "fantasy_ranking": 562,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "James Wiseman": {
+      "adp": 300,
+      "fantasy_ranking": 563,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Isaiah Wong": {
+      "adp": 300,
+      "fantasy_ranking": 564,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Delon Wright": {
+      "adp": 300,
+      "fantasy_ranking": 565,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Guerschon Yabusele": {
+      "adp": 300,
+      "fantasy_ranking": 566,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Cui Yongxi": {
+      "adp": 300,
+      "fantasy_ranking": 567,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Jahmir Young": {
+      "adp": 300,
+      "fantasy_ranking": 568,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Ivica Zubac": {
+      "adp": 300,
+      "fantasy_ranking": 569,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Tristan da Silva": {
+      "adp": 300,
+      "fantasy_ranking": 570,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Vlatko Čančar": {
+      "adp": 300,
+      "fantasy_ranking": 571,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    },
+    "Dario Šarić": {
+      "adp": 300,
+      "fantasy_ranking": 572,
+      "keeper_round_value": 15,
+      "position_rank": "G30"
+    }
+  }
+}
