@@ -67,7 +67,7 @@ jobs:
 
     - name: Run type checking
       working-directory: ./backend
-      run: mypy app --ignore-missing-imports
+      run: mypy app --config-file=mypy.ini
 
     - name: Run database migrations before tests
       working-directory: ./backend
