@@ -1,0 +1,226 @@
+{
+  "generated_at": "2025-08-10T14:18:43.348736",
+  "total": 10,
+  "documents": [
+    {
+      "doc_id": "a710b065ad90",
+      "trade_id": "injury_return_0",
+      "doc_type": "injury_analysis",
+      "source": "the_athletic",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "CHI"
+      ],
+      "headline": "Lonzo Ball Return Impact Analysis",
+      "title": "How Lonzo Ball's Return From Injury Affects Fantasy",
+      "text": "\n                **Lonzo Ball Set to Return: Fantasy Impact Analysis**\n                \n                After missing 12 games with a knee injury,\n                Lonzo Ball is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 21 minutes per game\n                - Week 3-4: 24 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Cautious expectations\n                - ROS: Top 30 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 2 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: Low\n                Upside if healthy: Very Good\n                Floor concerns: Significant\n                ",
+      "metadata": {
+        "player_focus": "Lonzo Ball",
+        "injury_type": "knee",
+        "team": "CHI",
+        "sentiment": 0.4901850369148554,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "041808a52658",
+      "trade_id": "injury_return_1",
+      "doc_type": "injury_analysis",
+      "source": "the_athletic",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "CHI"
+      ],
+      "headline": "Lonzo Ball Return Impact Analysis",
+      "title": "How Lonzo Ball's Return From Injury Affects Fantasy",
+      "text": "\n                **Lonzo Ball Set to Return: Fantasy Impact Analysis**\n                \n                After missing 13 games with a knee injury,\n                Lonzo Ball is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 21 minutes per game\n                - Week 3-4: 27 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Low expectations\n                - ROS: Top 75 potential\n                - Best ball: Hold\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 3 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                BUY - Value at all-time low, upside remains elite\n                \n                **Risk Assessment:**\n                Re-injury risk: Moderate\n                Upside if healthy: Elite\n                Floor concerns: Significant\n                ",
+      "metadata": {
+        "player_focus": "Lonzo Ball",
+        "injury_type": "knee",
+        "team": "CHI",
+        "sentiment": 0.47739156401641725,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "4a4d8dd22dfe",
+      "trade_id": "injury_return_2",
+      "doc_type": "injury_analysis",
+      "source": "reddit",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "LAC"
+      ],
+      "headline": "Kawhi Leonard Return Impact Analysis",
+      "title": "How Kawhi Leonard's Return From Injury Affects Fantasy",
+      "text": "\n                **Kawhi Leonard Set to Return: Fantasy Impact Analysis**\n                \n                After missing 25 games with a knee injury,\n                Kawhi Leonard is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 21 minutes per game\n                - Week 3-4: 28 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Cautious expectations\n                - ROS: Top 75 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 2 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                HOLD - Need to see health before making moves\n                \n                **Risk Assessment:**\n                Re-injury risk: High\n                Upside if healthy: Very Good\n                Floor concerns: Moderate\n                ",
+      "metadata": {
+        "player_focus": "Kawhi Leonard",
+        "injury_type": "knee",
+        "team": "LAC",
+        "sentiment": 0.623354648102273,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "65a3ee3b39c7",
+      "trade_id": "injury_return_3",
+      "doc_type": "injury_analysis",
+      "source": "the_athletic",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "ORL"
+      ],
+      "headline": "Jonathan Isaac Return Impact Analysis",
+      "title": "How Jonathan Isaac's Return From Injury Affects Fantasy",
+      "text": "\n                **Jonathan Isaac Set to Return: Fantasy Impact Analysis**\n                \n                After missing 13 games with a knee injury,\n                Jonathan Isaac is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 19 minutes per game\n                - Week 3-4: 26 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Cautious expectations\n                - ROS: Top 75 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 3 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                BUY - Value at all-time low, upside remains elite\n                \n                **Risk Assessment:**\n                Re-injury risk: High\n                Upside if healthy: Very Good\n                Floor concerns: Minimal\n                ",
+      "metadata": {
+        "player_focus": "Jonathan Isaac",
+        "injury_type": "knee",
+        "team": "ORL",
+        "sentiment": 0.49173342337417175,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "751b773f70c9",
+      "trade_id": "injury_return_4",
+      "doc_type": "injury_analysis",
+      "source": "espn",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "LAC"
+      ],
+      "headline": "Kawhi Leonard Return Impact Analysis",
+      "title": "How Kawhi Leonard's Return From Injury Affects Fantasy",
+      "text": "\n                **Kawhi Leonard Set to Return: Fantasy Impact Analysis**\n                \n                After missing 30 games with a knee injury,\n                Kawhi Leonard is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 19 minutes per game\n                - Week 3-4: 24 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Medium expectations\n                - ROS: Top 50 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 4 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: High\n                Upside if healthy: Good\n                Floor concerns: Significant\n                ",
+      "metadata": {
+        "player_focus": "Kawhi Leonard",
+        "injury_type": "knee",
+        "team": "LAC",
+        "sentiment": 0.5842916652338215,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "7ef435359401",
+      "trade_id": "injury_return_5",
+      "doc_type": "injury_analysis",
+      "source": "reddit",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "NOP"
+      ],
+      "headline": "Zion Williamson Return Impact Analysis",
+      "title": "How Zion Williamson's Return From Injury Affects Fantasy",
+      "text": "\n                **Zion Williamson Set to Return: Fantasy Impact Analysis**\n                \n                After missing 19 games with a hamstring injury,\n                Zion Williamson is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 18 minutes per game\n                - Week 3-4: 26 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Low expectations\n                - ROS: Top 75 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 3 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: Low\n                Upside if healthy: Very Good\n                Floor concerns: Minimal\n                ",
+      "metadata": {
+        "player_focus": "Zion Williamson",
+        "injury_type": "hamstring",
+        "team": "NOP",
+        "sentiment": 0.42956499649073293,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "30ab0749d0d9",
+      "trade_id": "injury_return_6",
+      "doc_type": "injury_analysis",
+      "source": "espn",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "ORL"
+      ],
+      "headline": "Jonathan Isaac Return Impact Analysis",
+      "title": "How Jonathan Isaac's Return From Injury Affects Fantasy",
+      "text": "\n                **Jonathan Isaac Set to Return: Fantasy Impact Analysis**\n                \n                After missing 21 games with a knee injury,\n                Jonathan Isaac is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 19 minutes per game\n                - Week 3-4: 25 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Cautious expectations\n                - ROS: Top 30 potential\n                - Best ball: Hold\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 3 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: High\n                Upside if healthy: Good\n                Floor concerns: Minimal\n                ",
+      "metadata": {
+        "player_focus": "Jonathan Isaac",
+        "injury_type": "knee",
+        "team": "ORL",
+        "sentiment": 0.43906437628934614,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "963e5f08bbfd",
+      "trade_id": "injury_return_7",
+      "doc_type": "injury_analysis",
+      "source": "espn",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "LAC"
+      ],
+      "headline": "Kawhi Leonard Return Impact Analysis",
+      "title": "How Kawhi Leonard's Return From Injury Affects Fantasy",
+      "text": "\n                **Kawhi Leonard Set to Return: Fantasy Impact Analysis**\n                \n                After missing 14 games with a knee injury,\n                Kawhi Leonard is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 18 minutes per game\n                - Week 3-4: 24 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Medium expectations\n                - ROS: Top 50 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 2 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                HOLD - Need to see health before making moves\n                \n                **Risk Assessment:**\n                Re-injury risk: Moderate\n                Upside if healthy: Very Good\n                Floor concerns: Significant\n                ",
+      "metadata": {
+        "player_focus": "Kawhi Leonard",
+        "injury_type": "knee",
+        "team": "LAC",
+        "sentiment": 0.6028022096143072,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "9b0b8855fe2d",
+      "trade_id": "injury_return_8",
+      "doc_type": "injury_analysis",
+      "source": "reddit",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "NOP"
+      ],
+      "headline": "Zion Williamson Return Impact Analysis",
+      "title": "How Zion Williamson's Return From Injury Affects Fantasy",
+      "text": "\n                **Zion Williamson Set to Return: Fantasy Impact Analysis**\n                \n                After missing 28 games with a hamstring injury,\n                Zion Williamson is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 20 minutes per game\n                - Week 3-4: 28 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Low expectations\n                - ROS: Top 75 potential\n                - Best ball: Hold\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 2 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: Moderate\n                Upside if healthy: Elite\n                Floor concerns: Minimal\n                ",
+      "metadata": {
+        "player_focus": "Zion Williamson",
+        "injury_type": "hamstring",
+        "team": "NOP",
+        "sentiment": 0.6338652282851727,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    },
+    {
+      "doc_id": "03aefcccca8b",
+      "trade_id": "injury_return_9",
+      "doc_type": "injury_analysis",
+      "source": "the_athletic",
+      "date_posted": "2024-11-01T00:00:00",
+      "trade_date": "2024-11-01",
+      "teams_involved": [
+        "LAC"
+      ],
+      "headline": "Kawhi Leonard Return Impact Analysis",
+      "title": "How Kawhi Leonard's Return From Injury Affects Fantasy",
+      "text": "\n                **Kawhi Leonard Set to Return: Fantasy Impact Analysis**\n                \n                After missing 19 games with a knee injury,\n                Kawhi Leonard is targeting a return. Here's what fantasy managers need to know:\n                \n                **Minutes Restriction Expected:**\n                - Week 1-2: 22 minutes per game\n                - Week 3-4: 28 minutes per game  \n                - Week 5+: Full workload if healthy\n                \n                **Fantasy Impact:**\n                - Immediate: Low expectations\n                - ROS: Top 30 potential\n                - Best ball: Wait and see\n                \n                **Players Affected:**\n                The return directly impacts rotation players who saw increased run.\n                Expect 4 players to lose significant minutes.\n                \n                **Buy/Sell/Hold:**\n                SELL - Injury risk too high for playoffs\n                \n                **Risk Assessment:**\n                Re-injury risk: Moderate\n                Upside if healthy: Very Good\n                Floor concerns: Significant\n                ",
+      "metadata": {
+        "player_focus": "Kawhi Leonard",
+        "injury_type": "knee",
+        "team": "LAC",
+        "sentiment": 0.5399211621242312,
+        "urgency": "medium",
+        "fantasy_relevance": "high"
+      }
+    }
+  ]
+}
