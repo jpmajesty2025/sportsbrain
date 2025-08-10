@@ -1,0 +1,186 @@
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\prediction_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\chat_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at schema.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at common.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at milvus.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at rg.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at feder.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at msg.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:35: LangChainDeprecationWarning: The class `OpenAI` was deprecated in LangChain 0.0.10 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-openai package and should be used instead. To use it run `pip install -U :class:`~langchain-openai` and import as `from :class:`~langchain_openai import OpenAI``.
+  llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.1)
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:36: LangChainDeprecationWarning: LangChain agents will continue to be supported, but it is recommended for new use cases to be built with LangGraph. LangGraph offers a more flexible and full-featured framework for building agents, including support for tool-calling, persistence of state, and human-in-the-loop workflows. For details, refer to the `LangGraph documentation <https://langchain-ai.github.io/langgraph/>`_ as well as guides for `Migrating from AgentExecutor <https://python.langchain.com/docs/how_to/migrate_agent/>`_ and LangGraph's `Pre-built ReAct agent <https://langchain-ai.github.io/langgraph/how-tos/create-react-agent/>`_.
+  self.agent_executor = initialize_agent(
+Testing TradeImpact Agent
+============================================================
+
+Query: How does Porzingis trade affect Tatum?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.9
+
+Response:
+**Trade Impact Analysis: Jayson Tatum**
+
+📅 **Trade**: Kristaps Porzingis traded to Boston Celtics
+📆 **Date**: 2023-06-22
+
+📊 **Statistical Impact**:
+- Usage Rate: -2.1% 
+- Scoring: -1.2 PPG
+- Assists: +0.8 APG
+- Rebounds: -0.5 RPG
+- Efficiency: +2.3%
+
+🎯 **Fantasy Impact**: Slight Negative
+
+💡 **Analysis**:
+- Jayson Tatum's usage rate drops significantly with the new addition, limiting volume-based stats
+- Better shot quality leads to improved efficiency, helping FG% and TS%
+- Consider lowering Jayson Tatum in your rankings by 5-10 spots
+- In daily fantasy, fade when facing teams with strong interior defense
+- Improved floor spacing should create better driving lanes and open shots
+
+
+Query: Who are the trade winners from recent deals?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.8
+
+Response:
+**🏆 Trade Winners - Players Who Benefit Most**
+
+**1. Jaren Jackson Jr.**
+   📅 Trade: Marcus Smart traded to Memphis Grizzlies
+   📈 Changes: Usage +0.5%, Scoring +0.8 PPG, Efficiency +0.3%
+   🎯 Fantasy Impact: Slight Positive
+
+
+💡 **Key Takeaway**: Target these players in trades or DFS when they face favorable matchups!
+
+Query: How does the Lillard trade impact Giannis?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.9
+
+Response:
+**Trade Impact Analysis: Giannis Antetokounmpo**
+
+📅 **Trade**: Damian Lillard traded to Milwaukee Bucks
+📆 **Date**: 2023-09-27
+
+📊 **Statistical Impact**:
+- Usage Rate: -3.5% 
+- Scoring: -2.1 PPG
+- Assists: -1.2 APG
+- Rebounds: +0.3 RPG
+- Efficiency: +3.1%
+
+🎯 **Fantasy Impact**: Moderate Negative
+
+💡 **Analysis**:
+- Giannis Antetokounmpo's usage rate drops significantly with the new addition, limiting volume-based stats
+- Better shot quality leads to improved efficiency, helping FG% and TS%
+- Consider lowering Giannis Antetokounmpo in your rankings by 5-10 spots
+- In daily fantasy, fade when facing teams with strong interior defense
+- Improved floor spacing should create better driving lanes and open shots
+
+
+Query: What are the team dynamics after the Celtics trade?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.8
+
+Response:
+**🏀 Team Dynamics Post-Trade Analysis**
+
+**Kristaps Porzingis traded to Boston Celtics**
+📅 Date: 2023-06-22
+
+Team Changes:
+- Floor Spacing: Improved
+- Defense: Slightly Worse
+- Offense: Improved
+- Championship Outlook: Improved
+
+Fantasy Implications:
+- Guards and wings benefit from better driving lanes
+- Centers may see fewer post touches but better efficiency
+
+==================================================
+
+**Damian Lillard traded to Milwaukee Bucks**
+📅 Date: 2023-09-27
+
+Team Changes:
+- Floor Spacing: Significantly Improved
+- Defense: Worse
+- Offense: Significantly Improved
+- Championship Outlook: Improved
+
+Fantasy Implications:
+- Guards and wings benefit from better driving lanes
+- Centers may see fewer post touches but better efficiency
+- Expect higher-scoring games (good for DFS)
+- Opposing players may have better fantasy nights
+
+==================================================
+
+**Marcus Smart traded to Memphis Grizzlies**
+📅 Date: 2023-06-22
+
+Team Changes:
+- Defense: Improved
+- Offense: Slightly Worse
+- Championship Outlook: Slightly Improved
+
+Fantasy Implications:
+
+==================================================
+
+
+
+============================================================
+Agent Capabilities:
+
+draft_prep: Expert in keeper league decisions, ADP analysis, and draft strategy
+Supported tasks: ['Keeper league decisions', 'ADP analysis', 'Finding value picks/sleepers', 'Player comparisons for draft', 'Round-by-round draft strategy']
+
+trade_impact: Expert in analyzing how trades affect player fantasy values and team dynamics
+Supported tasks: ['Trade impact analysis for specific players', 'Finding trade winners and losers', 'Team dynamics and chemistry changes', 'Usage rate and role changes', 'Dynasty league trade values', 'Post-trade fantasy rankings adjustments']
+
+analytics: Specialized agent for sports data analysis and statistical insights
+Supported tasks: ['player_performance_analysis', 'team_statistics', 'comparative_analysis', 'trend_identification', 'performance_metrics']
+
+prediction: Specialized agent for sports predictions and forecasting
+Supported tasks: ['game_outcome_prediction', 'player_performance_forecast', 'season_predictions', 'playoff_probability', 'injury_risk_assessment']
+
+chat: Conversational agent for general sports questions and interactions
+Supported tasks: ['general_sports_questions', 'rule_explanations', 'historical_facts', 'player_information', 'team_information', 'casual_conversation']

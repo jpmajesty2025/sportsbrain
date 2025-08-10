@@ -1,0 +1,110 @@
+{
+    "trades": [
+        {
+            "trade_id": "porzingis_celtics_2023",
+            "date": "2023-06-22",
+            "description": "Kristaps Porzingis traded to Boston Celtics",
+            "teams_involved": ["Boston Celtics", "Washington Wizards", "Memphis Grizzlies"],
+            "players": {
+                "to_celtics": ["Kristaps Porzingis"],
+                "from_celtics": ["Marcus Smart"],
+                "to_wizards": ["Tyus Jones", "Danilo Gallinari", "Mike Muscala"],
+                "to_grizzlies": ["Marcus Smart"]
+            },
+            "impact_analysis": {
+                "Jayson Tatum": {
+                    "usage_rate_change": -2.1,
+                    "assists_change": 0.8,
+                    "rebounds_change": -0.5,
+                    "scoring_change": -1.2,
+                    "efficiency_change": 2.3,
+                    "fantasy_impact": "slight_negative"
+                },
+                "Jaylen Brown": {
+                    "usage_rate_change": -1.5,
+                    "assists_change": 0.5,
+                    "rebounds_change": -0.3,
+                    "scoring_change": -0.8,
+                    "efficiency_change": 1.8,
+                    "fantasy_impact": "neutral"
+                }
+            },
+            "team_impact": {
+                "floor_spacing": "improved",
+                "defensive_rating": "slightly_worse",
+                "offensive_rating": "improved",
+                "title_odds": "improved"
+            }
+        },
+        {
+            "trade_id": "lillard_bucks_2023",
+            "date": "2023-09-27",
+            "description": "Damian Lillard traded to Milwaukee Bucks",
+            "teams_involved": ["Milwaukee Bucks", "Portland Trail Blazers", "Phoenix Suns"],
+            "players": {
+                "to_bucks": ["Damian Lillard"],
+                "from_bucks": ["Jrue Holiday", "Grayson Allen"],
+                "to_blazers": ["Jusuf Nurkic", "Nassir Little", "Keon Johnson", "draft picks"],
+                "to_suns": ["Jusuf Nurkic", "Grayson Allen", "Nassir Little", "Keon Johnson"]
+            },
+            "impact_analysis": {
+                "Giannis Antetokounmpo": {
+                    "usage_rate_change": -3.5,
+                    "assists_change": -1.2,
+                    "rebounds_change": 0.3,
+                    "scoring_change": -2.1,
+                    "efficiency_change": 3.1,
+                    "fantasy_impact": "moderate_negative"
+                },
+                "Khris Middleton": {
+                    "usage_rate_change": -2.0,
+                    "assists_change": -0.5,
+                    "rebounds_change": 0,
+                    "scoring_change": -1.5,
+                    "efficiency_change": 1.5,
+                    "fantasy_impact": "slight_negative"
+                }
+            },
+            "team_impact": {
+                "floor_spacing": "significantly_improved",
+                "defensive_rating": "worse",
+                "offensive_rating": "significantly_improved",
+                "title_odds": "improved"
+            }
+        },
+        {
+            "trade_id": "smart_grizzlies_2023",
+            "date": "2023-06-22",
+            "description": "Marcus Smart traded to Memphis Grizzlies",
+            "teams_involved": ["Memphis Grizzlies", "Boston Celtics"],
+            "players": {
+                "to_grizzlies": ["Marcus Smart"],
+                "from_grizzlies": ["draft picks"]
+            },
+            "impact_analysis": {
+                "Ja Morant": {
+                    "usage_rate_change": -1.5,
+                    "assists_change": -0.8,
+                    "rebounds_change": 0,
+                    "scoring_change": -1.0,
+                    "efficiency_change": 0.5,
+                    "fantasy_impact": "slight_negative"
+                },
+                "Jaren Jackson Jr.": {
+                    "usage_rate_change": 0.5,
+                    "assists_change": 0.2,
+                    "rebounds_change": 0.3,
+                    "scoring_change": 0.8,
+                    "efficiency_change": 0.3,
+                    "fantasy_impact": "slight_positive"
+                }
+            },
+            "team_impact": {
+                "defensive_rating": "improved",
+                "offensive_rating": "slightly_worse",
+                "leadership": "improved",
+                "title_odds": "slightly_improved"
+            }
+        }
+    ]
+}

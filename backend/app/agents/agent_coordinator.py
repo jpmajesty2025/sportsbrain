@@ -3,10 +3,14 @@ from .base_agent import BaseAgent, AgentResponse
 from .analytics_agent import AnalyticsAgent
 from .prediction_agent import PredictionAgent
 from .chat_agent import ChatAgent
+from .draft_prep_agent_async import DraftPrepAgent
+from .trade_impact_agent import TradeImpactAgent
 
 class AgentCoordinator:
     def __init__(self) -> None:
         self.agents: Dict[str, BaseAgent] = {
+            "draft_prep": DraftPrepAgent(),
+            "trade_impact": TradeImpactAgent(),
             "analytics": AnalyticsAgent(),
             "prediction": PredictionAgent(),
             "chat": ChatAgent()
@@ -34,6 +38,18 @@ class AgentCoordinator:
     def _select_best_agent(self, message: str) -> BaseAgent:
         message_lower = message.lower()
         
+        # Keywords for draft prep agent
+        draft_keywords = [
+            "draft", "keep", "keeper", "round", "adp", "value", "pick",
+            "sleeper", "bust", "target", "avoid", "mock"
+        ]
+        
+        # Keywords for trade impact agent
+        trade_keywords = [
+            "trade", "traded", "affect", "impact", "porzingis", "lillard",
+            "acquire", "deal", "swap", "move", "transaction"
+        ]
+        
         # Keywords for analytics agent
         analytics_keywords = [
             "analyze", "statistics", "stats", "performance", "compare", 
@@ -47,10 +63,17 @@ class AgentCoordinator:
         ]
         
         # Score each agent based on keyword presence
+        draft_score = sum(1 for keyword in draft_keywords if keyword in message_lower)
+        trade_score = sum(1 for keyword in trade_keywords if keyword in message_lower)
         analytics_score = sum(1 for keyword in analytics_keywords if keyword in message_lower)
         prediction_score = sum(1 for keyword in prediction_keywords if keyword in message_lower)
         
-        if analytics_score > prediction_score:
+        # Select agent with highest score
+        if trade_score > max(draft_score, analytics_score, prediction_score):
+            return self.agents["trade_impact"]
+        elif draft_score > max(analytics_score, prediction_score):
+            return self.agents["draft_prep"]
+        elif analytics_score > prediction_score:
             return self.agents["analytics"]
         elif prediction_score > analytics_score:
             return self.agents["prediction"]

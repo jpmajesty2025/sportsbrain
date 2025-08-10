@@ -1,0 +1,172 @@
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\prediction_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Projects\sportsbrain\backend\app\agents\chat_agent.py:3: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import OpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import OpenAI
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at schema.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at common.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at milvus.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at rg.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at feder.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\llp_y\anaconda3\Lib\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.27.2 is exactly one major version older than the runtime version 6.31.1 at msg.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:35: LangChainDeprecationWarning: The class `OpenAI` was deprecated in LangChain 0.0.10 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-openai package and should be used instead. To use it run `pip install -U :class:`~langchain-openai` and import as `from :class:`~langchain_openai import OpenAI``.
+  llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.1)
+C:\Projects\sportsbrain\backend\app\agents\analytics_agent.py:36: LangChainDeprecationWarning: LangChain agents will continue to be supported, but it is recommended for new use cases to be built with LangGraph. LangGraph offers a more flexible and full-featured framework for building agents, including support for tool-calling, persistence of state, and human-in-the-loop workflows. For details, refer to the `LangGraph documentation <https://langchain-ai.github.io/langgraph/>`_ as well as guides for `Migrating from AgentExecutor <https://python.langchain.com/docs/how_to/migrate_agent/>`_ and LangGraph's `Pre-built ReAct agent <https://langchain-ai.github.io/langgraph/how-tos/create-react-agent/>`_.
+  self.agent_executor = initialize_agent(
+Testing DraftPrep Agent
+============================================================
+
+Query: Should I keep Ja Morant in round 3?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.9
+
+Response:
+
+**Keeper Analysis for Ja Morant**
+
+📊 **Current Stats**:
+- ADP: 28.5 (Round 3)
+- Keeper Round Value: 2
+- Your Target Round: 3
+- 2023-24 Stats: 25.1 PPG, 5.6 RPG, 8.1 APG
+
+🎯 **Recommendation**: YES - Good keeper value
+
+💡 **Analysis**: 
+Keeping Ja Morant in round 3 gives you a player typically drafted in round 3. That's a 0 round advantage!
+
+Query: Find me some sleepers for my draft
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.8
+
+Response:
+**🎯 Top Value Picks (Sleepers & Undervalued Players)**
+
+**1. Deandre Ayton** (G)
+   📊 ADP: 75.4 (Round 7)
+   📈 Stats: 16.7 PPG, 11.1 RPG, 1.6 APG
+   💎 Value Score: 5.02
+
+**2. Miles Bridges** (G)
+   📊 ADP: 96.1 (Round 9)
+   📈 Stats: 21.0 PPG, 7.3 RPG, 3.3 APG
+   💎 Value Score: 4.05
+
+**3. Dillon Brooks** (G)
+   📊 ADP: 99.8 (Round 9)
+   📈 Stats: 12.7 PPG, 3.4 RPG, 1.7 APG
+   💎 Value Score: 2.24
+
+**4. Mike Conley** (G)
+   📊 ADP: 141.5 (Round 12)
+   📈 Stats: 11.4 PPG, 2.9 RPG, 5.9 APG
+   💎 Value Score: 1.97
+
+**5. Malaki Branham** (G)
+   📊 ADP: 90.1 (Round 8)
+   📈 Stats: 9.2 PPG, 2.0 RPG, 2.1 APG
+   💎 Value Score: 1.80
+
+
+💡 **Value Score** = Fantasy production relative to draft position. Higher scores indicate better value!
+
+Query: Who are the best value picks in the middle rounds?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.8
+
+Response:
+**🎯 Top Value Picks (Sleepers & Undervalued Players)**
+
+**1. Deandre Ayton** (G)
+   📊 ADP: 75.4 (Round 7)
+   📈 Stats: 16.7 PPG, 11.1 RPG, 1.6 APG
+   💎 Value Score: 5.02
+
+**2. Miles Bridges** (G)
+   📊 ADP: 96.1 (Round 9)
+   📈 Stats: 21.0 PPG, 7.3 RPG, 3.3 APG
+   💎 Value Score: 4.05
+
+**3. Dillon Brooks** (G)
+   📊 ADP: 99.8 (Round 9)
+   📈 Stats: 12.7 PPG, 3.4 RPG, 1.7 APG
+   💎 Value Score: 2.24
+
+**4. Mike Conley** (G)
+   📊 ADP: 141.5 (Round 12)
+   📈 Stats: 11.4 PPG, 2.9 RPG, 5.9 APG
+   💎 Value Score: 1.97
+
+**5. Malaki Branham** (G)
+   📊 ADP: 90.1 (Round 8)
+   📈 Stats: 9.2 PPG, 2.0 RPG, 2.1 APG
+   💎 Value Score: 1.80
+
+
+💡 **Value Score** = Fantasy production relative to draft position. Higher scores indicate better value!
+
+Query: Is Jayson Tatum worth keeping in round 2?
+------------------------------------------------------------
+Agent: Unknown
+Confidence: 0.9
+
+Response:
+
+**Keeper Analysis for Jayson Tatum**
+
+📊 **Current Stats**:
+- ADP: 8.5 (Round 1)
+- Keeper Round Value: 1
+- Your Target Round: 2
+- 2023-24 Stats: 26.9 PPG, 8.1 RPG, 4.9 APG
+
+🎯 **Recommendation**: YES - Good keeper value
+
+💡 **Analysis**: 
+Keeping Jayson Tatum in round 2 gives you a player typically drafted in round 1. That's a -1 round advantage!
+
+============================================================
+Agent Capabilities:
+
+draft_prep: Expert in keeper league decisions, ADP analysis, and draft strategy
+Supported tasks: ['Keeper league decisions', 'ADP analysis', 'Finding value picks/sleepers', 'Player comparisons for draft', 'Round-by-round draft strategy']
+
+trade_impact: Expert in analyzing how trades affect player fantasy values and team dynamics
+Supported tasks: ['Trade impact analysis for specific players', 'Finding trade winners and losers', 'Team dynamics and chemistry changes', 'Usage rate and role changes', 'Dynasty league trade values', 'Post-trade fantasy rankings adjustments']
+
+analytics: Specialized agent for sports data analysis and statistical insights
+Supported tasks: ['player_performance_analysis', 'team_statistics', 'comparative_analysis', 'trend_identification', 'performance_metrics']
+
+prediction: Specialized agent for sports predictions and forecasting
+Supported tasks: ['game_outcome_prediction', 'player_performance_forecast', 'season_predictions', 'playoff_probability', 'injury_risk_assessment']
+
+chat: Conversational agent for general sports questions and interactions
+Supported tasks: ['general_sports_questions', 'rule_explanations', 'historical_facts', 'player_information', 'team_information', 'casual_conversation']
