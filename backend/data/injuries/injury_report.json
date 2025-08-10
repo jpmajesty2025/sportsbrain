@@ -1,0 +1,38 @@
+{
+  "total_injuries": 195,
+  "by_severity": {
+    "moderate": 64,
+    "minor": 103,
+    "major": 28
+  },
+  "by_type": {
+    "Shoulder Injury": 17,
+    "Hamstring Strain": 20,
+    "Back Spasms": 22,
+    "Wrist Injury": 13,
+    "Knee Injury": 20,
+    "Rest/Load Management": 23,
+    "Hip Injury": 22,
+    "Calf Strain": 26,
+    "Ankle Sprain": 17,
+    "Concussion": 15
+  },
+  "by_season": {
+    "2024-25": 116,
+    "2023-24": 68,
+    "2022-23": 11
+  },
+  "most_injured_players": {
+    "Kyrie Irving": 6,
+    "Zion Williamson": 6,
+    "Joel Embiid": 6,
+    "Ben Simmons": 6,
+    "Kristaps Porzingis": 6,
+    "Bradley Beal": 5,
+    "Anthony Davis": 4,
+    "Tyrese Haliburton": 4,
+    "Kawhi Leonard": 3,
+    "Karl-Anthony Towns": 3
+  },
+  "average_games_missed": 11.3
+}

@@ -669,7 +669,7 @@ def main():
     print("\nGenerating strategy documents...")
     strategies = generator.generate_all_strategies()
     
-    print(f"\n✓ Generated {len(strategies)} strategy documents")
+    print(f"\n[OK] Generated {len(strategies)} strategy documents")
     
     # Show breakdown
     strategy_types = {}
@@ -686,8 +686,8 @@ def main():
     
     print("\n" + "=" * 60)
     print("Strategy Generation Complete!")
-    print(f"✓ {len(strategies)} strategy documents created")
-    print(f"✓ Saved to: {output_file}")
+    print(f"[OK] {len(strategies)} strategy documents created")
+    print(f"[OK] Saved to: {output_file}")
     print("=" * 60)
 
 

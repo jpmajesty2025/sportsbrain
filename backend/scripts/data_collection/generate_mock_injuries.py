@@ -556,7 +556,7 @@ def main():
     print("\nGenerating injury records...")
     injuries = generator.generate_all_injuries()
     
-    print(f"\n✓ Generated {len(injuries)} injury records")
+    print(f"\n[OK] Generated {len(injuries)} injury records")
     
     # Show breakdown
     report = generator.generate_injury_report(injuries)
@@ -577,8 +577,8 @@ def main():
     
     print("\n" + "=" * 60)
     print("Injury Generation Complete!")
-    print(f"✓ {len(injuries)} injury records created")
-    print(f"✓ Saved to: {output_file}")
+    print(f"[OK] {len(injuries)} injury records created")
+    print(f"[OK] Saved to: {output_file}")
     print("=" * 60)
 
 

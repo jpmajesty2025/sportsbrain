@@ -508,7 +508,7 @@ class TradeDocumentGenerator:
         
         **What This Means for Fantasy:**
         {team} games should now be {random.choice(['higher scoring', 'more defensive', 'more balanced'])}. 
-        Target {team} players in {random.choice(['DFS', 'season-long', 'dynasty']} formats.
+        Target {team} players in {random.choice(['DFS', 'season-long', 'dynasty'])} formats.
         """
         doc["metadata"] = {
             "team_focus": team,
@@ -816,7 +816,7 @@ def main():
     print(f"\nGenerating documents from {len(generator.base_trades)} base trades...")
     documents = generator.generate_all_documents()
     
-    print(f"\n✓ Generated {len(documents)} trade documents")
+    print(f"\n[OK] Generated {len(documents)} trade documents")
     print(f"  - Average {len(documents) // len(generator.base_trades)} documents per trade")
     
     print("\nSaving documents...")
@@ -824,8 +824,8 @@ def main():
     
     print("\n" + "=" * 60)
     print("Trade Generation Complete!")
-    print(f"✓ {len(documents)} trade documents created")
-    print(f"✓ Saved to: {output_file}")
+    print(f"[OK] {len(documents)} trade documents created")
+    print(f"[OK] Saved to: {output_file}")
     print("=" * 60)
 
 

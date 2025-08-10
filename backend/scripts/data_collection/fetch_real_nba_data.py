@@ -276,12 +276,12 @@ def main():
     # Fetch player performances
     print("\n[1/2] Fetching player performances...")
     performances = fetcher.fetch_all_player_performances()
-    print(f"✓ Collected {len(performances)} performances")
+    print(f"[OK] Collected {len(performances)} performances")
     
     # Fetch team matchups
     print("\n[2/2] Fetching team matchups...")
     matchups = fetcher.fetch_all_team_matchups()
-    print(f"✓ Collected {len(matchups)} matchups")
+    print(f"[OK] Collected {len(matchups)} matchups")
     
     # Save data
     print("\nSaving data...")
@@ -289,9 +289,9 @@ def main():
     
     print("\n" + "=" * 60)
     print("Data Collection Complete!")
-    print(f"✓ {len(performances)} player performances")
-    print(f"✓ {len(matchups)} team matchups")
-    print(f"✓ Data saved to: {output_dir}")
+    print(f"[OK] {len(performances)} player performances")
+    print(f"[OK] {len(matchups)} team matchups")
+    print(f"[OK] Data saved to: {output_dir}")
     print("=" * 60)
 
 
