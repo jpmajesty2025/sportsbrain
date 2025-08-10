@@ -4,10 +4,17 @@ Test the TradeImpact agent
 import sys
 import os
 import io
+import pytest
 
 # Set UTF-8 encoding for stdout
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Skip these tests in CI as they require Milvus/Neo4j services
+pytestmark = pytest.mark.skipif(
+    os.getenv("CI") == "true",
+    reason="Skipping in CI - requires Milvus and Neo4j services"
+)
 
 import asyncio
 from app.agents.agent_coordinator import AgentCoordinator

@@ -4,6 +4,7 @@ Run after: python load_data.py --players --limit 10
 """
 import sys
 import os
+import pytest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.db.vector_db import vector_db
@@ -11,6 +12,12 @@ from app.db.graph_db import graph_db
 from pymilvus import Collection
 from sentence_transformers import SentenceTransformer
 from app.core.config import settings
+
+# Skip these tests in CI as they require Milvus/Neo4j services
+pytestmark = pytest.mark.skipif(
+    os.getenv("CI") == "true",
+    reason="Skipping in CI - requires Milvus and Neo4j services"
+)
 
 
 def test_vector_search():
