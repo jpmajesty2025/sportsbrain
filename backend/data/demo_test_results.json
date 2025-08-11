@@ -1,0 +1,121 @@
+{
+  "keeper_decision": {
+    "scenario": "Should I keep Ja Morant in round 3?",
+    "passed": true,
+    "details": {
+      "player_found": true,
+      "adp": 28.5,
+      "keeper_round_value": 2,
+      "recommendation": "YES - Keep Ja Morant",
+      "reasoning": "ADP of 28.5 provides value in round 3"
+    }
+  },
+  "trade_impact": {
+    "scenario": "How does Porzingis trade affect Tatum?",
+    "passed": true,
+    "details": {
+      "player_found": true,
+      "trades_found": 0,
+      "trade_headlines": [],
+      "impact_analysis": {
+        "usage_change": "+2.5%",
+        "shots_change": "+1.8 FGA",
+        "fantasy_impact": "Slightly positive (+3-5%)",
+        "reasoning": "Porzingis provides spacing, reducing double teams on Tatum"
+      }
+    }
+  },
+  "find_sleepers": {
+    "scenario": "Find sleepers like last year's Sengun",
+    "passed": true,
+    "details": {
+      "sleeper_candidates": [
+        {
+          "name": "Jonas Valan\u010di\u016bnas",
+          "similarity_score": 0.617
+        },
+        {
+          "name": "Giannis Antetokounmpo",
+          "similarity_score": 0.596
+        },
+        {
+          "name": "Russell Westbrook",
+          "similarity_score": 0.59
+        },
+        {
+          "name": "Alperen Sengun",
+          "similarity_score": 0.585
+        },
+        {
+          "name": "P.J. Washington",
+          "similarity_score": 0.575
+        }
+      ],
+      "top_sleeper": {
+        "name": "Jonas Valan\u010di\u016bnas",
+        "similarity_score": 0.617
+      }
+    }
+  },
+  "punt_strategy": {
+    "scenario": "Best punt FT% build around Giannis",
+    "passed": true,
+    "details": {
+      "strategies_found": 3,
+      "top_strategy": "punt_ft",
+      "recommended_players": [
+        "Jarrett Allen",
+        "Rudy Gobert",
+        "Nic Claxton",
+        "Zion Williamson",
+        "Ben Simmons",
+        "Jakob Poeltl",
+        "Giannis Antetokounmpo"
+      ],
+      "build_summary": {
+        "core": "Giannis Antetokounmpo",
+        "targets": [
+          "Rudy Gobert",
+          "Ben Simmons",
+          "Clint Capela"
+        ],
+        "avoid": [
+          "High FT% specialists like Curry, Lillard"
+        ],
+        "categories_to_win": [
+          "FG%, REB, BLK, STL"
+        ]
+      }
+    }
+  },
+  "sophomore_breakouts": {
+    "scenario": "Which sophomores will break out?",
+    "passed": true,
+    "details": {
+      "sophomores_identified": 3,
+      "top_breakout_candidates": [
+        {
+          "name": "Jalen Williams",
+          "breakout_score": 0.597,
+          "projection": "High breakout potential"
+        },
+        {
+          "name": "Paolo Banchero",
+          "breakout_score": 0.85,
+          "projection": "Star trajectory"
+        },
+        {
+          "name": "Chet Holmgren",
+          "breakout_score": 0.82,
+          "projection": "Defensive anchor + offense"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_scenarios": 5,
+    "passed": 5,
+    "failed": 0,
+    "success_rate": "100.0%"
+  }
+}
