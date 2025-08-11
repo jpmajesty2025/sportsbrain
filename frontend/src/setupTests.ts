@@ -37,7 +37,8 @@ beforeAll(() => {
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('Warning: ReactDOM.render') ||
-       args[0].includes('ReactDOMTestUtils.act is deprecated') ||
+       args[0].includes('ReactDOMTestUtils') ||
+       args[0].includes('React.act') ||
        args[0].includes('Warning: An update to'))
     ) {
       return;

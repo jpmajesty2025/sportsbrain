@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from '../contexts/AuthContext';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import Login from '../pages/Login';
 import apiService from '../services/api';
 
@@ -17,8 +17,28 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Authentication Flow Integration', () => {
+  let localStorageMock: { [key: string]: string };
+  
   beforeEach(() => {
-    localStorage.clear();
+    // Setup localStorage mocks with proper storage
+    localStorageMock = {};
+    const mockLocalStorage = {
+      getItem: jest.fn((key: string) => localStorageMock[key] || null),
+      setItem: jest.fn((key: string, value: string) => {
+        localStorageMock[key] = value;
+      }),
+      removeItem: jest.fn((key: string) => {
+        delete localStorageMock[key];
+      }),
+      clear: jest.fn(() => {
+        localStorageMock = {};
+      }),
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+    });
+    
     jest.clearAllMocks();
   });
 
@@ -80,7 +100,7 @@ describe('Authentication Flow Integration', () => {
     it('should handle login failure and show error', async () => {
       const errorMessage = 'Invalid username or password';
       mockedApiService.login.mockRejectedValueOnce({
-        response: { data: { detail: errorMessage } },
+        response: { data: { detail: errorMessage } }
       });
       
       render(
@@ -100,7 +120,7 @@ describe('Authentication Flow Integration', () => {
       fireEvent.click(loginButton);
       
       await waitFor(() => {
-        // Check error message is displayed
+        // Check that error message is displayed
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
         
         // Check that no token was stored
@@ -123,13 +143,13 @@ describe('Authentication Flow Integration', () => {
         created_at: '2025-01-01T00:00:00Z'
       };
       
-      // Set token in localStorage before rendering
-      localStorage.setItem('access_token', 'existing-token');
+      // Set token in localStorage mock before rendering
+      localStorageMock['access_token'] = 'existing-token';
       mockedApiService.getCurrentUser.mockResolvedValueOnce(mockUser);
       
       // Create a test component to check auth state
       const TestComponent = () => {
-        const { user, isAuthenticated } = require('../contexts/AuthContext').useAuth();
+        const { user, isAuthenticated } = useAuth();
         return (
           <div>
             <div data-testid="auth-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</div>
@@ -154,11 +174,12 @@ describe('Authentication Flow Integration', () => {
     });
 
     it('should clear invalid token on failed auto-login', async () => {
-      localStorage.setItem('access_token', 'invalid-token');
+      // Set invalid token in localStorage mock
+      localStorageMock['access_token'] = 'invalid-token';
       mockedApiService.getCurrentUser.mockRejectedValueOnce(new Error('Unauthorized'));
       
       const TestComponent = () => {
-        const { isAuthenticated } = require('../contexts/AuthContext').useAuth();
+        const { isAuthenticated } = useAuth();
         return <div data-testid="auth-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</div>;
       };
       
@@ -188,11 +209,12 @@ describe('Authentication Flow Integration', () => {
         created_at: '2025-01-01T00:00:00Z'
       };
       
-      localStorage.setItem('access_token', 'test-token');
+      // Set token in localStorage mock
+      localStorageMock['access_token'] = 'test-token';
       mockedApiService.getCurrentUser.mockResolvedValueOnce(mockUser);
       
       const TestComponent = () => {
-        const { user, logout, isAuthenticated } = require('../contexts/AuthContext').useAuth();
+        const { user, logout, isAuthenticated } = useAuth();
         return (
           <div>
             <div data-testid="auth-status">{isAuthenticated ? 'authenticated' : 'not-authenticated'}</div>
