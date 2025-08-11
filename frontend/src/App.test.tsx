@@ -29,7 +29,7 @@ describe('App Component', () => {
   it('should show login page when not authenticated', () => {
     render(<App />);
     
-    // Should show login form when not authenticated
-    expect(screen.getByText(/login/i)).toBeInTheDocument();
+    // Should show login page heading when not authenticated  
+    expect(screen.getByText('SportsBrain')).toBeInTheDocument();
   });
 });

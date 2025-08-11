@@ -149,25 +149,45 @@ describe('AuthContext', () => {
     });
 
     it('should handle login error', async () => {
-      mockedApiService.login.mockRejectedValueOnce(new Error('Invalid credentials'));
+      const errorMessage = 'Invalid credentials';
+      mockedApiService.login.mockRejectedValueOnce(new Error(errorMessage));
+      
+      const TestErrorComponent = () => {
+        const { login, user, isAuthenticated } = useAuth();
+        const [error, setError] = React.useState<string | null>(null);
+        
+        const handleLogin = async () => {
+          try {
+            await login({ username: 'test', password: 'test' });
+          } catch (err) {
+            setError((err as Error).message);
+          }
+        };
+        
+        return (
+          <div>
+            <div data-testid="user">{user ? user.username : 'no-user'}</div>
+            <div data-testid="authenticated">{isAuthenticated.toString()}</div>
+            <div data-testid="error">{error || 'no-error'}</div>
+            <button onClick={handleLogin}>Login</button>
+          </div>
+        );
+      };
       
       render(
         <AuthProvider>
-          <TestComponent />
+          <TestErrorComponent />
         </AuthProvider>
       );
       
       const loginButton = screen.getByText('Login');
       
       await act(async () => {
-        try {
-          await loginButton.click();
-        } catch (error) {
-          // Expected error
-        }
+        loginButton.click();
       });
       
       await waitFor(() => {
+        expect(screen.getByTestId('error').textContent).toBe(errorMessage);
         expect(localStorage.getItem('access_token')).toBeNull();
         expect(screen.getByTestId('user').textContent).toBe('no-user');
       });

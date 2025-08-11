@@ -1,46 +1,31 @@
-import { AuthTokens, LoginCredentials, RegisterData, User, Player } from '../../types';
-
 const mockApiService = {
-  login: jest.fn((credentials: LoginCredentials): Promise<AuthTokens> => 
-    Promise.resolve({ access_token: 'test-token', token_type: 'Bearer' })
-  ),
-  
-  register: jest.fn((data: RegisterData): Promise<User> => 
-    Promise.resolve({
-      id: 1,
-      username: data.username,
-      email: data.email,
-      is_active: true,
-      is_superuser: false,
-      created_at: '2025-01-01T00:00:00Z'
-    })
-  ),
-  
-  getCurrentUser: jest.fn((): Promise<User> => 
-    Promise.resolve({
-      id: 1,
-      username: 'testuser',
-      email: 'test@example.com',
-      is_active: true,
-      is_superuser: false,
-      created_at: '2025-01-01T00:00:00Z'
-    })
-  ),
-  
-  getPlayers: jest.fn((skip = 0, limit = 100): Promise<Player[]> => 
-    Promise.resolve([])
-  ),
-  
-  getPlayer: jest.fn((playerId: number): Promise<Player> => 
-    Promise.resolve({
-      id: playerId,
-      name: 'Test Player',
-      position: 'PG',
-      team: 'Test Team',
-      is_active: true,
-      created_at: '2025-01-01T00:00:00Z'
-    })
-  ),
+  login: jest.fn(),
+  register: jest.fn(),
+  getCurrentUser: jest.fn(),
+  getPlayers: jest.fn(),
+  getPlayer: jest.fn(),
+  createPlayer: jest.fn(),
+  updatePlayer: jest.fn(),
+  deletePlayer: jest.fn(),
+  getUsers: jest.fn(),
+  getUser: jest.fn(),
+  createUser: jest.fn(),
+  updateUser: jest.fn(),
+  deleteUser: jest.fn(),
+  getGames: jest.fn(),
+  getGame: jest.fn(),
+  createGame: jest.fn(),
+  updateGame: jest.fn(),
+  deleteGame: jest.fn(),
+  getGameStats: jest.fn(),
+  createGameStats: jest.fn(),
+  updateGameStats: jest.fn(),
+  deleteGameStats: jest.fn(),
+  getAgentSessions: jest.fn(),
+  createAgentSession: jest.fn(),
+  getAgentSession: jest.fn(),
+  updateAgentSession: jest.fn(),
+  getAgentMessages: jest.fn(),
 };
 
 export default mockApiService;
