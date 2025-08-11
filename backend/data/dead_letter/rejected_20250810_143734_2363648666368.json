@@ -1,0 +1,14 @@
+{
+  "data": {
+    "title": "Random Post",
+    "content": "Not about fantasy",
+    "author": "user1234567890",
+    "source": "reddit"
+  },
+  "issues": [
+    "Strategy too short: 17 chars",
+    "Content doesn't appear to be strategy-related",
+    "Suspicious author name pattern"
+  ],
+  "timestamp": "2025-08-10T14:37:34.629851"
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "headline": "Invalid Trade",
+    "date": "invalid-date",
+    "source": "FakeNews",
+    "content": "Too short"
+  },
+  "issues": [
+    "Invalid date format: invalid-date",
+    "Content too short: 9 chars (min 100)",
+    "Unknown source: FakeNews",
+    "No NBA teams detected in content"
+  ],
+  "timestamp": "2025-08-10T14:37:34.628643"
+}

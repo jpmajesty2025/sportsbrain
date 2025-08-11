@@ -1,0 +1,155 @@
+{
+  "timestamp": "2025-08-10T14:30:06.963182",
+  "sources_checked": [
+    "strategies",
+    "trades",
+    "injuries",
+    "embeddings"
+  ],
+  "total_issues": 0,
+  "critical_issues": 0,
+  "warnings": 6,
+  "passed_checks": 8,
+  "total_checks": 10,
+  "check_results": [
+    {
+      "source": "strategies",
+      "file_paths": [
+        "strategies/strategy_documents_2024_25.json",
+        "supplemental/supplemental_strategies.json"
+      ],
+      "total_documents": 230,
+      "checks": {
+        "text_quality": {
+          "passed": true,
+          "issues_found": 0,
+          "details": []
+        },
+        "metadata_completeness": {
+          "passed": false,
+          "issues_found": 27,
+          "details": [
+            "Strategy 199: Missing metadata.categories",
+            "Strategy 200: Missing metadata.categories",
+            "Strategy 201: Missing metadata.categories",
+            "Strategy 202: Missing metadata.categories",
+            "Strategy 203: Missing metadata.categories"
+          ]
+        },
+        "type_validation": {
+          "passed": true,
+          "issues_found": 0,
+          "type_distribution": {
+            "punt_ft": 20,
+            "punt_fg": 20,
+            "punt_ast": 20,
+            "punt_pts": 20,
+            "punt_3pm": 20,
+            "punt_reb": 20,
+            "punt_blk": 20,
+            "punt_stl": 20,
+            "punt_to": 20,
+            "balanced": 10,
+            "position_guard": 3,
+            "position_wing": 3,
+            "position_big": 3,
+            "keeper": 5,
+            "dfs": 4,
+            "auction": 2,
+            "rookie_focus": 15,
+            "dfs_advanced": 5
+          }
+        }
+      },
+      "issues": [],
+      "warnings": [
+        "Strategy 199: Missing metadata.categories",
+        "Strategy 200: Missing metadata.categories",
+        "Strategy 201: Missing metadata.categories"
+      ]
+    },
+    {
+      "source": "trades",
+      "file_paths": [
+        "mock_trades/trade_documents_2024_25.json",
+        "supplemental/supplemental_trades.json"
+      ],
+      "total_documents": 205,
+      "checks": {
+        "date_validation": {
+          "passed": true,
+          "issues_found": 0,
+          "details": []
+        },
+        "source_validation": {
+          "passed": true,
+          "issues_found": 0,
+          "source_distribution": {
+            "bleacher_report": 24,
+            "twitter": 55,
+            "reddit": 44,
+            "the_athletic": 46,
+            "espn": 36
+          }
+        },
+        "content_coherence": {
+          "passed": true,
+          "issues_found": 0,
+          "avg_text_length": 924.170731707317,
+          "details": []
+        }
+      },
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "source": "injuries",
+      "file_paths": [
+        "injuries/injury_history_2024_25.json"
+      ],
+      "total_documents": 195,
+      "checks": {
+        "severity_consistency": {
+          "passed": false,
+          "issues_found": 5,
+          "details": [
+            "Injury 6: moderate severity but 0 games missed (expected 5-30)",
+            "Injury 20: major severity but 0 games missed (expected 15-82)",
+            "Injury 22: moderate severity but 0 games missed (expected 5-30)",
+            "Injury 28: moderate severity but 0 games missed (expected 5-30)",
+            "Injury 32: moderate severity but 0 games missed (expected 5-30)"
+          ]
+        },
+        "player_validation": {
+          "passed": true,
+          "issues_found": 0,
+          "unique_players": 105,
+          "max_injuries_per_player": 6
+        }
+      },
+      "issues": [],
+      "warnings": [
+        "Injury 6: moderate severity but 0 games missed (expected 5-30)",
+        "Injury 20: major severity but 0 games missed (expected 15-82)",
+        "Injury 22: moderate severity but 0 games missed (expected 5-30)"
+      ]
+    },
+    {
+      "source": "embeddings",
+      "checks": {
+        "embedding_dimensions": {
+          "passed": true,
+          "issues_found": 0,
+          "details": []
+        },
+        "embedding_normalization": {
+          "passed": true,
+          "issues_found": 0,
+          "details": []
+        }
+      },
+      "issues": [],
+      "warnings": []
+    }
+  ]
+}
