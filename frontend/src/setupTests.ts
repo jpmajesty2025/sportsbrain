@@ -28,20 +28,35 @@ const localStorageMock = {
 };
 global.localStorage = localStorageMock as any;
 
-// Suppress console errors in tests (optional)
+// Suppress console errors and warnings in tests
 const originalError = console.error;
+const originalWarn = console.warn;
+
 beforeAll(() => {
   console.error = (...args: any[]) => {
     if (
       typeof args[0] === 'string' &&
-      args[0].includes('Warning: ReactDOM.render')
+      (args[0].includes('Warning: ReactDOM.render') ||
+       args[0].includes('ReactDOMTestUtils.act is deprecated') ||
+       args[0].includes('Warning: An update to'))
     ) {
       return;
     }
     originalError.call(console, ...args);
   };
+  
+  console.warn = (...args: any[]) => {
+    if (
+      typeof args[0] === 'string' &&
+      args[0].includes('React Router Future Flag Warning')
+    ) {
+      return;
+    }
+    originalWarn.call(console, ...args);
+  };
 });
 
 afterAll(() => {
   console.error = originalError;
+  console.warn = originalWarn;
 });

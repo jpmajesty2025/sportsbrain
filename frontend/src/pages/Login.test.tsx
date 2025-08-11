@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -44,7 +44,8 @@ describe('Login Component', () => {
     it('should render login form', () => {
       renderLogin();
       
-      expect(screen.getByText('Login')).toBeInTheDocument();
+      // Use more specific queries to avoid multiple matches
+      expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
       expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
@@ -101,7 +102,10 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'testpass123' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(mockLogin).toHaveBeenCalledWith({
@@ -121,7 +125,10 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'testpass123' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
@@ -142,7 +149,10 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
@@ -160,7 +170,10 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'testpass' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(screen.getByText('Login failed')).toBeInTheDocument();
@@ -170,7 +183,10 @@ describe('Login Component', () => {
 
   describe('Loading State', () => {
     it('should disable inputs during login', async () => {
-      mockLogin.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)));
+      let resolveLogin: () => void;
+      mockLogin.mockImplementation(() => new Promise(resolve => {
+        resolveLogin = () => resolve(undefined);
+      }));
       
       renderLogin();
       
@@ -180,17 +196,28 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'testpass' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(usernameInput).toBeDisabled();
         expect(passwordInput).toBeDisabled();
         expect(submitButton).toBeDisabled();
       });
+      
+      // Clean up
+      await act(async () => {
+        resolveLogin!();
+      });
     });
 
     it('should show loading spinner during login', async () => {
-      mockLogin.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)));
+      let resolveLogin: () => void;
+      mockLogin.mockImplementation(() => new Promise(resolve => {
+        resolveLogin = () => resolve(undefined);
+      }));
       
       renderLogin();
       
@@ -200,10 +227,18 @@ describe('Login Component', () => {
       
       fireEvent.change(usernameInput, { target: { value: 'testuser' } });
       fireEvent.change(passwordInput, { target: { value: 'testpass' } });
-      fireEvent.click(submitButton);
+      
+      await act(async () => {
+        fireEvent.click(submitButton);
+      });
       
       await waitFor(() => {
         expect(screen.getByRole('progressbar')).toBeInTheDocument();
+      });
+      
+      // Clean up
+      await act(async () => {
+        resolveLogin!();
       });
     });
   });
