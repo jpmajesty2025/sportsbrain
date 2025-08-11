@@ -27,9 +27,12 @@ describe('Authentication Flow Integration', () => {
       // Setup mocks
       const mockTokens = { access_token: 'test-token', token_type: 'Bearer' };
       const mockUser = { 
-        id: '1', 
+        id: 1, 
         username: 'testuser', 
-        email: 'test@example.com' 
+        email: 'test@example.com',
+        is_active: true,
+        is_superuser: false,
+        created_at: '2025-01-01T00:00:00Z'
       };
       
       mockedApiService.login.mockResolvedValueOnce(mockTokens);
@@ -112,9 +115,12 @@ describe('Authentication Flow Integration', () => {
   describe('Auto-login on Page Load', () => {
     it('should auto-login if valid token exists', async () => {
       const mockUser = { 
-        id: '1', 
+        id: 1, 
         username: 'existinguser', 
-        email: 'existing@example.com' 
+        email: 'existing@example.com',
+        is_active: true,
+        is_superuser: false,
+        created_at: '2025-01-01T00:00:00Z'
       };
       
       // Set token in localStorage before rendering
@@ -174,9 +180,12 @@ describe('Authentication Flow Integration', () => {
   describe('Logout Flow', () => {
     it('should clear authentication on logout', async () => {
       const mockUser = { 
-        id: '1', 
+        id: 1, 
         username: 'testuser', 
-        email: 'test@example.com' 
+        email: 'test@example.com',
+        is_active: true,
+        is_superuser: false,
+        created_at: '2025-01-01T00:00:00Z'
       };
       
       localStorage.setItem('access_token', 'test-token');

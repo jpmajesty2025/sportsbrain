@@ -1,6 +1,8 @@
 // Mock axios before importing apiService
-jest.mock('axios', () => ({
-  create: jest.fn(() => ({
+let mockAxiosInstance: any;
+
+jest.mock('axios', () => {
+  mockAxiosInstance = {
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
@@ -9,15 +11,17 @@ jest.mock('axios', () => ({
       request: { use: jest.fn() },
       response: { use: jest.fn() },
     },
-  })),
-}));
+  };
+  return {
+    create: jest.fn(() => mockAxiosInstance),
+  };
+});
 
 import axios from 'axios';
 import apiService from './api';
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('ApiService', () => {
-  let mockAxiosInstance: any;
   let mockLocalStorage: { [key: string]: string };
 
   beforeEach(() => {
@@ -31,22 +35,8 @@ describe('ApiService', () => {
       delete mockLocalStorage[key];
     });
 
-    // Create mock axios instance
-    mockAxiosInstance = {
-      get: jest.fn(),
-      post: jest.fn(),
-      put: jest.fn(),
-      delete: jest.fn(),
-      interceptors: {
-        request: { use: jest.fn() },
-        response: { use: jest.fn() },
-      },
-    };
-
-    mockedAxios.create.mockReturnValue(mockAxiosInstance);
-
-    // Re-initialize the service to apply mocks
-    jest.resetModules();
+    // Clear mock calls
+    jest.clearAllMocks();
   });
 
   afterEach(() => {
@@ -89,9 +79,12 @@ describe('ApiService', () => {
     describe('register', () => {
       it('should send registration data and return user', async () => {
         const mockUser = { 
-          id: '1', 
+          id: 1, 
           username: 'newuser', 
-          email: 'new@example.com' 
+          email: 'new@example.com',
+          is_active: true,
+          is_superuser: false,
+          created_at: '2025-01-01T00:00:00Z'
         };
         mockAxiosInstance.post.mockResolvedValueOnce({ data: mockUser });
 
@@ -110,9 +103,12 @@ describe('ApiService', () => {
     describe('getCurrentUser', () => {
       it('should fetch current user data', async () => {
         const mockUser = { 
-          id: '1', 
+          id: 1, 
           username: 'testuser', 
-          email: 'test@example.com' 
+          email: 'test@example.com',
+          is_active: true,
+          is_superuser: false,
+          created_at: '2025-01-01T00:00:00Z'
         };
         mockAxiosInstance.get.mockResolvedValueOnce({ data: mockUser });
 

@@ -74,7 +74,14 @@ describe('AuthContext', () => {
     });
 
     it('should load user if token exists in localStorage', async () => {
-      const mockUser = { id: '1', username: 'testuser', email: 'test@example.com' };
+      const mockUser = { 
+        id: 1, 
+        username: 'testuser', 
+        email: 'test@example.com',
+        is_active: true,
+        is_superuser: false,
+        created_at: '2024-01-01T00:00:00Z'
+      };
       localStorage.setItem('access_token', 'test-token');
       mockedApiService.getCurrentUser.mockResolvedValueOnce(mockUser);
       
@@ -110,7 +117,14 @@ describe('AuthContext', () => {
   describe('Login', () => {
     it('should login successfully and set user', async () => {
       const mockTokens = { access_token: 'new-token', token_type: 'Bearer' };
-      const mockUser = { id: '1', username: 'testuser', email: 'test@example.com' };
+      const mockUser = { 
+        id: 1, 
+        username: 'testuser', 
+        email: 'test@example.com',
+        is_active: true,
+        is_superuser: false,
+        created_at: '2024-01-01T00:00:00Z'
+      };
       
       mockedApiService.login.mockResolvedValueOnce(mockTokens);
       mockedApiService.getCurrentUser.mockResolvedValueOnce(mockUser);
@@ -162,7 +176,7 @@ describe('AuthContext', () => {
 
   describe('Logout', () => {
     it('should clear user and token on logout', async () => {
-      const mockUser = { id: '1', username: 'testuser', email: 'test@example.com' };
+      const mockUser = { id: 1, username: 'testuser', email: 'test@example.com', is_active: true, is_superuser: false, created_at: '2025-01-01T00:00:00Z' };
       localStorage.setItem('access_token', 'test-token');
       mockedApiService.getCurrentUser.mockResolvedValueOnce(mockUser);
       
@@ -191,7 +205,7 @@ describe('AuthContext', () => {
   describe('Register', () => {
     it('should register and auto-login', async () => {
       const mockTokens = { access_token: 'new-token', token_type: 'Bearer' };
-      const mockUser = { id: '1', username: 'newuser', email: 'new@example.com' };
+      const mockUser = { id: 1, username: 'newuser', email: 'new@example.com', is_active: true, is_superuser: false, created_at: '2025-01-01T00:00:00Z' };
       
       mockedApiService.register.mockResolvedValueOnce(mockUser);
       mockedApiService.login.mockResolvedValueOnce(mockTokens);
