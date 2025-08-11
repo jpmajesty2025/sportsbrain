@@ -52,10 +52,10 @@ class InputValidator:
         r"personal.*information",
         r"dump.*data",
         r"export.*users",
-        r"SELECT.*FROM",  # SQL injection attempts
-        r"DROP.*TABLE",
-        r"DELETE.*FROM",
-        r"UPDATE.*SET",
+        r"select.*from",  # SQL injection attempts (lowercase for matching)
+        r"drop.*table",
+        r"delete.*from",
+        r"update.*set",
     ]
     
     # Allowed query patterns (whitelist approach)
