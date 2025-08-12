@@ -49,12 +49,16 @@
   - `sportsbrain_strategies`: 230 strategy documents
   - `sportsbrain_trades`: 205 trade analyses
 
-### 4️⃣ RAG Implementation ✅ COMPLETE
-- [x] **Three Specialized Agents**:
-  1. **DraftPrep Agent**: Mock drafts, keeper decisions, ADP analysis
-  2. **TradeImpact Agent**: Off-season moves, usage rate projections
-  3. **PredictionAgent**: 2024-25 season predictions, breakout candidates
-- [x] **Integration Tests**: 5/5 demo scenarios passing
+### 4️⃣ RAG Implementation ✅ ARCHITECTURE COMPLETE
+- [x] **Three Specialized Agents** (Consolidated from 4):
+  1. **Intelligence Agent** (NEW): Merged Analytics + Prediction for stats analysis, projections, sleepers
+  2. **DraftPrep Agent**: Mock drafts, keeper decisions, ADP analysis, punt strategies
+  3. **TradeImpact Agent**: Off-season moves, usage rate projections, depth chart impacts
+- [x] **Agent Tools** (IN PROGRESS):
+  - [ ] SQL queries for PostgreSQL data
+  - [ ] Vector similarity search in Milvus
+  - [ ] Keeper value calculations
+  - [ ] ADP comparisons
 - [x] **Abuse Protection**: Rate limiting, auth required, input validation
 - [x] **Advanced Features**: Multi-agent coordination, tool usage, fallbacks
 
@@ -108,22 +112,27 @@
 
 ---
 
-## 🚀 KEY DEMO SCENARIOS (100% SUCCESS RATE)
+## 🚀 KEY DEMO SCENARIOS (READY FOR IMPLEMENTATION)
 
-1. **"Should I keep Ja Morant in round 3?"** ✅
-   - System: YES - ADP 28.5, Keeper Round 2, excellent value
+1. **"Should I keep Ja Morant in round 3?"** → **DraftPrep Agent**
+   - Expected: Compare ADP (21) vs keeper round (3), calculate value
+   - Data: PostgreSQL FantasyData table (ADP, keeper values)
 
-2. **"How does Porzingis trade affect Tatum?"** ✅
-   - System: Increased usage rate, more shot attempts, MVP candidate
+2. **"How does Porzingis trade affect Tatum?"** → **TradeImpact Agent**
+   - Expected: Analyze usage rate changes, shot distribution
+   - Data: Trade documents in Milvus, player stats in PostgreSQL
 
-3. **"Find me sleepers like last year's Sengun"** ✅
-   - System: Alperen Sengun, Nic Claxton, Walker Kessler recommendations
+3. **"Find me sleepers like last year's Sengun"** → **Intelligence Agent**
+   - Expected: Query players with high sleeper_score (>0.7)
+   - Data: PostgreSQL FantasyData table (sleeper_score field)
 
-4. **"Best punt FT% build around Giannis"** ✅
-   - System: Target Gobert, Claxton, focus on FG%, REB, BLK, AST
+4. **"Best punt FT% build around Giannis"** → **DraftPrep Agent**
+   - Expected: Find players with punt_ft_fit=true
+   - Data: PostgreSQL FantasyData table (punt strategy fields)
 
-5. **"Which sophomores will break out?"** ✅
-   - System: Paolo Banchero, Chet Holmgren, Ausar Thompson analysis
+5. **"Which sophomores will break out?"** → **Intelligence Agent**
+   - Expected: Query breakout_candidate=true, second-year players
+   - Data: PostgreSQL FantasyData table (breakout_candidate field)
 
 ---
 
@@ -160,10 +169,11 @@
 ```
 sportsbrain/
 ├── backend/                 # FastAPI application
-│   ├── agents/             # Three specialized AI agents
-│   ├── models/             # SQLAlchemy models
+│   ├── agents/             # AI agents (Intelligence, DraftPrep, TradeImpact)
+│   ├── models/             # SQLAlchemy models (including FantasyData)
 │   ├── routers/            # API endpoints
 │   ├── services/           # Business logic
+│   ├── security/           # Defensive prompt engineering
 │   └── tests/              # Comprehensive test suite
 ├── frontend/               # React application  
 │   ├── src/
@@ -245,6 +255,33 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
 - [ ] Social features (leagues, chat)
 - [ ] Advanced visualization (D3.js charts)
 - [ ] Export functionality (CSV, PDF reports)
+
+---
+
+## 🤖 AGENT ARCHITECTURE (REVISED - Aug 12, 2025)
+
+### Phase 1 Agent Consolidation
+We consolidated from 4 agents to 3 specialized agents for better focus:
+
+1. **Intelligence Agent** (NEW - Merged Analytics + Prediction)
+   - Combines historical analysis with future projections
+   - Handles: Stats analysis, performance predictions, sleeper identification
+   - Demo Scenarios: #3 (sleepers), #5 (breakout sophomores)
+
+2. **DraftPrep Agent** (Existing)
+   - Specializes in draft preparation and strategy
+   - Handles: Keeper decisions, ADP analysis, punt strategies, mock drafts
+   - Demo Scenarios: #1 (keeper value), #4 (punt builds)
+
+3. **TradeImpact Agent** (Existing)
+   - Analyzes trade impacts on fantasy value
+   - Handles: Usage rate changes, depth chart impacts, role changes
+   - Demo Scenarios: #2 (trade impacts)
+
+### Why We Merged Analytics + Prediction
+- Both relied on similar data (stats, projections)
+- Overlapping functionality (analysis vs projection is artificial split)
+- Better user experience with unified intelligence
 
 ---
 

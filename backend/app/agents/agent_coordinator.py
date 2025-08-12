@@ -1,7 +1,6 @@
 from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
-from .analytics_agent import AnalyticsAgent
-from .prediction_agent import PredictionAgent
+from .intelligence_agent import IntelligenceAgent
 from .chat_agent import ChatAgent
 from .draft_prep_agent_async import DraftPrepAgent
 from .trade_impact_agent import TradeImpactAgent
@@ -11,8 +10,7 @@ class AgentCoordinator:
         self.agents: Dict[str, BaseAgent] = {
             "draft_prep": DraftPrepAgent(),
             "trade_impact": TradeImpactAgent(),
-            "analytics": AnalyticsAgent(),
-            "prediction": PredictionAgent(),
+            "intelligence": IntelligenceAgent(),  # Replaces analytics + prediction
             "chat": ChatAgent()
         }
         self.conversation_history: List[Dict[str, Any]] = []
@@ -50,33 +48,27 @@ class AgentCoordinator:
             "acquire", "deal", "swap", "move", "transaction"
         ]
         
-        # Keywords for analytics agent
-        analytics_keywords = [
-            "analyze", "statistics", "stats", "performance", "compare", 
-            "metrics", "data", "trend", "breakdown"
-        ]
-        
-        # Keywords for prediction agent
-        prediction_keywords = [
-            "predict", "forecast", "odds", "probability", "outcome", 
-            "future", "likely", "expect", "projection"
+        # Keywords for intelligence agent (analytics + prediction combined)
+        intelligence_keywords = [
+            "analyze", "statistics", "stats", "performance", "compare",
+            "metrics", "data", "trend", "breakdown", "predict", "forecast",
+            "odds", "probability", "outcome", "future", "likely", "expect",
+            "projection", "sleeper", "breakout", "sophomore", "consistency",
+            "risk", "upside", "potential"
         ]
         
         # Score each agent based on keyword presence
         draft_score = sum(1 for keyword in draft_keywords if keyword in message_lower)
         trade_score = sum(1 for keyword in trade_keywords if keyword in message_lower)
-        analytics_score = sum(1 for keyword in analytics_keywords if keyword in message_lower)
-        prediction_score = sum(1 for keyword in prediction_keywords if keyword in message_lower)
+        intelligence_score = sum(1 for keyword in intelligence_keywords if keyword in message_lower)
         
         # Select agent with highest score
-        if trade_score > max(draft_score, analytics_score, prediction_score):
+        if trade_score > max(draft_score, intelligence_score):
             return self.agents["trade_impact"]
-        elif draft_score > max(analytics_score, prediction_score):
+        elif draft_score > intelligence_score:
             return self.agents["draft_prep"]
-        elif analytics_score > prediction_score:
-            return self.agents["analytics"]
-        elif prediction_score > analytics_score:
-            return self.agents["prediction"]
+        elif intelligence_score > 0:
+            return self.agents["intelligence"]
         else:
             # Default to chat agent for general questions
             return self.agents["chat"]
