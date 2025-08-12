@@ -43,6 +43,7 @@ class Player(Base):
     
     # Relationships
     game_stats = relationship("GameStats", back_populates="player")
+    fantasy_data = relationship("FantasyData", back_populates="player", uselist=False)
 
 class Game(Base):
     __tablename__ = "games"
@@ -138,6 +139,52 @@ class Team(Base):
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+class FantasyData(Base):
+    __tablename__ = "fantasy_data"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey("players.id"), nullable=False, unique=True)
+    season = Column(String, default="2024-25", index=True)
+    
+    # Draft data
+    adp_rank = Column(Integer, index=True)  # Average Draft Position rank (1-300)
+    adp_round = Column(Integer)  # Round typically drafted (1-15)
+    yahoo_rank = Column(Integer)  # Yahoo fantasy ranking
+    espn_rank = Column(Integer)  # ESPN fantasy ranking
+    
+    # Keeper/Dynasty values
+    keeper_round = Column(Integer)  # Round value for keeper leagues
+    dynasty_value = Column(Integer)  # Dynasty league ranking
+    
+    # Projections for 2024-25
+    projected_ppg = Column(Float)  # Points per game
+    projected_rpg = Column(Float)  # Rebounds per game
+    projected_apg = Column(Float)  # Assists per game
+    projected_spg = Column(Float)  # Steals per game
+    projected_bpg = Column(Float)  # Blocks per game
+    projected_fg_pct = Column(Float)  # Field goal percentage
+    projected_ft_pct = Column(Float)  # Free throw percentage
+    projected_3pm = Column(Float)  # Three pointers made per game
+    projected_fantasy_ppg = Column(Float)  # Fantasy points per game
+    
+    # Strategic values
+    punt_ft_fit = Column(Boolean, default=False)  # Good for punt FT% build
+    punt_fg_fit = Column(Boolean, default=False)  # Good for punt FG% build
+    punt_ast_fit = Column(Boolean, default=False)  # Good for punt assists build
+    punt_3pm_fit = Column(Boolean, default=False)  # Good for punt 3PM build
+    
+    # Analysis flags
+    sleeper_score = Column(Float)  # 0-1 score for sleeper potential
+    breakout_candidate = Column(Boolean, default=False)
+    injury_risk = Column(String)  # Low, Medium, High
+    consistency_rating = Column(Float)  # 0-1 score for consistency
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationship
+    player = relationship("Player", back_populates="fantasy_data", uselist=False)
 
 class AgentSession(Base):
     __tablename__ = "agent_sessions"

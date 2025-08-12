@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Database
-    DATABASE_URL: str = "postgresql://sportsbrain:password@localhost:5432/sportsbrain"
+    DATABASE_URL: str = "postgresql://user:pass@localhost/db"  # Will be overridden by .env
     TEST_DATABASE_URL: Optional[str] = None
     
     # Redis

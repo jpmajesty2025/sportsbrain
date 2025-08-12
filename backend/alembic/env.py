@@ -4,12 +4,25 @@ from sqlalchemy import pool
 from alembic import context
 import os
 import sys
+from dotenv import load_dotenv
 
 # Add the project root to the path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
+# Load environment variables from .env file
+# Look for .env in both backend directory and parent directory
+backend_dir = os.path.dirname(os.path.dirname(__file__))
+parent_dir = os.path.dirname(backend_dir)
+
+# Try parent directory first (your root-level .env)
+env_path = os.path.join(parent_dir, '.env')
+if not os.path.exists(env_path):
+    # Fall back to backend directory
+    env_path = os.path.join(backend_dir, '.env')
+
+load_dotenv(env_path)
+
 from app.models.models import Base
-from app.core.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,7 +43,15 @@ target_metadata = Base.metadata
 # ... etc.
 
 def get_url():
-    return settings.DATABASE_URL
+    # Get DATABASE_URL from environment variable
+    # This way we don't rely on config.py which might have placeholder values
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise ValueError(
+            "DATABASE_URL environment variable is not set. "
+            "Please set it in your .env file or as an environment variable."
+        )
+    return database_url
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
