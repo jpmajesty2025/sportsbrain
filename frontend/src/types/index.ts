@@ -99,3 +99,6 @@ export interface RegisterData {
   password: string;
   full_name?: string;
 }
+
+// Re-export preferences types
+export * from './preferences';

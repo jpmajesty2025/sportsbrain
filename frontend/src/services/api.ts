@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { AuthTokens, LoginCredentials, RegisterData, User, Player, Game, GameStats, AgentSession, AgentMessage } from '../types';
+import { UserPreferences, UserPreferencesUpdate } from '../types/preferences';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
@@ -148,23 +149,23 @@ class ApiService {
   }
 
   // User Preferences
-  async getUserPreferences(): Promise<any> {
-    const response = await this.client.get('/users/preferences');
+  async getUserPreferences(): Promise<UserPreferences> {
+    const response = await this.client.get<UserPreferences>('/users/preferences');
     return response.data;
   }
 
-  async updateUserPreferences(preferences: any): Promise<any> {
-    const response = await this.client.put('/users/preferences', preferences);
+  async updateUserPreferences(preferences: UserPreferencesUpdate): Promise<UserPreferences> {
+    const response = await this.client.put<UserPreferences>('/users/preferences', preferences);
     return response.data;
   }
 
-  async toggleTheme(): Promise<{ theme_mode: string }> {
-    const response = await this.client.patch('/users/preferences/theme');
+  async toggleTheme(): Promise<{ theme_mode: 'light' | 'dark' }> {
+    const response = await this.client.patch<{ theme_mode: 'light' | 'dark' }>('/users/preferences/theme');
     return response.data;
   }
 
-  async resetPreferences(): Promise<any> {
-    const response = await this.client.post('/users/preferences/reset');
+  async resetPreferences(): Promise<UserPreferences> {
+    const response = await this.client.post<UserPreferences>('/users/preferences/reset');
     return response.data;
   }
 

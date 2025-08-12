@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from '../theme/theme';
 import { useAuth } from './AuthContext';
-import { apiService } from '../services/api';
+import apiService from '../services/api';
+import { UserPreferences } from '../types/preferences';
 
 interface ThemeContextType {
   isDarkMode: boolean;
@@ -38,11 +39,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     if (isAuthenticated && user) {
       setIsLoading(true);
       apiService.getUserPreferences()
-        .then(preferences => {
+        .then((preferences: UserPreferences) => {
           setIsDarkMode(preferences.theme_mode === 'dark');
           localStorage.setItem('theme', preferences.theme_mode);
         })
-        .catch(error => {
+        .catch((error: Error) => {
           console.error('Failed to load theme preference:', error);
         })
         .finally(() => {
