@@ -13,6 +13,9 @@ def test_get_preferences_creates_default(
 ):
     """Test that getting preferences creates defaults if none exist"""
     response = client.get("/api/v1/users/preferences", headers=auth_headers)
+    if response.status_code != 200:
+        print(f"Response status: {response.status_code}")
+        print(f"Response body: {response.json()}")
     assert response.status_code == 200
     
     data = response.json()

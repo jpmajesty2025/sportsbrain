@@ -12,6 +12,24 @@ from app.api.endpoints.auth import get_current_user
 
 router = APIRouter()
 
+def create_default_preferences(user_id: int) -> UserPreferences:
+    """Create a UserPreferences instance with all default values"""
+    return UserPreferences(
+        user_id=user_id,
+        theme_mode="light",
+        sidebar_collapsed=False,
+        preferred_agent="intelligence",
+        agent_response_style="detailed",
+        league_type="h2h_9cat",
+        team_size=12,
+        favorite_team=None,
+        email_notifications=True,
+        injury_alerts=True,
+        trade_alerts=True,
+        default_stat_view="season",
+        show_advanced_stats=False
+    )
+
 class UserPreferencesUpdate(BaseModel):
     theme_mode: Optional[str] = None
     sidebar_collapsed: Optional[bool] = None
@@ -55,7 +73,7 @@ async def get_user_preferences(
     
     if not preferences:
         # Create default preferences for user
-        preferences = UserPreferences(user_id=current_user.id)
+        preferences = create_default_preferences(current_user.id)
         db.add(preferences)
         db.commit()
         db.refresh(preferences)
@@ -74,8 +92,8 @@ async def update_user_preferences(
     ).first()
     
     if not preferences:
-        # Create new preferences with the update
-        preferences = UserPreferences(user_id=current_user.id)
+        # Create new preferences with defaults
+        preferences = create_default_preferences(current_user.id)
         db.add(preferences)
     
     # Update only provided fields
@@ -99,10 +117,9 @@ async def toggle_theme_mode(
     ).first()
     
     if not preferences:
-        preferences = UserPreferences(
-            user_id=current_user.id,
-            theme_mode="dark"  # If no preferences, first toggle goes to dark
-        )
+        # Create with defaults, but set theme to dark for first toggle
+        preferences = create_default_preferences(current_user.id)
+        preferences.theme_mode = "dark"
         db.add(preferences)
     else:
         # Toggle the theme
@@ -139,7 +156,7 @@ async def reset_user_preferences(
         preferences.show_advanced_stats = False
     else:
         # Create new with defaults
-        preferences = UserPreferences(user_id=current_user.id)
+        preferences = create_default_preferences(current_user.id)
         db.add(preferences)
     
     db.commit()
