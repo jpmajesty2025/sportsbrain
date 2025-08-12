@@ -1,7 +1,7 @@
 """Add user preferences table
 
-Revision ID: add_user_preferences
-Revises: 
+Revision ID: 005_add_user_preferences
+Revises: 004_add_fantasy_data
 Create Date: 2025-08-12
 
 """
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.sql import func
 
 # revision identifiers, used by Alembic
-revision = 'add_user_preferences'
-down_revision = None
+revision = '005_add_user_preferences'
+down_revision = '004_add_fantasy_data'
 branch_labels = None
 depends_on = None
 
