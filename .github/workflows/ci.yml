@@ -169,6 +169,8 @@ jobs:
         file: ./frontend/Dockerfile.railway
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/sportsbrain-frontend:latest
+        build-args: |
+          REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
