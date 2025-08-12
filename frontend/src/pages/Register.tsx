@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import ApiConfig from '../components/Debug/ApiConfig';
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -92,11 +93,13 @@ const Register: React.FC = () => {
     <Box
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '80vh',
       }}
     >
+      <ApiConfig />
       <Card sx={{ maxWidth: 500, width: '100%', p: 2 }}>
         <CardContent>
           <Typography variant="h4" component="h1" gutterBottom align="center">
