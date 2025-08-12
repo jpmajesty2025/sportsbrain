@@ -140,3 +140,13 @@ def authenticated_client(client, test_user):
     tokens = response.json()
     client.headers = {"Authorization": f"Bearer {tokens['access_token']}"}
     return client
+
+@pytest.fixture
+def auth_headers(client, test_user):
+    """Return authorization headers for test user"""
+    response = client.post(
+        "/api/v1/auth/login",
+        data={"username": "testuser", "password": "testpassword"}
+    )
+    tokens = response.json()
+    return {"Authorization": f"Bearer {tokens['access_token']}"}
