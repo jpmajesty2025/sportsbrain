@@ -17,6 +17,9 @@ class User(Base):
     is_superuser = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    preferences = relationship("UserPreferences", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
 class Player(Base):
     __tablename__ = "players"
@@ -244,3 +247,38 @@ class PlayerRiskAssessment(Base):
     
     # Relationships
     player = relationship("Player")
+
+class UserPreferences(Base):
+    __tablename__ = "user_preferences"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+    
+    # UI Preferences
+    theme_mode = Column(String, default="light")  # "light" or "dark"
+    sidebar_collapsed = Column(Boolean, default=False)
+    
+    # Agent Preferences
+    preferred_agent = Column(String, default="intelligence")  # Default agent for queries
+    agent_response_style = Column(String, default="detailed")  # "concise", "detailed", "expert"
+    
+    # Fantasy Preferences
+    league_type = Column(String, default="h2h_9cat")  # "h2h_9cat", "h2h_points", "roto"
+    team_size = Column(Integer, default=12)  # Number of teams in league
+    favorite_team = Column(String)  # NBA team preference
+    
+    # Notification Preferences
+    email_notifications = Column(Boolean, default=True)
+    injury_alerts = Column(Boolean, default=True)
+    trade_alerts = Column(Boolean, default=True)
+    
+    # Display Preferences
+    default_stat_view = Column(String, default="season")  # "season", "last30", "last7"
+    show_advanced_stats = Column(Boolean, default=False)
+    
+    # Metadata
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    user = relationship("User", back_populates="preferences", uselist=False)

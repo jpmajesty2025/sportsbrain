@@ -1,97 +1,190 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Container,
   Grid,
   Card,
   CardContent,
   Typography,
   Box,
   Button,
+  TextField,
+  Paper,
   Chip,
+  Avatar,
+  IconButton,
+  Tooltip,
+  Fade,
+  LinearProgress,
 } from '@mui/material';
-import { Sports, TrendingUp, Chat, Analytics } from '@mui/icons-material';
+import {
+  Analytics as AnalyticsIcon,
+  TrendingUp as TrendingUpIcon,
+  SwapHoriz as SwapHorizIcon,
+  Send as SendIcon,
+  Psychology as PsychologyIcon,
+  EmojiEvents as TrophyIcon,
+  Timeline as TimelineIcon,
+} from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import ThemeToggle from '../components/ThemeToggle';
 import apiService from '../services/api';
 import { Player, Game } from '../types';
 
+interface AgentCard {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ReactNode;
+  color: string;
+  examples: string[];
+}
+
+const agents: AgentCard[] = [
+  {
+    id: 'intelligence',
+    name: 'Intelligence Agent',
+    description: 'Analytics, predictions, sleepers, and breakout candidates',
+    icon: <PsychologyIcon sx={{ fontSize: 40 }} />,
+    color: '#3B82F6',
+    examples: [
+      'Find sleepers like Sengun',
+      'Which sophomores will break out?',
+      'Analyze player consistency',
+      'Compare Player A vs Player B'
+    ]
+  },
+  {
+    id: 'draft_prep',
+    name: 'DraftPrep Agent',
+    description: 'Keeper decisions, ADP analysis, and punt strategies',
+    icon: <TrophyIcon sx={{ fontSize: 40 }} />,
+    color: '#10B981',
+    examples: [
+      'Should I keep Ja Morant in round 3?',
+      'Best punt FT% build',
+      'Mock draft for pick 7',
+      'Top value picks by ADP'
+    ]
+  },
+  {
+    id: 'trade_impact',
+    name: 'TradeImpact Agent',
+    description: 'Trade analysis, usage projections, and depth charts',
+    icon: <SwapHorizIcon sx={{ fontSize: 40 }} />,
+    color: '#F59E0B',
+    examples: [
+      'How does Porzingis trade affect Tatum?',
+      'Trade impact on team depth',
+      'Usage rate changes',
+      'Find trade beneficiaries'
+    ]
+  }
+];
+
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedAgent, setSelectedAgent] = useState<string>('intelligence');
+  const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
+  const handleAgentSelect = (agentId: string) => {
+    setSelectedAgent(agentId);
+    setResponse(null);
+  };
 
-  const loadDashboardData = async () => {
+  const handleExampleClick = (example: string) => {
+    setQuery(example);
+  };
+
+  const handleSubmit = async () => {
+    if (!query.trim()) return;
+
+    setIsLoading(true);
     try {
-      const [playersData, gamesData] = await Promise.all([
-        apiService.getPlayers(0, 5),
-        apiService.getGames(0, 5),
-      ]);
-      setPlayers(playersData);
-      setGames(gamesData);
+      // TODO: Implement actual agent query
+      // const result = await apiService.queryAgent(selectedAgent, query);
+      // setResponse(result);
+      
+      // Placeholder response
+      setResponse(`Response from ${selectedAgent} agent: Processing "${query}"...`);
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      console.error('Error querying agent:', error);
+      setResponse('Error: Failed to get response from agent');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const agentCards = [
-    {
-      title: 'Analytics Agent',
-      description: 'Get detailed statistical analysis and insights',
-      icon: <Analytics fontSize="large" />,
-      color: '#1976d2',
-      onClick: () => navigate('/agents/analytics'),
-    },
-    {
-      title: 'Prediction Agent',
-      description: 'AI-powered game and performance predictions',
-      icon: <TrendingUp fontSize="large" />,
-      color: '#388e3c',
-      onClick: () => navigate('/agents/prediction'),
-    },
-    {
-      title: 'Chat Agent',
-      description: 'Ask questions about sports and get instant answers',
-      icon: <Chat fontSize="large" />,
-      color: '#f57c00',
-      onClick: () => navigate('/agents/chat'),
-    },
-  ];
+  const selectedAgentData = agents.find(a => a.id === selectedAgent);
+
 
   return (
-    <Box>
-      <Typography variant="h3" component="h1" gutterBottom>
-        Welcome back, {user?.full_name || user?.username}!
-      </Typography>
-
-      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4, mb: 2 }}>
-        AI Agents
-      </Typography>
-      
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Header */}
+      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" gutterBottom fontWeight="bold">
+            SportsBrain AI Assistant
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            Welcome back, {user?.username || 'User'}! Select an agent to get started.
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Chip 
+            label="2024-25 Season" 
+            color="primary" 
+            variant="outlined"
+            icon={<TimelineIcon />}
+          />
+          <ThemeToggle />
+        </Box>
+      </Box>
+      {/* Agent Selection Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {agentCards.map((agent, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card 
-              sx={{ 
-                cursor: 'pointer', 
-                transition: 'transform 0.2s',
-                '&:hover': { transform: 'translateY(-4px)' }
+        {agents.map((agent) => (
+          <Grid item xs={12} md={4} key={agent.id}>
+            <Card
+              sx={{
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                border: selectedAgent === agent.id ? `3px solid ${agent.color}` : '1px solid',
+                borderColor: selectedAgent === agent.id ? agent.color : 'divider',
+                transform: selectedAgent === agent.id ? 'scale(1.02)' : 'scale(1)',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  boxShadow: 6,
+                },
               }}
-              onClick={agent.onClick}
+              onClick={() => handleAgentSelect(agent.id)}
             >
-              <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                <Box sx={{ color: agent.color, mb: 2 }}>
-                  {agent.icon}
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: agent.color,
+                      width: 56,
+                      height: 56,
+                      mr: 2,
+                    }}
+                  >
+                    {agent.icon}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="h6" fontWeight="bold">
+                      {agent.name}
+                    </Typography>
+                    {selectedAgent === agent.id && (
+                      <Chip
+                        label="Active"
+                        size="small"
+                        color="success"
+                        sx={{ mt: 0.5 }}
+                      />
+                    )}
+                  </Box>
                 </Box>
-                <Typography variant="h6" component="h3" gutterBottom>
-                  {agent.title}
-                </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {agent.description}
                 </Typography>
@@ -101,74 +194,174 @@ const Dashboard: React.FC = () => {
         ))}
       </Grid>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+      {/* Query Interface */}
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          borderRadius: 2,
+          background: (theme) =>
+            theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%)'
+              : 'linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%)',
+        }}
+      >
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" gutterBottom fontWeight="bold">
+            Ask {selectedAgentData?.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Try one of these examples or ask your own question:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {selectedAgentData?.examples.map((example, index) => (
+              <Chip
+                key={index}
+                label={example}
+                onClick={() => handleExampleClick(example)}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: selectedAgentData.color,
+                    color: 'white',
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+          <TextField
+            fullWidth
+            multiline
+            rows={2}
+            variant="outlined"
+            placeholder="Type your question here..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                  borderColor: selectedAgentData?.color,
+                },
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleSubmit}
+            disabled={!query.trim() || isLoading}
+            sx={{
+              bgcolor: selectedAgentData?.color,
+              '&:hover': {
+                bgcolor: selectedAgentData?.color,
+                filter: 'brightness(0.9)',
+              },
+              minWidth: 120,
+            }}
+            endIcon={<SendIcon />}
+          >
+            Send
+          </Button>
+        </Box>
+
+        {/* Loading Indicator */}
+        {isLoading && <LinearProgress sx={{ mb: 2 }} />}
+
+        {/* Response Area */}
+        {response && (
+          <Fade in={true}>
+            <Paper
+              sx={{
+                p: 3,
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'dark' ? 'background.paper' : 'grey.50',
+                borderLeft: `4px solid ${selectedAgentData?.color}`,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Avatar
+                  sx={{
+                    bgcolor: selectedAgentData?.color,
+                    width: 32,
+                    height: 32,
+                    mr: 1,
+                  }}
+                >
+                  {selectedAgentData?.icon}
+                </Avatar>
+                <Typography variant="subtitle2" fontWeight="bold">
+                  {selectedAgentData?.name} Response
+                </Typography>
+              </Box>
+              <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                {response}
+              </Typography>
+            </Paper>
+          </Fade>
+        )}
+      </Paper>
+
+      {/* Quick Stats */}
+      <Grid container spacing={3} sx={{ mt: 4 }}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
-              <Typography variant="h6" component="h3" gutterBottom>
-                Recent Players
+              <Typography color="text.secondary" gutterBottom>
+                Queries Today
               </Typography>
-              {loading ? (
-                <Typography>Loading...</Typography>
-              ) : players.length > 0 ? (
-                <Box>
-                  {players.map((player) => (
-                    <Box key={player.id} sx={{ mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="body1">{player.name}</Typography>
-                      <Chip label={player.team || 'No Team'} size="small" />
-                    </Box>
-                  ))}
-                  <Button 
-                    variant="text" 
-                    sx={{ mt: 2 }}
-                    onClick={() => navigate('/players')}
-                  >
-                    View All Players
-                  </Button>
-                </Box>
-              ) : (
-                <Typography color="text.secondary">No players found</Typography>
-              )}
+              <Typography variant="h4" fontWeight="bold">
+                12
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
-
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
-              <Typography variant="h6" component="h3" gutterBottom>
-                Recent Games
+              <Typography color="text.secondary" gutterBottom>
+                Active League
               </Typography>
-              {loading ? (
-                <Typography>Loading...</Typography>
-              ) : games.length > 0 ? (
-                <Box>
-                  {games.map((game) => (
-                    <Box key={game.id} sx={{ mb: 1 }}>
-                      <Typography variant="body1">
-                        {game.away_team} @ {game.home_team}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {new Date(game.date).toLocaleDateString()}
-                      </Typography>
-                    </Box>
-                  ))}
-                  <Button 
-                    variant="text" 
-                    sx={{ mt: 2 }}
-                    onClick={() => navigate('/games')}
-                  >
-                    View All Games
-                  </Button>
-                </Box>
-              ) : (
-                <Typography color="text.secondary">No games found</Typography>
-              )}
+              <Typography variant="h4" fontWeight="bold">
+                H2H 9-Cat
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardContent>
+              <Typography color="text.secondary" gutterBottom>
+                Saved Players
+              </Typography>
+              <Typography variant="h4" fontWeight="bold">
+                24
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardContent>
+              <Typography color="text.secondary" gutterBottom>
+                Days to Draft
+              </Typography>
+              <Typography variant="h4" fontWeight="bold">
+                45
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 

@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from .endpoints import auth, users, players, games, agents, milvus_test, neo4j_test, secure_agents
+from .endpoints import auth, users, players, games, agents, milvus_test, neo4j_test, secure_agents, preferences
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(preferences.router, prefix="/users", tags=["preferences"])
 api_router.include_router(players.router, prefix="/players", tags=["players"])
 api_router.include_router(games.router, prefix="/games", tags=["games"])
 api_router.include_router(agents.router, prefix="/agents", tags=["agents"])

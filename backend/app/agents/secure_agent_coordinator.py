@@ -57,7 +57,7 @@ class SecureAgentCoordinator(AgentCoordinator):
                 # Fallback to first matching agent
                 agent_name = next((name for name, agent in self.agents.items() 
                                   if getattr(agent, 'agent', agent).__class__.__name__ == base_agent.__class__.__name__), 
-                                 "chat")
+                                 "intelligence")  # Default to Intelligence agent instead of chat
                 selected_agent = self.agents[agent_name]
         
         logger.info(f"Routing message from user {user_id} to {agent_name} agent")

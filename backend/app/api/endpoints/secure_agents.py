@@ -31,7 +31,7 @@ def get_coordinator() -> SecureAgentCoordinator:
 class AgentQueryRequest(BaseModel):
     """Request model for agent queries"""
     message: str = Field(..., min_length=1, max_length=500, description="User's query message")
-    agent_type: Optional[str] = Field(None, description="Specific agent to use (draft_prep, trade_impact, analytics, prediction, chat)")
+    agent_type: Optional[str] = Field(None, description="Specific agent to use (intelligence, draft_prep, trade_impact)")
     context: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Additional context for the query")
 
 class AgentQueryResponse(BaseModel):

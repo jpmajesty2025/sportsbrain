@@ -147,6 +147,27 @@ class ApiService {
     return response.data;
   }
 
+  // User Preferences
+  async getUserPreferences(): Promise<any> {
+    const response = await this.client.get('/users/preferences');
+    return response.data;
+  }
+
+  async updateUserPreferences(preferences: any): Promise<any> {
+    const response = await this.client.put('/users/preferences', preferences);
+    return response.data;
+  }
+
+  async toggleTheme(): Promise<{ theme_mode: string }> {
+    const response = await this.client.patch('/users/preferences/theme');
+    return response.data;
+  }
+
+  async resetPreferences(): Promise<any> {
+    const response = await this.client.post('/users/preferences/reset');
+    return response.data;
+  }
+
   async getAgentMessages(sessionId: string, skip = 0, limit = 100): Promise<AgentMessage[]> {
     const response: AxiosResponse<AgentMessage[]> = await this.client.get(`/agents/sessions/${sessionId}/messages?skip=${skip}&limit=${limit}`);
     return response.data;
