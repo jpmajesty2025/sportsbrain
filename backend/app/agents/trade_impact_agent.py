@@ -187,16 +187,16 @@ class TradeImpactAgent(BaseAgent):
 📅 **Trade**: {trade['description']}
 📆 **Date**: {trade['date']}
 
-📊 **Statistical Impact**:
+[STATS] **Statistical Impact**:
 - Usage Rate: {impact['usage_rate_change']:+.1f}% 
 - Scoring: {impact['scoring_change']:+.1f} PPG
 - Assists: {impact['assists_change']:+.1f} APG
 - Rebounds: {impact['rebounds_change']:+.1f} RPG
 - Efficiency: {impact['efficiency_change']:+.1f}%
 
-🎯 **Fantasy Impact**: {impact['fantasy_impact'].replace('_', ' ').title()}
+[TARGET] **Fantasy Impact**: {impact['fantasy_impact'].replace('_', ' ').title()}
 
-💡 **Analysis**:
+[TIP] **Analysis**:
 """
             
             # Add contextual analysis
@@ -250,17 +250,17 @@ class TradeImpactAgent(BaseAgent):
             # Sort by overall benefit
             winners.sort(key=lambda x: x['usage_change'] + x['efficiency_change'], reverse=True)
             
-            response = "**🏆 Trade Winners - Players Who Benefit Most**\n\n"
+            response = "**[WINNER] Trade Winners - Players Who Benefit Most**\n\n"
             
             for i, winner in enumerate(winners[:5]):
                 response += f"**{i+1}. {winner['player']}**\n"
                 response += f"   📅 Trade: {winner['trade']}\n"
-                response += f"   📈 Changes: Usage {winner['usage_change']:+.1f}%, "
+                response += f"   [UP] Changes: Usage {winner['usage_change']:+.1f}%, "
                 response += f"Scoring {winner['scoring_change']:+.1f} PPG, "
                 response += f"Efficiency {winner['efficiency_change']:+.1f}%\n"
-                response += f"   🎯 Fantasy Impact: {winner['impact'].replace('_', ' ').title()}\n\n"
+                response += f"   [TARGET] Fantasy Impact: {winner['impact'].replace('_', ' ').title()}\n\n"
             
-            response += "\n💡 **Key Takeaway**: Target these players in trades or DFS when they face favorable matchups!"
+            response += "\n[TIP] **Key Takeaway**: Target these players in trades or DFS when they face favorable matchups!"
             
             return response
             
@@ -271,7 +271,7 @@ class TradeImpactAgent(BaseAgent):
     def _analyze_team_dynamics(self) -> str:
         """Analyze how trades affect team dynamics"""
         try:
-            response = "**🏀 Team Dynamics Post-Trade Analysis**\n\n"
+            response = "**[NBA] Team Dynamics Post-Trade Analysis**\n\n"
             
             for trade in self.trade_data.get('trades', [])[:3]:  # Top 3 recent trades
                 team_impact = trade.get('team_impact', {})

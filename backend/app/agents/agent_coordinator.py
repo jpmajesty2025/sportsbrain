@@ -2,8 +2,8 @@ from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
 from .intelligence_agent import IntelligenceAgent
 from .chat_agent import ChatAgent
-from .draft_prep_agent_async import DraftPrepAgent
-from .trade_impact_agent import TradeImpactAgent
+from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
+from .trade_impact_agent_tools import TradeImpactAgent  # Use enhanced version with tools
 
 class AgentCoordinator:
     def __init__(self) -> None:
@@ -39,13 +39,13 @@ class AgentCoordinator:
         # Keywords for draft prep agent
         draft_keywords = [
             "draft", "keep", "keeper", "round", "adp", "value", "pick",
-            "sleeper", "bust", "target", "avoid", "mock"
+            "bust", "target", "avoid", "mock", "punt", "punting", "build"
         ]
         
         # Keywords for trade impact agent
         trade_keywords = [
             "trade", "traded", "affect", "impact", "porzingis", "lillard",
-            "acquire", "deal", "swap", "move", "transaction"
+            "acquire", "deal", "swap", "move", "transaction", "usage"
         ]
         
         # Keywords for intelligence agent (analytics + prediction combined)
@@ -53,8 +53,8 @@ class AgentCoordinator:
             "analyze", "statistics", "stats", "performance", "compare",
             "metrics", "data", "trend", "breakdown", "predict", "forecast",
             "odds", "probability", "outcome", "future", "likely", "expect",
-            "projection", "sleeper", "breakout", "sophomore", "consistency",
-            "risk", "upside", "potential"
+            "projection", "breakout", "sophomore", "consistency",
+            "risk", "upside", "potential", "sleeper", "sleepers", "find"
         ]
         
         # Score each agent based on keyword presence
@@ -62,16 +62,22 @@ class AgentCoordinator:
         trade_score = sum(1 for keyword in trade_keywords if keyword in message_lower)
         intelligence_score = sum(1 for keyword in intelligence_keywords if keyword in message_lower)
         
+        # Special cases for common queries
+        if "find" in message_lower and "sleeper" in message_lower:
+            # "Find sleepers" should go to Intelligence
+            return self.agents["intelligence"]
+        elif "punt" in message_lower and any(word in message_lower for word in ["strategy", "build", "ft", "fg", "assist"]):
+            # Punt strategies should go to DraftPrep
+            return self.agents["draft_prep"]
+        
         # Select agent with highest score
         if trade_score > max(draft_score, intelligence_score):
             return self.agents["trade_impact"]
-        elif draft_score > intelligence_score:
+        elif draft_score >= intelligence_score and draft_score > 0:
             return self.agents["draft_prep"]
-        elif intelligence_score > 0:
-            return self.agents["intelligence"]
         else:
-            # Default to chat agent for general questions
-            return self.agents["chat"]
+            # Default to Intelligence agent for analysis/general questions
+            return self.agents["intelligence"]
     
     def get_agent_capabilities(self) -> Dict[str, Dict[str, Any]]:
         return {

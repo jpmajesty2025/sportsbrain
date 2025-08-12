@@ -160,7 +160,7 @@ class DraftPrepAgent(BaseAgent):
             if keeper_round <= target_round:
                 value_diff = target_round - keeper_round
                 if value_diff >= 2:
-                    recommendation = "STRONG YES - Excellent keeper value! 🔥"
+                    recommendation = "STRONG YES - Excellent keeper value! *"
                 elif value_diff >= 1:
                     recommendation = "YES - Good keeper value"
                 else:
@@ -171,15 +171,15 @@ class DraftPrepAgent(BaseAgent):
             analysis = f"""
 **Keeper Analysis for {player_name}**
 
-📊 **Current Stats**:
+[STATS] **Current Stats**:
 - ADP: {adp} (Round {int(adp/12) + 1})
 - Keeper Round Value: {keeper_round}
 - Your Target Round: {target_round}
 - 2023-24 Stats: {stats.get('ppg', 0)} PPG, {stats.get('rpg', 0)} RPG, {stats.get('apg', 0)} APG
 
-🎯 **Recommendation**: {recommendation}
+[TARGET] **Recommendation**: {recommendation}
 
-💡 **Analysis**: 
+[TIP] **Analysis**: 
 """
             if keeper_round <= target_round:
                 analysis += f"Keeping {player_name} in round {target_round} gives you a player typically drafted in round {int(adp/12) + 1}. "
@@ -246,16 +246,16 @@ class DraftPrepAgent(BaseAgent):
             # Sort by value score
             value_picks.sort(key=lambda x: x['value_score'], reverse=True)
             
-            response = "**🎯 Top Value Picks (Sleepers & Undervalued Players)**\n\n"
+            response = "**[TARGET] Top Value Picks (Sleepers & Undervalued Players)**\n\n"
             
             for i, pick in enumerate(value_picks[:10]):
                 response += f"**{i+1}. {pick['name']}** ({pick['position']})\n"
-                response += f"   📊 ADP: {pick['adp']:.1f} (Round {pick['round']})\n"
-                response += f"   📈 Stats: {pick['stats'].get('ppg', 0)} PPG, "
+                response += f"   [STATS] ADP: {pick['adp']:.1f} (Round {pick['round']})\n"
+                response += f"   [UP] Stats: {pick['stats'].get('ppg', 0)} PPG, "
                 response += f"{pick['stats'].get('rpg', 0)} RPG, {pick['stats'].get('apg', 0)} APG\n"
                 response += f"   💎 Value Score: {pick['value_score']:.2f}\n\n"
             
-            response += "\n💡 **Value Score** = Fantasy production relative to draft position. Higher scores indicate better value!"
+            response += "\n[TIP] **Value Score** = Fantasy production relative to draft position. Higher scores indicate better value!"
             
             vector_db.disconnect()
             return response
