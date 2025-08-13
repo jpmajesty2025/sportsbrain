@@ -14,7 +14,7 @@ from app.agents.base_agent import AgentResponse
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/v1/secure", tags=["secure_agents"])
+router = APIRouter(prefix="/secure", tags=["secure_agents"])
 
 # Initialize secure coordinator (singleton pattern)
 _coordinator = None
