@@ -15,7 +15,16 @@ def test_get_preferences_creates_default(
     response = client.get("/api/v1/users/preferences", headers=auth_headers)
     if response.status_code != 200:
         print(f"Response status: {response.status_code}")
-        print(f"Response body: {response.json()}")
+        error_body = response.json()
+        print(f"Response body: {error_body}")
+        if "detail" in error_body:
+            if isinstance(error_body["detail"], list):
+                for err in error_body["detail"]:
+                    print(f"  Error location: {err.get('loc', [])}")
+                    print(f"  Error message: {err.get('msg', '')}")
+                    print(f"  Error type: {err.get('type', '')}")
+            else:
+                print(f"  Error detail: {error_body['detail']}")
     assert response.status_code == 200
     
     data = response.json()
