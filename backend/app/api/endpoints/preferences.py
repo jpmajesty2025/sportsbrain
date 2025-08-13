@@ -4,7 +4,7 @@ User preferences API endpoints
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.db.database import get_db
 from app.models.models import User, UserPreferences
@@ -45,6 +45,8 @@ class UserPreferencesUpdate(BaseModel):
     show_advanced_stats: Optional[bool] = None
 
 class UserPreferencesResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     theme_mode: str
     sidebar_collapsed: bool
     preferred_agent: str
@@ -57,9 +59,6 @@ class UserPreferencesResponse(BaseModel):
     trade_alerts: bool
     default_stat_view: str
     show_advanced_stats: bool
-
-    class Config:
-        from_attributes = True
 
 @router.get("/preferences", response_model=UserPreferencesResponse)
 async def get_user_preferences(
@@ -78,21 +77,7 @@ async def get_user_preferences(
         db.commit()
         db.refresh(preferences)
     
-    # Ensure all fields have values before returning
-    return UserPreferencesResponse(
-        theme_mode=preferences.theme_mode or "light",
-        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
-        preferred_agent=preferences.preferred_agent or "intelligence",
-        agent_response_style=preferences.agent_response_style or "detailed",
-        league_type=preferences.league_type or "h2h_9cat",
-        team_size=preferences.team_size or 12,
-        favorite_team=preferences.favorite_team,
-        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
-        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
-        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
-        default_stat_view=preferences.default_stat_view or "season",
-        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
-    )
+    return preferences
 
 @router.put("/preferences", response_model=UserPreferencesResponse)
 async def update_user_preferences(
@@ -118,21 +103,7 @@ async def update_user_preferences(
     db.commit()
     db.refresh(preferences)
     
-    # Ensure all fields have values before returning
-    return UserPreferencesResponse(
-        theme_mode=preferences.theme_mode or "light",
-        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
-        preferred_agent=preferences.preferred_agent or "intelligence",
-        agent_response_style=preferences.agent_response_style or "detailed",
-        league_type=preferences.league_type or "h2h_9cat",
-        team_size=preferences.team_size or 12,
-        favorite_team=preferences.favorite_team,
-        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
-        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
-        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
-        default_stat_view=preferences.default_stat_view or "season",
-        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
-    )
+    return preferences
 
 @router.patch("/preferences/theme", response_model=dict)
 async def toggle_theme_mode(
@@ -190,18 +161,4 @@ async def reset_user_preferences(
     db.commit()
     db.refresh(preferences)
     
-    # Ensure all fields have values before returning
-    return UserPreferencesResponse(
-        theme_mode=preferences.theme_mode or "light",
-        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
-        preferred_agent=preferences.preferred_agent or "intelligence",
-        agent_response_style=preferences.agent_response_style or "detailed",
-        league_type=preferences.league_type or "h2h_9cat",
-        team_size=preferences.team_size or 12,
-        favorite_team=preferences.favorite_team,
-        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
-        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
-        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
-        default_stat_view=preferences.default_stat_view or "season",
-        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
-    )
+    return preferences
