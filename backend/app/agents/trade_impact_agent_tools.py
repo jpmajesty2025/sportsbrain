@@ -76,7 +76,9 @@ class TradeImpactAgent(BaseAgent):
                 tools=self.tools,
                 llm=llm,
                 agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-                verbose=True
+                verbose=True,
+                handle_parsing_errors=True,
+                max_iterations=3
             )
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:

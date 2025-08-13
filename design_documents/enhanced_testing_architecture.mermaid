@@ -1,0 +1,151 @@
+graph TB
+    subgraph "Enhanced Testing Pyramid"
+        subgraph "Unit Tests (70%)"
+            UT1[Agent Logic Tests<br/>- Fantasy recommendations<br/>- Trade analysis<br/>- Draft intelligence<br/>- Community sentiment analysis<br/>- Personalization algorithms]
+            UT2[Data Validation Tests<br/>- Schema validation<br/>- Quality checks<br/>- Consistency verification<br/>- Community data validation<br/>- User preference validation]
+            UT3[RAG System Tests<br/>- Vector retrieval<br/>- Graph traversal<br/>- Embedding accuracy<br/>- Community sentiment vectors<br/>- User preference embeddings]
+            UT4[Business Logic Tests<br/>- Fantasy scoring<br/>- Player comparisons<br/>- Historical accuracy<br/>- Social proof generation<br/>- Risk-adjusted recommendations]
+            UT5[Mobile Logic Tests<br/>- Response compression<br/>- Mobile-optimized payloads<br/>- Quick action generation<br/>- Progressive loading logic<br/>- Offline capability functions]
+        end
+        
+        subgraph "Integration Tests (25%)"
+            IT1[Multi-Agent Workflow<br/>- End-to-end query processing<br/>- Agent coordination<br/>- Error cascade handling<br/>- Community data integration<br/>- Personalization pipeline]
+            IT2[Data Pipeline Tests<br/>- API integration<br/>- Data flow validation<br/>- Cache consistency<br/>- Real-time sentiment updates<br/>- User behavior tracking]
+            IT3[Database Integration<br/>- Vector + Graph sync<br/>- Query performance<br/>- Data consistency<br/>- User data privacy<br/>- Community data freshness]
+            IT4[Personalization Tests<br/>- User preference learning<br/>- Decision accuracy tracking<br/>- Risk tolerance modeling<br/>- Recommendation adaptation<br/>- Cross-session consistency]
+            IT5[Mobile Integration Tests<br/>- Device-specific responses<br/>- Mobile API endpoints<br/>- Push notification delivery<br/>- Offline-online sync<br/>- Performance optimization]
+        end
+        
+        subgraph "E2E Tests (5%)"
+            E2E1[User Journey Tests<br/>- Complete workflows<br/>- Authentication flow<br/>- Response quality<br/>- Personalized experience<br/>- Community feature usage]
+            E2E2[Performance Tests<br/>- Load testing<br/>- Concurrent users<br/>- Response times<br/>- Mobile performance<br/>- Real-time data processing]
+            E2E3[Production Validation<br/>- Health checks<br/>- Deployment verification<br/>- Monitoring validation<br/>- User satisfaction tracking<br/>- Community data accuracy]
+            E2E4[Mobile User Experience<br/>- Cross-device functionality<br/>- Touch interface testing<br/>- Notification flow testing<br/>- Offline behavior validation<br/>- Progressive enhancement]
+        end
+    end
+    
+    subgraph "Enhanced Test Data Management"
+        MOCK[Mock Data<br/>- Standardized player profiles<br/>- Test scenarios<br/>- Known outcomes<br/>- Synthetic user profiles<br/>- Community sentiment samples]
+        HIST[Historical Data<br/>- 2022-24 seasons<br/>- Draft outcomes<br/>- Trade results<br/>- User decision history<br/>- Community trend data]
+        LIVE[Live Test Data<br/>- Current player stats<br/>- Recent games<br/>- Real API responses<br/>- Live community sentiment<br/>- Real user interactions]
+        PRIVACY[Privacy-Safe Data<br/>- Anonymized user data<br/>- Synthetic decision patterns<br/>- GDPR-compliant test sets<br/>- Masked personal information]
+    end
+    
+    subgraph "Enhanced CI/CD Pipeline"
+        GH[GitHub Actions<br/>- Automated test runs<br/>- Coverage reporting<br/>- Quality gates<br/>- Community data validation<br/>- Mobile testing automation]
+        
+        subgraph "Enhanced Test Stages"
+            UNIT[Unit Test Stage<br/>- Fast feedback<br/>- 80% coverage gate<br/>- Less than 2 min execution<br/>- Community logic validation<br/>- Personalization accuracy]
+            INTEG[Integration Stage<br/>- API validation<br/>- Database checks<br/>- Less than 5 min execution<br/>- Community API testing<br/>- User flow validation]
+            MOBILE[Mobile Test Stage<br/>- Device simulation<br/>- Performance validation<br/>- UI/UX testing<br/>- Notification testing<br/>- Offline capability checks]
+            DEPLOY[Deployment Stage<br/>- E2E validation<br/>- Performance check<br/>- Health verification<br/>- Community feature testing<br/>- User experience validation]
+        end
+    end
+    
+    subgraph "Enhanced Quality Metrics"
+        COV[Coverage Metrics<br/>- Line coverage over 80%<br/>- Branch coverage over 70%<br/>- Function coverage over 90%<br/>- Community feature coverage over 85%<br/>- Mobile pathway coverage over 75%]
+        PERF[Performance Metrics<br/>- Response time under 3s web<br/>- Mobile response under 1.5s<br/>- Throughput over 100 RPS<br/>- P95 latency under 5s<br/>- Community data freshness under 30s]
+        BIZ[Business Metrics<br/>- Prediction accuracy over 70%<br/>- User satisfaction over 4.0<br/>- Fantasy improvement over 10%<br/>- Community engagement over 60%<br/>- Mobile adoption over 70%]
+        PERSON[Personalization Metrics<br/>- Recommendation relevance over 75%<br/>- User preference accuracy over 80%<br/>- Decision improvement over 15%<br/>- Risk model accuracy over 70%<br/>- Learning curve efficiency]
+    end
+    
+    subgraph "Enhanced Fantasy-Specific Testing"
+        DRAFT[Draft Analysis Tests<br/>- Player rankings<br/>- Value assessment<br/>- Risk evaluation<br/>- Community consensus integration<br/>- Personalized draft strategy]
+        TRADE[Trade Evaluation Tests<br/>- Multi-player scenarios<br/>- Dynasty vs redraft<br/>- Outcome prediction<br/>- User risk tolerance<br/>- Social proof factors]
+        DAILY[Daily Lineup Tests<br/>- Start/sit decisions<br/>- Matchup analysis<br/>- Injury adjustments<br/>- Community sentiment impact<br/>- Mobile quick decisions]
+        OPPONENT[Opponent Analysis Tests<br/>- Defensive breakdowns<br/>- Historical matchups<br/>- Advantage identification<br/>- Pace impact analysis<br/>- Coaching tendency modeling]
+    end
+    
+    subgraph "Community Intelligence Testing"
+        SENTIMENT[Sentiment Analysis Tests<br/>- Reddit sentiment accuracy<br/>- Twitter trend detection<br/>- Expert consensus validation<br/>- Emotion classification<br/>- Bias detection algorithms]
+        SOCIAL[Social Proof Tests<br/>- Ownership percentage accuracy<br/>- Expert agreement calculation<br/>- Confidence score validation<br/>- Trending detection<br/>- Influence scoring]
+        COMMUNITY_API[Community API Tests<br/>- Rate limit handling<br/>- Data freshness validation<br/>- API reliability testing<br/>- Error handling scenarios<br/>- Fallback mechanism testing]
+    end
+    
+    subgraph "Personalization Testing Framework"
+        USER_MODEL[User Modeling Tests<br/>- Preference extraction<br/>- Risk tolerance classification<br/>- Decision pattern analysis<br/>- Learning rate optimization<br/>- Model adaptation testing]
+        RECOMMENDATION[Recommendation Tests<br/>- Accuracy validation<br/>- Diversity measurement<br/>- Novelty assessment<br/>- Cold start handling<br/>- Explanation quality]
+        PRIVACY_TEST[Privacy Testing<br/>- Data anonymization<br/>- User consent validation<br/>- GDPR compliance<br/>- Data retention policies<br/>- Cross-user isolation]
+    end
+    
+    subgraph "Mobile-Specific Testing"
+        DEVICE[Device Testing<br/>- iOS compatibility<br/>- Android compatibility<br/>- Cross-browser testing<br/>- Screen size adaptation<br/>- Touch interface validation]
+        NETWORK[Network Testing<br/>- Slow connection handling<br/>- Offline functionality<br/>- Data compression validation<br/>- Progressive loading<br/>- Bandwidth optimization]
+        UX_MOBILE[Mobile UX Testing<br/>- Swipe gesture testing<br/>- Quick action validation<br/>- Notification effectiveness<br/>- Loading state testing<br/>- Error message clarity]
+    end
+    
+    %% Enhanced Test Flow Connections
+    UT1 --> IT1
+    UT2 --> IT2
+    UT3 --> IT3
+    UT4 --> IT1
+    UT5 --> IT5
+    
+    IT1 --> E2E1
+    IT2 --> E2E2
+    IT3 --> E2E3
+    IT4 --> E2E1
+    IT5 --> E2E4
+    
+    %% Enhanced Data Flow
+    MOCK --> UT1
+    MOCK --> UT2
+    HIST --> UT4
+    LIVE --> IT2
+    PRIVACY --> IT4
+    
+    %% Enhanced CI/CD Flow
+    GH --> UNIT
+    UNIT --> INTEG
+    INTEG --> MOBILE
+    MOBILE --> DEPLOY
+    
+    %% Enhanced Metrics Collection
+    UNIT --> COV
+    INTEG --> PERF
+    E2E1 --> BIZ
+    IT4 --> PERSON
+    
+    %% Enhanced Fantasy Testing Integration
+    DRAFT --> UT4
+    TRADE --> IT1
+    DAILY --> E2E1
+    OPPONENT --> IT1
+    
+    %% Community Testing Integration
+    SENTIMENT --> UT1
+    SOCIAL --> IT1
+    COMMUNITY_API --> IT2
+    
+    %% Personalization Testing Integration
+    USER_MODEL --> IT4
+    RECOMMENDATION --> E2E1
+    PRIVACY_TEST --> IT4
+    
+    %% Mobile Testing Integration
+    DEVICE --> E2E4
+    NETWORK --> IT5
+    UX_MOBILE --> E2E4
+    
+    %% Styling
+    classDef unitStyle fill:#e8f5e8
+    classDef integStyle fill:#e1f5fe
+    classDef e2eStyle fill:#f3e5f5
+    classDef dataStyle fill:#fff3e0
+    classDef ciStyle fill:#ffebee
+    classDef metricStyle fill:#f1f8e9
+    classDef fantasyStyle fill:#fce4ec
+    classDef communityStyle fill:#e8eaf6
+    classDef personalStyle fill:#f8bbd9
+    classDef mobileStyle fill:#e0f2f1
+    
+    class UT1,UT2,UT3,UT4,UT5 unitStyle
+    class IT1,IT2,IT3,IT4,IT5 integStyle
+    class E2E1,E2E2,E2E3,E2E4 e2eStyle
+    class MOCK,HIST,LIVE,PRIVACY dataStyle
+    class GH,UNIT,INTEG,MOBILE,DEPLOY ciStyle
+    class COV,PERF,BIZ,PERSON metricStyle
+    class DRAFT,TRADE,DAILY,OPPONENT fantasyStyle
+    class SENTIMENT,SOCIAL,COMMUNITY_API communityStyle
+    class USER_MODEL,RECOMMENDATION,PRIVACY_TEST personalStyle
+    class DEVICE,NETWORK,UX_MOBILE mobileStyle

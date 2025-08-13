@@ -1,0 +1,109 @@
+graph TB
+    subgraph "Phase 1 Testing Architecture (2-Week Capstone)"
+        subgraph "Unit Tests (60% - Core Logic)"
+            UT1[Model Testing<br/>✅ User, Player, Game models<br/>✅ Basic relationships<br/>✅ Phase 1A enhancements<br/>✅ Data validation]
+            UT2[API Testing<br/>✅ Health check endpoints<br/>✅ Authentication flow<br/>✅ CRUD operations<br/>✅ Error handling]
+            UT3[Agent Testing<br/>✅ Coordinator patterns<br/>✅ Basic workflows<br/>✅ Error handling<br/>🔄 Single vertical slice]
+        end
+        
+        subgraph "Integration Tests (35% - Deployment Focus)"
+            IT1[Deployment Verification<br/>✅ All 4 services connected<br/>✅ Database health checks<br/>✅ Redis connectivity<br/>✅ API accessibility]
+            IT2[CI/CD Integration<br/>✅ GitHub Actions pipeline<br/>✅ Docker image builds<br/>✅ Railway deployment<br/>✅ Automated verification]
+            IT3[Performance Validation<br/>✅ Response time testing<br/>✅ CORS configuration<br/>✅ Service orchestration<br/>✅ Health monitoring]
+        end
+        
+        subgraph "E2E Tests (5% - Critical Paths)"
+            E2E1[Production Health<br/>✅ Service status validation<br/>✅ Real deployment testing<br/>✅ Manual verification tools<br/>🔄 Basic user journey]
+        end
+    end
+    
+    subgraph "Phase 1 Test Data (Realistic Scope)"
+        BASIC[Basic Test Data<br/>✅ Sample users & players<br/>✅ Authentication fixtures<br/>✅ Health check scenarios<br/>✅ Mock agent responses]
+        DEPLOY[Deployment Data<br/>✅ Service connectivity tests<br/>✅ Performance benchmarks<br/>✅ Error scenarios<br/>✅ Configuration validation]
+    end
+    
+    subgraph "Phase 1 CI/CD Pipeline (GitHub Actions)"
+        BUILD[Build Stage<br/>✅ Backend tests (pytest)<br/>✅ Frontend tests (npm)<br/>✅ Docker image builds<br/>✅ Coverage reporting]
+        DEPLOY_STAGE[Deploy Stage<br/>✅ Push to Docker Hub<br/>✅ Railway deployment<br/>✅ Database migrations<br/>✅ Service verification]
+        VERIFY[Verification Stage<br/>✅ Health check validation<br/>✅ Response time testing<br/>✅ Service connectivity<br/>✅ Error handling]
+    end
+    
+    subgraph "Phase 1 Quality Gates"
+        COV[Coverage Gate<br/>✅ >70% test coverage<br/>✅ Core business logic<br/>✅ API endpoints<br/>✅ Model validation]
+        PERF[Performance Gate<br/>✅ <3s response time<br/>✅ Service health checks<br/>✅ Database connectivity<br/>✅ Error response times]
+        DEPLOY_HEALTH[Deployment Gate<br/>✅ All services running<br/>✅ Health endpoints responding<br/>✅ Database migrations applied<br/>✅ Manual verification passed]
+    end
+    
+    subgraph "Phase 1 Testing Tools (Current Stack)"
+        PYTEST[pytest + extensions<br/>✅ pytest==7.4.3<br/>✅ pytest-asyncio<br/>✅ pytest-cov<br/>✅ pytest-mock]
+        HTTP[HTTP Testing<br/>✅ httpx for FastAPI<br/>✅ requests for deployment<br/>✅ aiohttp for async<br/>✅ TestClient integration]
+        MANUAL[Manual Testing<br/>✅ test_deployment_manual.py<br/>✅ Interactive verification<br/>✅ Health check scripts<br/>✅ Performance validation]
+    end
+    
+    subgraph "Phase 1 Vertical Slice Testing (Choose One)"
+        COMMUNITY[Community Intelligence Slice<br/>🔄 Basic sentiment models<br/>🔄 Reddit/Twitter stubs<br/>🔄 Expert consensus mock<br/>🔄 Social proof generation]
+        PERSONAL[Personalization Slice<br/>🔄 User preference models<br/>🔄 Decision tracking<br/>🔄 Basic recommendation<br/>🔄 Learning simulation]
+    end
+    
+    subgraph "Future Phase 2+ Testing (Not Phase 1)"
+        FUTURE1[Advanced Features<br/>❌ Complex sentiment analysis<br/>❌ Real API integrations<br/>❌ Mobile optimizations<br/>❌ Advanced personalization]
+        FUTURE2[Enterprise Testing<br/>❌ Load testing<br/>❌ Security testing<br/>❌ A/B testing framework<br/>❌ Advanced monitoring]
+    end
+    
+    %% Phase 1 Test Flow
+    UT1 --> IT1
+    UT2 --> IT1
+    UT3 --> IT2
+    
+    IT1 --> E2E1
+    IT2 --> E2E1
+    IT3 --> E2E1
+    
+    %% Data Flow
+    BASIC --> UT1
+    BASIC --> UT2
+    DEPLOY --> IT1
+    
+    %% CI/CD Flow
+    BUILD --> DEPLOY_STAGE
+    DEPLOY_STAGE --> VERIFY
+    
+    %% Quality Gates
+    UT1 --> COV
+    IT3 --> PERF
+    VERIFY --> DEPLOY_HEALTH
+    
+    %% Tool Integration
+    PYTEST --> UT1
+    PYTEST --> UT2
+    HTTP --> IT1
+    MANUAL --> E2E1
+    
+    %% Vertical Slice Integration (Choose One)
+    COMMUNITY --> UT3
+    PERSONAL --> UT3
+    
+    %% Future Evolution (Dotted lines)
+    E2E1 -.-> FUTURE1
+    IT2 -.-> FUTURE2
+    
+    %% Styling for Phase 1 Focus
+    classDef phase1Style fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
+    classDef implementedStyle fill:#c8e6c9,stroke:#4caf50,stroke-width:2px
+    classDef plannedStyle fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef futureStyle fill:#ffebee,stroke:#f44336,stroke-width:1px,stroke-dasharray: 5 5
+    
+    class UT1,UT2,UT3,IT1,IT2,IT3,E2E1 phase1Style
+    class BUILD,DEPLOY_STAGE,VERIFY,COV,PERF,DEPLOY_HEALTH implementedStyle
+    class COMMUNITY,PERSONAL plannedStyle
+    class FUTURE1,FUTURE2 futureStyle
+    
+    %% Labels
+    class BASIC,DEPLOY,PYTEST,HTTP,MANUAL implementedStyle
+
+%% Phase 1 Success Criteria
+subgraph "Phase 1 Success Metrics"
+    SUCCESS[✅ All 4 services deployed<br/>✅ CI/CD pipeline working<br/>✅ >70% test coverage<br/>✅ <3s response time<br/>✅ Health monitoring active<br/>🔄 One vertical slice complete]
+end
+
+SUCCESS --> E2E1

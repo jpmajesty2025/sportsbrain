@@ -1,0 +1,165 @@
+graph LR
+    subgraph "Enhanced Data Sources"
+        NBA[NBA Stats API<br/>- Player Stats<br/>- Game Data<br/>- Team Info<br/>- Defensive Ratings]
+        ESPN[ESPN API<br/>- News<br/>- Injuries<br/>- Schedules<br/>- Expert Analysis]
+        BBR[Basketball Ref<br/>- Historical Data<br/>- Advanced Metrics<br/>- Cross-era Context]
+        NEWS[Sports News<br/>- Articles<br/>- Analysis<br/>- Reports]
+        
+        %% NEW: Community Data Sources
+        REDDIT[Reddit API<br/>- r/fantasybball<br/>- Community Sentiment<br/>- Discussion Threads<br/>- User Opinions]
+        TWITTER[Twitter API<br/>- Expert Tweets<br/>- Breaking News<br/>- Trend Analysis<br/>- Real-time Buzz]
+        EXPERT[Expert Consensus<br/>- FantasyPros<br/>- Start/Sit Data<br/>- Ownership %<br/>- Confidence Levels]
+    end
+    
+    subgraph "Enhanced Ingestion & Processing"
+        AGENT[Data Ingestion Agent<br/>- API Orchestration<br/>- Rate Limit Management<br/>- Error Handling<br/>- Priority Queuing]
+        
+        ETL[ETL Pipeline<br/>- Data Cleaning<br/>- Validation<br/>- Standardization<br/>- Deduplication<br/>- Mobile Optimization]
+        
+        EMBED[Vector Processing<br/>- Text Embeddings<br/>- Semantic Encoding<br/>- Similarity Indexing<br/>- Community Sentiment Vectors]
+        
+        GRAPH[Graph Construction<br/>- Relationship Mapping<br/>- Entity Linking<br/>- Context Building<br/>- User Preference Graphs]
+        
+        %% NEW: Specialized Processing
+        SENTIMENT[Sentiment Analysis<br/>- NLP Processing<br/>- Emotion Detection<br/>- Confidence Scoring<br/>- Trend Analysis]
+        
+        PERSONALIZE[Personalization Engine<br/>- User Pattern Analysis<br/>- Decision Tracking<br/>- Preference Learning<br/>- Risk Profiling]
+        
+        MOBILE_OPT[Mobile Optimizer<br/>- Payload Compression<br/>- Response Formatting<br/>- Cache Preparation<br/>- Quick-Access Indexing]
+    end
+    
+    subgraph "Enhanced Quality Assurance Pipeline"
+        VALIDATE[Schema Validation<br/>- Pydantic Models<br/>- Range Validation<br/>- Business Rules<br/>- Type Checking<br/>- Community Data Validation]
+        
+        QUALITY[Quality Scoring<br/>- Completeness Analysis<br/>- Consistency Checks<br/>- Timeliness Validation<br/>- Cross-source Verification<br/>- Sentiment Accuracy]
+        
+        ANOMALY[Anomaly Detection<br/>- Statistical Outliers<br/>- Performance Extremes<br/>- Data Drift Detection<br/>- Sentiment Anomalies<br/>- User Behavior Outliers]
+        
+        MONITOR[Pipeline Monitoring<br/>- Health Metrics<br/>- Error Tracking<br/>- Alert Generation<br/>- Dashboard Updates<br/>- Mobile Performance]
+    end
+    
+    subgraph "Enhanced Storage Systems"
+        VECTOR[(Milvus Vector Store<br/>- Embedded Content<br/>- Similarity Search<br/>- Semantic Retrieval<br/>- Community Sentiment Vectors<br/>- Mobile-Optimized Indexes)]
+        
+        GRAPH_DB[(Neo4j Graph DB<br/>- Entity Relationships<br/>- Path Queries<br/>- Context Traversal<br/>- User Preference Networks<br/>- Matchup Histories)]
+        
+        CACHE[(Redis Cache<br/>- Hot Data<br/>- Query Results<br/>- Session State<br/>- Mobile Payloads<br/>- Real-time Updates)]
+        
+        %% NEW: User Data Storage
+        USER_DB[(PostgreSQL<br/>- User Profiles<br/>- Decision History<br/>- Subscription Data<br/>- Analytics Tracking<br/>- Personalization Models)]
+    end
+    
+    subgraph "Enhanced Query Processing"
+        QUERY[User Query<br/>Natural Language Input<br/>+ User Context<br/>+ Device Type]
+        
+        ROUTER[Enhanced Query Router<br/>- Intent Analysis<br/>- Strategy Selection<br/>- Execution Planning<br/>- User Personalization<br/>- Mobile Optimization]
+        
+        VSEARCH[Vector Search<br/>- Semantic Similarity<br/>- Content Retrieval<br/>- Ranking<br/>- Community Context<br/>- Mobile-First Results]
+        
+        GQUERY[Graph Traversal<br/>- Relationship Queries<br/>- Path Finding<br/>- Context Expansion<br/>- User Preference Integration<br/>- Matchup Analysis]
+        
+        %% NEW: Specialized Query Processing
+        COMMUNITY_Q[Community Query<br/>- Sentiment Retrieval<br/>- Expert Consensus<br/>- Ownership Trends<br/>- Social Proof Generation]
+        
+        PERSONAL_Q[Personalization Query<br/>- User History Analysis<br/>- Preference Application<br/>- Risk Adjustment<br/>- Custom Weighting]
+        
+        MOBILE_Q[Mobile Query Optimizer<br/>- Response Compression<br/>- Essential Info First<br/>- Progressive Loading<br/>- Quick Actions]
+        
+        FUSION[Enhanced Result Fusion<br/>- Multi-source Integration<br/>- Relevance Scoring<br/>- Deduplication<br/>- Community Integration<br/>- Personalization Blend<br/>- Mobile Formatting]
+        
+        RESPONSE[Generated Response<br/>- Natural Language<br/>- Supporting Evidence<br/>- Confidence Scores<br/>- Community Insights<br/>- Personalized Recommendations<br/>- Mobile-Optimized Format]
+    end
+    
+    subgraph "Real-time Processing Layer"
+        STREAM[Real-time Stream<br/>- Live Game Updates<br/>- Breaking News<br/>- Injury Alerts<br/>- Community Buzz<br/>- Mobile Notifications]
+        
+        NOTIF[Notification Engine<br/>- Alert Generation<br/>- User Targeting<br/>- Mobile Push<br/>- Preference Filtering]
+    end
+    
+    %% Enhanced Data Ingestion Flow
+    NBA --> AGENT
+    ESPN --> AGENT
+    BBR --> AGENT
+    NEWS --> AGENT
+    REDDIT --> AGENT
+    TWITTER --> AGENT
+    EXPERT --> AGENT
+    
+    AGENT --> ETL
+    ETL --> VALIDATE
+    VALIDATE --> EMBED
+    VALIDATE --> GRAPH
+    VALIDATE --> SENTIMENT
+    
+    EMBED --> VECTOR
+    GRAPH --> GRAPH_DB
+    SENTIMENT --> VECTOR
+    SENTIMENT --> USER_DB
+    AGENT --> CACHE
+    
+    %% NEW: Personalization Flow
+    PERSONALIZE --> USER_DB
+    PERSONALIZE --> GRAPH_DB
+    MOBILE_OPT --> CACHE
+    MOBILE_OPT --> VECTOR
+    
+    %% Enhanced Quality Pipeline Flow
+    VALIDATE --> QUALITY
+    QUALITY --> ANOMALY
+    ANOMALY --> MONITOR
+    EMBED --> MONITOR
+    GRAPH --> MONITOR
+    SENTIMENT --> MONITOR
+    PERSONALIZE --> MONITOR
+    
+    %% Enhanced Query Processing Flow
+    QUERY --> ROUTER
+    ROUTER --> VSEARCH
+    ROUTER --> GQUERY
+    ROUTER --> COMMUNITY_Q
+    ROUTER --> PERSONAL_Q
+    ROUTER --> MOBILE_Q
+    
+    VSEARCH --> VECTOR
+    GQUERY --> GRAPH_DB
+    COMMUNITY_Q --> VECTOR
+    COMMUNITY_Q --> CACHE
+    PERSONAL_Q --> USER_DB
+    PERSONAL_Q --> GRAPH_DB
+    MOBILE_Q --> CACHE
+    ROUTER --> CACHE
+    
+    VSEARCH --> FUSION
+    GQUERY --> FUSION
+    COMMUNITY_Q --> FUSION
+    PERSONAL_Q --> FUSION
+    MOBILE_Q --> FUSION
+    CACHE --> FUSION
+    
+    FUSION --> RESPONSE
+    
+    %% NEW: Real-time Processing Flow
+    STREAM --> CACHE
+    STREAM --> NOTIF
+    STREAM --> MOBILE_Q
+    NOTIF --> RESPONSE
+    
+    %% Styling
+    classDef sourceStyle fill:#ffebee
+    classDef processStyle fill:#e8f5e8
+    classDef qualityStyle fill:#fff3e0
+    classDef storageStyle fill:#e1f5fe
+    classDef queryStyle fill:#f3e5f5
+    classDef realtimeStyle fill:#fce4ec
+    classDef newStyle fill:#e8eaf6
+    
+    class NBA,ESPN,BBR,NEWS sourceStyle
+    class REDDIT,TWITTER,EXPERT newStyle
+    class AGENT,ETL,EMBED,GRAPH processStyle
+    class SENTIMENT,PERSONALIZE,MOBILE_OPT newStyle
+    class VALIDATE,QUALITY,ANOMALY,MONITOR qualityStyle
+    class VECTOR,GRAPH_DB,CACHE storageStyle
+    class USER_DB newStyle
+    class QUERY,ROUTER,VSEARCH,GQUERY,FUSION,RESPONSE queryStyle
+    class COMMUNITY_Q,PERSONAL_Q,MOBILE_Q newStyle
+    class STREAM,NOTIF realtimeStyle

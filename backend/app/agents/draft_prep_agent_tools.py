@@ -13,6 +13,27 @@ from app.core.config import settings
 from app.db.database import get_db
 import json
 import re
+import unicodedata
+
+def clean_unicode(text: str) -> str:
+    """Remove or replace problematic Unicode characters"""
+    if not text:
+        return text
+    # Replace common problematic characters
+    replacements = {
+        'ć': 'c', 'Ć': 'C', 'č': 'c', 'Č': 'C',
+        'ž': 'z', 'Ž': 'Z', 'š': 's', 'Š': 'S',
+        'ñ': 'n', 'Ñ': 'N', 'ü': 'u', 'Ü': 'U',
+        'ö': 'o', 'Ö': 'O', 'ä': 'a', 'Ä': 'A',
+        'é': 'e', 'É': 'E', 'è': 'e', 'È': 'E',
+        'ê': 'e', 'Ê': 'E', 'à': 'a', 'À': 'A',
+        'á': 'a', 'Á': 'A', 'í': 'i', 'Í': 'I',
+        'ó': 'o', 'Ó': 'O', 'ú': 'u', 'Ú': 'U'
+    }
+    for char, replacement in replacements.items():
+        text = text.replace(char, replacement)
+    # Remove any remaining non-ASCII characters
+    return ''.join(char if ord(char) < 128 else '' for char in text)
 
 class DraftPrepAgent(BaseAgent):
     """
@@ -75,7 +96,9 @@ class DraftPrepAgent(BaseAgent):
                 tools=self.tools,
                 llm=llm,
                 agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-                verbose=True
+                verbose=True,
+                handle_parsing_errors=True,
+                max_iterations=3
             )
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
@@ -186,7 +209,7 @@ class DraftPrepAgent(BaseAgent):
                     recommendation = "POOR VALUE - Do not keep"
                 
                 response = f"""
-**Keeper Analysis for {player.name}**
+**Keeper Analysis for {clean_unicode(player.name)}**
 
 [STATS] **Player Info**:
 - Position: {player.position} | Team: {player.team}
@@ -206,7 +229,7 @@ class DraftPrepAgent(BaseAgent):
 """
             else:
                 response = f"""
-**{player.name} Keeper Info**:
+**{clean_unicode(player.name)} Keeper Info**:
 - ADP: #{player.adp_rank} (Round {player.adp_round})
 - Recommended Keeper Round: {player.keeper_round} or later
 - Projected: {player.projected_fantasy_ppg:.1f} fantasy points/game
@@ -286,7 +309,8 @@ class DraftPrepAgent(BaseAgent):
             response = f"[LIST] **{title} (2024-25 ADP)**:\n\n"
             
             for p in players:
-                response += f"{p.adp_rank}. {p.name} ({p.position}, {p.team}) - Round {p.adp_round}\n"
+                name = clean_unicode(p.name)
+                response += f"{p.adp_rank}. {name} ({p.position}, {p.team}) - Round {p.adp_round}\n"
             
             return response
             
@@ -346,18 +370,21 @@ class DraftPrepAgent(BaseAgent):
             if early:
                 response += "**Early Rounds (1-3)**:\n"
                 for p in early:
-                    response += f"- {p.name} ({p.position}) - Round {p.adp_round}\n"
+                    name = clean_unicode(p.name)
+                    response += f"- {name} ({p.position}) - Round {p.adp_round}\n"
                     response += f"  Stats: {p.projected_ppg:.1f} PPG, {p.projected_rpg:.1f} RPG, {p.projected_apg:.1f} APG\n"
             
             if mid:
                 response += "\n**Mid Rounds (4-7)**:\n"
                 for p in mid:
-                    response += f"- {p.name} ({p.position}) - Round {p.adp_round}\n"
+                    name = clean_unicode(p.name)
+                    response += f"- {name} ({p.position}) - Round {p.adp_round}\n"
             
             if late:
                 response += "\n**Late Round Values (8+)**:\n"
                 for p in late:
-                    response += f"- {p.name} ({p.position}) - Round {p.adp_round}\n"
+                    name = clean_unicode(p.name)
+                    response += f"- {name} ({p.position}) - Round {p.adp_round}\n"
             
             response += f"\n[TIP] **Strategy Tips**:\n"
             if punt_cat == "FT%":
@@ -428,7 +455,8 @@ class DraftPrepAgent(BaseAgent):
                 if p.punt_ast_fit: punts.append("AST")
                 if p.punt_3pm_fit: punts.append("3PM")
                 
-                response += f"**{p.name}** ({p.position}, {p.team})\n"
+                name = clean_unicode(p.name)
+                response += f"**{name}** ({p.position}, {p.team})\n"
                 response += f"- ADP: #{p.adp_rank} (Round {p.adp_round})\n"
                 response += f"- Fantasy PPG: {p.projected_fantasy_ppg:.1f}\n"
                 response += f"- Fits: Punt {', '.join(punts)}\n\n"
@@ -482,7 +510,8 @@ class DraftPrepAgent(BaseAgent):
             response = f"[DICE] **Mock Draft - Best Available (Picks {pick_start}-{pick_end})**:\n\n"
             
             for p in players[:8]:
-                response += f"**Pick {p.adp_rank}: {p.name}** ({p.position}, {p.team})\n"
+                name = clean_unicode(p.name)
+                response += f"**Pick {p.adp_rank}: {name}** ({p.position}, {p.team})\n"
                 response += f"- Projected: {p.projected_fantasy_ppg:.1f} FP/game\n"
                 response += f"- Consistency: {p.consistency_rating:.2f}\n\n"
             

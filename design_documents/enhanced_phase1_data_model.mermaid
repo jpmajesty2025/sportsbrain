@@ -1,0 +1,262 @@
+erDiagram
+    PLAYER {
+        int player_id PK
+        string name
+        string position
+        string team_current
+        date birth_date
+        int height_inches
+        int weight_lbs
+        date career_start
+        date career_end
+        string college
+        float injury_risk_score
+        string playing_style
+    }
+    
+    TEAM {
+        int team_id PK
+        string name
+        string city
+        string abbreviation
+        string conference
+        string division
+        int founded_year
+        string head_coach
+        float pace_factor
+        float offensive_style_rating
+        float defensive_style_rating
+    }
+    
+    GAME {
+        int game_id PK
+        date game_date
+        int home_team_id FK
+        int away_team_id FK
+        int home_score
+        int away_score
+        string season_type
+        int season_year
+        boolean overtime
+        float pace
+        string game_importance
+    }
+    
+    GAME_LINEUP {
+        int lineup_id PK
+        int game_id FK
+        int player_id FK
+        boolean is_starter
+        int lineup_position
+        string position_played
+        int minutes_played
+        float usage_rate
+    }
+    
+    PLAYER_STATS {
+        int stat_id PK
+        int game_id FK
+        int player_id FK
+        int minutes_played
+        int points
+        int rebounds
+        int assists
+        int steals
+        int blocks
+        int turnovers
+        int field_goals_made
+        int field_goals_attempted
+        int three_pointers_made
+        int three_pointers_attempted
+        int free_throws_made
+        int free_throws_attempted
+        float plus_minus
+        float usage_rate
+        float game_score
+        float fantasy_points
+    }
+    
+    TEAM_STATS {
+        int team_stat_id PK
+        int game_id FK
+        int team_id FK
+        int points
+        int rebounds
+        int assists
+        float field_goal_pct
+        float pace
+        float offensive_rating
+        float defensive_rating
+        float three_pt_allowed_pct
+        float paint_points_allowed
+    }
+    
+    PLAYER_TEAM_HISTORY {
+        int history_id PK
+        int player_id FK
+        int team_id FK
+        date start_date
+        date end_date
+        string primary_position
+        boolean was_starter
+        float avg_minutes
+        string role_description
+    }
+    
+    NEWS_ARTICLE {
+        int article_id PK
+        string title
+        string content
+        string source
+        date publish_date
+        string url
+        string sentiment
+        float relevance_score
+        int player_id FK
+        int team_id FK
+    }
+    
+    INJURY_REPORT {
+        int injury_id PK
+        int player_id FK
+        string injury_type
+        date injury_date
+        string severity
+        string status
+        date expected_return
+        float impact_rating
+        string affected_stats
+    }
+    
+    SEASON {
+        int season_id PK
+        int year
+        string type
+        date start_date
+        date end_date
+    }
+    
+    %% NEW: Community Intelligence Entities
+    COMMUNITY_SENTIMENT {
+        int sentiment_id PK
+        int player_id FK
+        date sentiment_date
+        string source_platform
+        float sentiment_score
+        int mention_count
+        float confidence_level
+        string trending_direction
+    }
+    
+    EXPERT_CONSENSUS {
+        int consensus_id PK
+        int player_id FK
+        int game_id FK
+        date analysis_date
+        float start_percentage
+        float ownership_percentage
+        string consensus_rating
+        string expert_source
+    }
+    
+    %% NEW: User & Personalization Entities
+    USER {
+        int user_id PK
+        string username
+        string email
+        date created_at
+        string subscription_tier
+        string risk_tolerance
+        string preferred_analysis_depth
+        boolean mobile_user
+    }
+    
+    USER_PREFERENCES {
+        int preference_id PK
+        int user_id FK
+        string preference_type
+        string preference_value
+        float weight
+        date last_updated
+    }
+    
+    USER_DECISIONS {
+        int decision_id PK
+        int user_id FK
+        int player_id FK
+        string decision_type
+        string decision_value
+        date decision_date
+        string outcome
+        float accuracy_score
+    }
+    
+    USER_QUERIES {
+        int query_id PK
+        int user_id FK
+        string query_text
+        string query_category
+        timestamp query_time
+        float response_time
+        float satisfaction_score
+        string device_type
+    }
+    
+    %% NEW: Enhanced Matchup Analysis
+    OPPONENT_MATCHUP {
+        int matchup_id PK
+        int player_id FK
+        int opponent_team_id FK
+        string opponent_position
+        float historical_performance
+        float defensive_rating_vs_position
+        string key_advantages
+        string key_concerns
+    }
+    
+    DEFENSIVE_PROFILE {
+        int profile_id PK
+        int team_id FK
+        string position_defended
+        float points_allowed_per_game
+        float field_goal_pct_allowed
+        float three_pt_pct_allowed
+        string defensive_style
+        string key_weaknesses
+    }
+    
+    %% Core MVP Relationships (Enhanced)
+    PLAYER ||--o{ PLAYER_STATS : plays
+    PLAYER ||--o{ GAME_LINEUP : "appears in"
+    GAME ||--o{ PLAYER_STATS : contains
+    GAME ||--o{ GAME_LINEUP : "has lineup"
+    GAME ||--o{ TEAM_STATS : contains
+    TEAM ||--o{ TEAM_STATS : performs
+    
+    %% Historical Context (Essential for Cross-Era Comparisons)
+    PLAYER ||--o{ PLAYER_TEAM_HISTORY : "plays for"
+    TEAM ||--o{ PLAYER_TEAM_HISTORY : employs
+    
+    %% Content & Context (Critical for RAG)
+    PLAYER ||--o{ NEWS_ARTICLE : mentions
+    TEAM ||--o{ NEWS_ARTICLE : mentions
+    PLAYER ||--o{ INJURY_REPORT : suffers
+    
+    %% NEW: Community Intelligence Relationships
+    PLAYER ||--o{ COMMUNITY_SENTIMENT : "has sentiment"
+    PLAYER ||--o{ EXPERT_CONSENSUS : "has consensus"
+    GAME ||--o{ EXPERT_CONSENSUS : "analyzed for"
+    
+    %% NEW: User & Personalization Relationships
+    USER ||--o{ USER_PREFERENCES : "has preferences"
+    USER ||--o{ USER_DECISIONS : "makes decisions"
+    USER ||--o{ USER_QUERIES : "submits queries"
+    PLAYER ||--o{ USER_DECISIONS : "subject of"
+    
+    %% NEW: Enhanced Matchup Relationships
+    PLAYER ||--o{ OPPONENT_MATCHUP : "analyzed against"
+    TEAM ||--o{ OPPONENT_MATCHUP : "opponent in"
+    TEAM ||--o{ DEFENSIVE_PROFILE : "has profile"
+    
+    %% Temporal Structure
+    SEASON ||--o{ GAME : includes
