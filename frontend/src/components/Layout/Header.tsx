@@ -9,12 +9,14 @@ import {
   MenuItem,
   Avatar,
 } from '@mui/material';
-import { AccountCircle, Sports } from '@mui/icons-material';
+import { AccountCircle, Sports, Brightness4, Brightness7 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -49,6 +51,15 @@ const Header: React.FC = () => {
         >
           SportsBrain
         </Typography>
+
+        <IconButton 
+          sx={{ ml: 1 }} 
+          onClick={toggleTheme} 
+          color="inherit"
+          aria-label="toggle theme"
+        >
+          {isDarkMode ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
 
         {isAuthenticated ? (
           <div>
