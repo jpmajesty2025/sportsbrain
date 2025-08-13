@@ -92,6 +92,16 @@ class DraftPrepAgent(BaseAgent):
     def _initialize_agent(self):
         """Initialize the LangChain agent with tools"""
         if settings.OPENAI_API_KEY:
+            from langchain.prompts import PromptTemplate
+            
+            # Custom prompt to ensure agent returns tool output
+            prefix = """You are a fantasy basketball draft expert. Answer the following questions as best you can using the available tools.
+
+When you use a tool and get results, your Final Answer should BE those results, not a description of what tool you used.
+For example, if someone asks for a punt strategy and you use build_punt_strategy, return the actual player recommendations and tips, not "I used the build_punt_strategy function".
+
+You have access to the following tools:"""
+            
             llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.1)
             self.agent_executor = initialize_agent(
                 tools=self.tools,
@@ -99,7 +109,10 @@ class DraftPrepAgent(BaseAgent):
                 agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
                 verbose=True,
                 handle_parsing_errors=True,
-                max_iterations=3
+                max_iterations=5,
+                agent_kwargs={
+                    "prefix": prefix
+                }
             )
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
@@ -112,13 +125,49 @@ class DraftPrepAgent(BaseAgent):
         
         try:
             # Add context about draft preparation
-            enhanced_message = f"[Context: Fantasy basketball draft preparation for 2024-25 season]\n{message}"
+            enhanced_message = f"""[Context: Fantasy basketball draft preparation for 2024-25 season]
+{message}
+
+IMPORTANT: Your final answer should be the actual results from the tool, not a description of what tool you used. 
+Present the player recommendations, statistics, and strategy tips directly to the user."""
             
             # Add timeout to prevent hanging
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
                 timeout=30.0  # 30 second timeout
             )
+            
+            # Check if the result is just describing tool usage
+            if "build_punt_strategy function" in result or "use the" in result.lower():
+                # Agent returned meta description - try to get actual tool output
+                # Call the tool directly based on the query
+                if "punt" in message.lower():
+                    # Extract what category to punt
+                    tool_result = self._build_punt_strategy(message)
+                    return AgentResponse(
+                        content=tool_result,
+                        metadata={
+                            "context": context,
+                            "agent_type": "draft_prep",
+                            "capabilities": ["keeper_analysis", "adp_value", "punt_strategies", "mock_drafts"],
+                            "note": "Direct tool call due to agent meta-response"
+                        },
+                        tools_used=["build_punt_strategy"],
+                        confidence=0.85
+                    )
+                elif "keeper" in message.lower():
+                    tool_result = self._calculate_keeper_value(message)
+                    return AgentResponse(
+                        content=tool_result,
+                        metadata={
+                            "context": context,
+                            "agent_type": "draft_prep",
+                            "capabilities": ["keeper_analysis", "adp_value", "punt_strategies", "mock_drafts"],
+                            "note": "Direct tool call due to agent meta-response"
+                        },
+                        tools_used=["calculate_keeper_value"],
+                        confidence=0.85
+                    )
             
             return AgentResponse(
                 content=result,
