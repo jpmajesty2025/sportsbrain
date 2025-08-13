@@ -14,6 +14,7 @@ from app.db.database import get_db
 import json
 import re
 import unicodedata
+import asyncio
 
 def clean_unicode(text: str) -> str:
     """Remove or replace problematic Unicode characters"""
@@ -113,7 +114,11 @@ class DraftPrepAgent(BaseAgent):
             # Add context about draft preparation
             enhanced_message = f"[Context: Fantasy basketball draft preparation for 2024-25 season]\n{message}"
             
-            result = await self.agent_executor.arun(input=enhanced_message)
+            # Add timeout to prevent hanging
+            result = await asyncio.wait_for(
+                self.agent_executor.arun(input=enhanced_message),
+                timeout=30.0  # 30 second timeout
+            )
             
             return AgentResponse(
                 content=result,
@@ -125,10 +130,26 @@ class DraftPrepAgent(BaseAgent):
                 tools_used=[tool.name for tool in self.tools],
                 confidence=0.9
             )
-        except Exception as e:
+        except asyncio.TimeoutError:
+            # Try to provide a helpful response even if we timeout
             return AgentResponse(
-                content=f"Error processing draft query: {str(e)}",
-                confidence=0.0
+                content="The request took too long to process. For punt strategies, try asking more specific questions like 'Which guards fit a punt FT% build?' or 'What are good targets for punt rebounds strategy?'",
+                confidence=0.5,
+                metadata={"error": "timeout", "agent_type": "draft_prep"}
+            )
+        except Exception as e:
+            error_msg = str(e)
+            if "iteration limit" in error_msg.lower() or "time limit" in error_msg.lower():
+                # Agent hit iteration limit - provide helpful response
+                return AgentResponse(
+                    content="I found relevant information but couldn't complete the full analysis. Try asking a more specific question about your punt strategy, keeper decision, or draft targets.",
+                    confidence=0.5,
+                    metadata={"error": "iteration_limit", "agent_type": "draft_prep"}
+                )
+            return AgentResponse(
+                content=f"Error processing draft query: {error_msg}",
+                confidence=0.0,
+                metadata={"error": str(e), "agent_type": "draft_prep"}
             )
     
     def _get_supported_tasks(self) -> List[str]:

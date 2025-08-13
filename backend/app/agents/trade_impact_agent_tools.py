@@ -14,6 +14,7 @@ import numpy as np
 from .base_agent import BaseAgent, AgentResponse
 from app.core.config import settings
 from app.db.database import get_db
+import asyncio
 import json
 import logging
 
@@ -93,7 +94,11 @@ class TradeImpactAgent(BaseAgent):
             # Add context about trade analysis
             enhanced_message = f"[Context: Analyzing NBA trades and their fantasy basketball impact for 2024-25 season]\n{message}"
             
-            result = await self.agent_executor.arun(input=enhanced_message)
+            # Add timeout to prevent hanging
+            result = await asyncio.wait_for(
+                self.agent_executor.arun(input=enhanced_message),
+                timeout=30.0  # 30 second timeout
+            )
             
             return AgentResponse(
                 content=result,
@@ -105,10 +110,24 @@ class TradeImpactAgent(BaseAgent):
                 tools_used=[tool.name for tool in self.tools],
                 confidence=0.85
             )
-        except Exception as e:
+        except asyncio.TimeoutError:
             return AgentResponse(
-                content=f"Error processing trade query: {str(e)}",
-                confidence=0.0
+                content="The request took too long to process. Try asking a more specific question about trade impacts, such as 'How does the Porzingis trade affect Tatum?' or 'Which players benefit from recent trades?'",
+                confidence=0.5,
+                metadata={"error": "timeout", "agent_type": "trade_impact"}
+            )
+        except Exception as e:
+            error_msg = str(e)
+            if "iteration limit" in error_msg.lower() or "time limit" in error_msg.lower():
+                return AgentResponse(
+                    content="I found relevant trade information but couldn't complete the full analysis. Try asking about specific players or trades.",
+                    confidence=0.5,
+                    metadata={"error": "iteration_limit", "agent_type": "trade_impact"}
+                )
+            return AgentResponse(
+                content=f"Error processing trade query: {error_msg}",
+                confidence=0.0,
+                metadata={"error": str(e), "agent_type": "trade_impact"}
             )
     
     def _get_supported_tasks(self) -> List[str]:
