@@ -176,7 +176,7 @@ class ApiService {
 
   // Secure Agent Query
   async querySecureAgent(agentName: string, query: string): Promise<any> {
-    const response = await this.client.post('/secure-agent-query', {
+    const response = await this.client.post('/secure/query', {
       agent_name: agentName,
       query: query
     });
