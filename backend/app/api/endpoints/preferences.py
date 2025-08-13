@@ -51,7 +51,7 @@ class UserPreferencesResponse(BaseModel):
     agent_response_style: str
     league_type: str
     team_size: int
-    favorite_team: Optional[str]
+    favorite_team: Optional[str] = None
     email_notifications: bool
     injury_alerts: bool
     trade_alerts: bool
@@ -78,7 +78,21 @@ async def get_user_preferences(
         db.commit()
         db.refresh(preferences)
     
-    return preferences
+    # Ensure all fields have values before returning
+    return UserPreferencesResponse(
+        theme_mode=preferences.theme_mode or "light",
+        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
+        preferred_agent=preferences.preferred_agent or "intelligence",
+        agent_response_style=preferences.agent_response_style or "detailed",
+        league_type=preferences.league_type or "h2h_9cat",
+        team_size=preferences.team_size or 12,
+        favorite_team=preferences.favorite_team,
+        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
+        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
+        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
+        default_stat_view=preferences.default_stat_view or "season",
+        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
+    )
 
 @router.put("/preferences", response_model=UserPreferencesResponse)
 async def update_user_preferences(
@@ -104,7 +118,21 @@ async def update_user_preferences(
     db.commit()
     db.refresh(preferences)
     
-    return preferences
+    # Ensure all fields have values before returning
+    return UserPreferencesResponse(
+        theme_mode=preferences.theme_mode or "light",
+        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
+        preferred_agent=preferences.preferred_agent or "intelligence",
+        agent_response_style=preferences.agent_response_style or "detailed",
+        league_type=preferences.league_type or "h2h_9cat",
+        team_size=preferences.team_size or 12,
+        favorite_team=preferences.favorite_team,
+        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
+        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
+        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
+        default_stat_view=preferences.default_stat_view or "season",
+        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
+    )
 
 @router.patch("/preferences/theme", response_model=dict)
 async def toggle_theme_mode(
@@ -162,4 +190,18 @@ async def reset_user_preferences(
     db.commit()
     db.refresh(preferences)
     
-    return preferences
+    # Ensure all fields have values before returning
+    return UserPreferencesResponse(
+        theme_mode=preferences.theme_mode or "light",
+        sidebar_collapsed=preferences.sidebar_collapsed if preferences.sidebar_collapsed is not None else False,
+        preferred_agent=preferences.preferred_agent or "intelligence",
+        agent_response_style=preferences.agent_response_style or "detailed",
+        league_type=preferences.league_type or "h2h_9cat",
+        team_size=preferences.team_size or 12,
+        favorite_team=preferences.favorite_team,
+        email_notifications=preferences.email_notifications if preferences.email_notifications is not None else True,
+        injury_alerts=preferences.injury_alerts if preferences.injury_alerts is not None else True,
+        trade_alerts=preferences.trade_alerts if preferences.trade_alerts is not None else True,
+        default_stat_view=preferences.default_stat_view or "season",
+        show_advanced_stats=preferences.show_advanced_stats if preferences.show_advanced_stats is not None else False
+    )
