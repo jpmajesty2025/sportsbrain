@@ -185,9 +185,11 @@ class ApiService {
     
     const agentType = agentTypeMap[agentName] || 'intelligence';
     
-    // NOTE: Due to routing issue, path is currently doubled in production
-    // Should be /secure/query but is /api/v1/secure/query
-    const response = await this.client.post('/api/v1/secure/query', {
+    // TEMPORARY: Using just /secure/query because backend currently has doubled path
+    // Backend has /api/v1/secure prefix in router definition
+    // This gets added to base /api/v1, resulting in /api/v1/api/v1/secure/query
+    // Using /secure/query here results in correct /api/v1/secure/query path
+    const response = await this.client.post('/secure/query', {
       message: query,  // Backend expects 'message' not 'query'
       agent_type: agentType  // Backend expects 'agent_type' not 'agent_name'
     });
