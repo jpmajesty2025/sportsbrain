@@ -507,3 +507,46 @@
      ☐ Create tests for API service
      ☐ Add integration tests for authentication flow
 
+-
+8/13/2025
+1. Agent Output Problem (FIXED)
+
+  The agent was returning meta-descriptions like "I used the
+  build_punt_strategy function" instead of the actual tool results. This was        
+  because the ZERO_SHOT_REACT_DESCRIPTION agent type wasn't properly instructed     
+   to return tool outputs as the final answer.
+
+  2. Iteration Limit (FIXED)
+
+  With only 3 iterations, the agent would often fail to complete its reasoning      
+  chain, especially when it needed to parse complex queries or recover from
+  minor errors.
+
+  3. Tool Selection Issues
+
+  The agent uses simple keyword matching in tool descriptions, which can lead       
+  to:
+  - Wrong tool selection for ambiguous queries
+  - Inability to handle variations in phrasing
+  - No understanding of fantasy basketball context
+
+  4. Limited Tool Flexibility
+
+  The tools themselves have rigid parameter expectations and limited ability to     
+   handle varied inputs. For example, _build_punt_strategy uses hardcoded
+  keyword matching for categories.
+
+  5. No Memory or Context
+
+  The agent doesn't remember previous interactions, so it can't learn from
+  corrections or build on previous answers.
+
+  The immediate fix I deployed addresses issues #1 and #2 by:
+  - Adding a custom prompt to instruct the agent to return actual results
+  - Increasing max_iterations to 5
+  - Adding a fallback mechanism to call tools directly if needed
+
+  This should resolve the "Agent stopped due to iteration limit" error in
+  production. The agent will now return actual player recommendations and
+  strategy tips instead of meta-descriptions.
+  

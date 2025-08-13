@@ -117,6 +117,79 @@ You have access to the following tools:"""
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         """Process a draft-related query"""
+        
+        # DIRECT TOOL ROUTING - bypass agent for common queries
+        message_lower = message.lower()
+        
+        # Keeper queries
+        if "keep" in message_lower or "keeper" in message_lower:
+            try:
+                tool_result = self._calculate_keeper_value(message)
+                return AgentResponse(
+                    content=tool_result,
+                    metadata={
+                        "context": context,
+                        "agent_type": "draft_prep",
+                        "method": "direct_tool_call"
+                    },
+                    tools_used=["calculate_keeper_value"],
+                    confidence=0.95
+                )
+            except Exception as e:
+                pass  # Fall through to agent
+        
+        # Punt strategy queries
+        elif "punt" in message_lower:
+            try:
+                tool_result = self._build_punt_strategy(message)
+                return AgentResponse(
+                    content=tool_result,
+                    metadata={
+                        "context": context,
+                        "agent_type": "draft_prep",
+                        "method": "direct_tool_call"
+                    },
+                    tools_used=["build_punt_strategy"],
+                    confidence=0.95
+                )
+            except Exception as e:
+                pass  # Fall through to agent
+        
+        # ADP/value queries  
+        elif "adp" in message_lower or "value" in message_lower:
+            try:
+                tool_result = self._analyze_adp_value(message)
+                return AgentResponse(
+                    content=tool_result,
+                    metadata={
+                        "context": context,
+                        "agent_type": "draft_prep",
+                        "method": "direct_tool_call"
+                    },
+                    tools_used=["analyze_adp_value"],
+                    confidence=0.95
+                )
+            except Exception as e:
+                pass  # Fall through to agent
+        
+        # Mock draft queries
+        elif "mock" in message_lower or "draft" in message_lower or "pick" in message_lower:
+            try:
+                tool_result = self._simulate_draft_pick(message)
+                return AgentResponse(
+                    content=tool_result,
+                    metadata={
+                        "context": context,
+                        "agent_type": "draft_prep",
+                        "method": "direct_tool_call"
+                    },
+                    tools_used=["simulate_draft_pick"],
+                    confidence=0.95
+                )
+            except Exception as e:
+                pass  # Fall through to agent
+        
+        # FALLBACK TO AGENT for complex or unclear queries
         if not self.agent_executor:
             return AgentResponse(
                 content="DraftPrep agent not properly initialized. Please check OpenAI API key.",
@@ -124,60 +197,26 @@ You have access to the following tools:"""
             )
         
         try:
-            # Add context about draft preparation
+            # Use agent for complex queries that don't match patterns
             enhanced_message = f"""[Context: Fantasy basketball draft preparation for 2024-25 season]
 {message}
 
-IMPORTANT: Your final answer should be the actual results from the tool, not a description of what tool you used. 
-Present the player recommendations, statistics, and strategy tips directly to the user."""
+Pass the COMPLETE user query to the tool, including all details like round numbers, player names, and categories."""
             
-            # Add timeout to prevent hanging
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
-                timeout=30.0  # 30 second timeout
+                timeout=30.0
             )
-            
-            # Check if the result is just describing tool usage
-            if "build_punt_strategy function" in result or "use the" in result.lower():
-                # Agent returned meta description - try to get actual tool output
-                # Call the tool directly based on the query
-                if "punt" in message.lower():
-                    # Extract what category to punt
-                    tool_result = self._build_punt_strategy(message)
-                    return AgentResponse(
-                        content=tool_result,
-                        metadata={
-                            "context": context,
-                            "agent_type": "draft_prep",
-                            "capabilities": ["keeper_analysis", "adp_value", "punt_strategies", "mock_drafts"],
-                            "note": "Direct tool call due to agent meta-response"
-                        },
-                        tools_used=["build_punt_strategy"],
-                        confidence=0.85
-                    )
-                elif "keeper" in message.lower():
-                    tool_result = self._calculate_keeper_value(message)
-                    return AgentResponse(
-                        content=tool_result,
-                        metadata={
-                            "context": context,
-                            "agent_type": "draft_prep",
-                            "capabilities": ["keeper_analysis", "adp_value", "punt_strategies", "mock_drafts"],
-                            "note": "Direct tool call due to agent meta-response"
-                        },
-                        tools_used=["calculate_keeper_value"],
-                        confidence=0.85
-                    )
             
             return AgentResponse(
                 content=result,
                 metadata={
                     "context": context,
                     "agent_type": "draft_prep",
-                    "capabilities": ["keeper_analysis", "adp_value", "punt_strategies", "mock_drafts"]
+                    "method": "agent_reasoning"
                 },
                 tools_used=[tool.name for tool in self.tools],
-                confidence=0.9
+                confidence=0.7  # Lower confidence for agent responses
             )
         except asyncio.TimeoutError:
             # Try to provide a helpful response even if we timeout
