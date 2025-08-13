@@ -113,8 +113,10 @@ const Dashboard: React.FC = () => {
       const agentName = agentMap[selectedAgent];
       const result = await apiService.querySecureAgent(agentName, query);
       
-      // The response should have a 'response' field
-      if (result && result.response) {
+      // The response has a 'content' field from the AgentQueryResponse model
+      if (result && result.content) {
+        setResponse(result.content);
+      } else if (result && result.response) {
         setResponse(result.response);
       } else if (result && result.message) {
         setResponse(result.message);

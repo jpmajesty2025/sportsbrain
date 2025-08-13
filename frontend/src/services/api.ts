@@ -176,9 +176,20 @@ class ApiService {
 
   // Secure Agent Query
   async querySecureAgent(agentName: string, query: string): Promise<any> {
-    const response = await this.client.post('/secure/query', {
-      agent_name: agentName,
-      query: query
+    // Map frontend agent names to backend agent types
+    const agentTypeMap: { [key: string]: string } = {
+      'IntelligenceAgent': 'intelligence',
+      'DraftPrepAgent': 'draft_prep',
+      'TradeImpactAgent': 'trade_impact'
+    };
+    
+    const agentType = agentTypeMap[agentName] || 'intelligence';
+    
+    // NOTE: Due to routing issue, path is currently doubled in production
+    // Should be /secure/query but is /api/v1/secure/query
+    const response = await this.client.post('/api/v1/secure/query', {
+      message: query,  // Backend expects 'message' not 'query'
+      agent_type: agentType  // Backend expects 'agent_type' not 'agent_name'
     });
     return response.data;
   }
