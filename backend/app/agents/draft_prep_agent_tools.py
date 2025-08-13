@@ -336,26 +336,109 @@ class DraftPrepAgent(BaseAgent):
             elif "3" in strategy.lower() or "three" in strategy.lower():
                 punt_field = "punt_3pm_fit"
                 punt_cat = "3-Pointers"
+            elif "reb" in strategy.lower() or "rebound" in strategy.lower():
+                punt_field = None  # We'll handle this differently
+                punt_cat = "Rebounds"
+            elif "pts" in strategy.lower() or "point" in strategy.lower() or "scoring" in strategy.lower():
+                punt_field = None
+                punt_cat = "Points"
+            elif "stl" in strategy.lower() or "steal" in strategy.lower():
+                punt_field = None
+                punt_cat = "Steals"
+            elif "blk" in strategy.lower() or "block" in strategy.lower():
+                punt_field = None
+                punt_cat = "Blocks"
             else:
-                return "Please specify a category to punt (FT%, FG%, Assists, or 3PM)"
+                return "Please specify a category to punt (FT%, FG%, Assists, 3PM, Rebounds, Points, Steals, or Blocks)"
             
             db = next(get_db())
             
             # Get players that fit this punt build
-            result = db.execute(text(f"""
-                SELECT 
-                    p.name, p.position, p.team,
-                    f.adp_rank, f.adp_round,
-                    f.projected_ppg, f.projected_rpg, f.projected_apg,
-                    f.projected_bpg, f.projected_spg,
-                    f.projected_fg_pct, f.projected_ft_pct,
-                    f.{punt_field} as punt_fit
-                FROM players p
-                JOIN fantasy_data f ON p.id = f.player_id
-                WHERE f.{punt_field} = true
-                ORDER BY f.adp_rank
-                LIMIT 15
-            """))
+            if punt_field:
+                # Use existing punt fields for categories we have
+                result = db.execute(text(f"""
+                    SELECT 
+                        p.name, p.position, p.team,
+                        f.adp_rank, f.adp_round,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_bpg, f.projected_spg,
+                        f.projected_fg_pct, f.projected_ft_pct,
+                        f.{punt_field} as punt_fit
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE f.{punt_field} = true
+                    ORDER BY f.adp_rank
+                    LIMIT 15
+                """))
+            elif punt_cat == "Rebounds":
+                # For punt REB, find guards and wings with low rebounds but high other stats
+                result = db.execute(text("""
+                    SELECT 
+                        p.name, p.position, p.team,
+                        f.adp_rank, f.adp_round,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_bpg, f.projected_spg,
+                        f.projected_fg_pct, f.projected_ft_pct
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE p.position IN ('PG', 'SG', 'SF')
+                    AND f.projected_rpg < 6.0  -- Low rebounds
+                    AND f.projected_fantasy_ppg > 30  -- Still valuable
+                    ORDER BY f.adp_rank
+                    LIMIT 15
+                """))
+            elif punt_cat == "Points":
+                # For punt PTS, find defensive specialists
+                result = db.execute(text("""
+                    SELECT 
+                        p.name, p.position, p.team,
+                        f.adp_rank, f.adp_round,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_bpg, f.projected_spg,
+                        f.projected_fg_pct, f.projected_ft_pct
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE f.projected_ppg < 15.0  -- Low scoring
+                    AND (f.projected_bpg > 1.0 OR f.projected_spg > 1.0)  -- Good defense
+                    ORDER BY f.adp_rank
+                    LIMIT 15
+                """))
+            elif punt_cat == "Steals":
+                # For punt STL, find bigs with low steals
+                result = db.execute(text("""
+                    SELECT 
+                        p.name, p.position, p.team,
+                        f.adp_rank, f.adp_round,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_bpg, f.projected_spg,
+                        f.projected_fg_pct, f.projected_ft_pct
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE p.position IN ('PF', 'C')
+                    AND f.projected_spg < 1.0  -- Low steals
+                    AND f.projected_fantasy_ppg > 30  -- Still valuable
+                    ORDER BY f.adp_rank
+                    LIMIT 15
+                """))
+            elif punt_cat == "Blocks":
+                # For punt BLK, find guards and wings
+                result = db.execute(text("""
+                    SELECT 
+                        p.name, p.position, p.team,
+                        f.adp_rank, f.adp_round,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_bpg, f.projected_spg,
+                        f.projected_fg_pct, f.projected_ft_pct
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE p.position IN ('PG', 'SG', 'SF')
+                    AND f.projected_bpg < 0.5  -- Low blocks
+                    AND f.projected_fantasy_ppg > 30  -- Still valuable
+                    ORDER BY f.adp_rank
+                    LIMIT 15
+                """))
+            else:
+                return f"Error: Unrecognized punt category {punt_cat}"
             
             players = result.fetchall()
             
@@ -395,6 +478,23 @@ class DraftPrepAgent(BaseAgent):
                 response += "- Target scoring bigs and wings\n"
                 response += "- Focus on PTS, REB, stocks (STL+BLK)\n"
                 response += "- Avoid traditional point guards\n"
+            elif punt_cat == "Rebounds":
+                response += "- Target elite guards and perimeter players\n"
+                response += "- Focus on AST, STL, 3PM, FT%\n"
+                response += "- Avoid traditional big men and rebounding specialists\n"
+                response += "- Look for guards with high usage rates\n"
+            elif punt_cat == "Points":
+                response += "- Target defensive specialists and facilitators\n"
+                response += "- Focus on REB, AST, STL, BLK, FG%\n"
+                response += "- Look for players like Draymond Green, Marcus Smart\n"
+            elif punt_cat == "Steals":
+                response += "- Target traditional big men\n"
+                response += "- Focus on REB, BLK, FG%, points in the paint\n"
+                response += "- Avoid guard-heavy builds\n"
+            elif punt_cat == "Blocks":
+                response += "- Target guards and wings\n"
+                response += "- Focus on AST, STL, 3PM, FT%\n"
+                response += "- Avoid traditional centers\n"
             
             return response
             
