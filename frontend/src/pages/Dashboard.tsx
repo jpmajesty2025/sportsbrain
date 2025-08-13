@@ -101,16 +101,30 @@ const Dashboard: React.FC = () => {
     if (!query.trim()) return;
 
     setIsLoading(true);
+    setResponse(null);
     try {
-      // TODO: Implement actual agent query
-      // const result = await apiService.queryAgent(selectedAgent, query);
-      // setResponse(result);
+      // Map agent IDs to backend agent names
+      const agentMap: { [key: string]: string } = {
+        'intelligence': 'IntelligenceAgent',
+        'draft_prep': 'DraftPrepAgent',
+        'trade_impact': 'TradeImpactAgent'
+      };
       
-      // Placeholder response
-      setResponse(`Response from ${selectedAgent} agent: Processing "${query}"...`);
-    } catch (error) {
+      const agentName = agentMap[selectedAgent];
+      const result = await apiService.querySecureAgent(agentName, query);
+      
+      // The response should have a 'response' field
+      if (result && result.response) {
+        setResponse(result.response);
+      } else if (result && result.message) {
+        setResponse(result.message);
+      } else {
+        setResponse('Received empty response from agent');
+      }
+    } catch (error: any) {
       console.error('Error querying agent:', error);
-      setResponse('Error: Failed to get response from agent');
+      const errorMessage = error?.response?.data?.detail || error?.message || 'Failed to get response from agent';
+      setResponse(`Error: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }

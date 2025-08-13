@@ -173,6 +173,15 @@ class ApiService {
     const response: AxiosResponse<AgentMessage[]> = await this.client.get(`/agents/sessions/${sessionId}/messages?skip=${skip}&limit=${limit}`);
     return response.data;
   }
+
+  // Secure Agent Query
+  async querySecureAgent(agentName: string, query: string): Promise<any> {
+    const response = await this.client.post('/secure-agent-query', {
+      agent_name: agentName,
+      query: query
+    });
+    return response.data;
+  }
 }
 
 export default new ApiService();
