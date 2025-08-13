@@ -12,7 +12,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.agents.agent_coordinator import AgentCoordinator
-from app.agents.intelligence_agent import IntelligenceAgent
+from app.agents.intelligence_agent_enhanced import IntelligenceAgentEnhanced as IntelligenceAgent
 from app.agents.draft_prep_agent_tools import DraftPrepAgent
 from app.agents.trade_impact_agent_tools import TradeImpactAgent
 
@@ -101,8 +101,8 @@ class TestDemoScenarios:
         """Test: Find me sleepers like last year's Sengun"""
         agent = IntelligenceAgent()
         
-        # Test sleeper finding tool
-        result = agent._find_sleeper_candidates("")
+        # Test sleeper finding tool (enhanced version)
+        result = agent._find_sleeper_candidates_enhanced("")
         
         # Verify response contains sleeper candidates
         assert "sleeper" in result.lower()
@@ -131,8 +131,8 @@ class TestDemoScenarios:
         """Test: Which sophomores will break out?"""
         agent = IntelligenceAgent()
         
-        # Test breakout identification tool
-        result = agent._identify_breakout_candidates("")
+        # Test breakout identification tool (enhanced version)
+        result = agent._identify_breakout_candidates_enhanced("")
         
         # Verify response contains breakout candidates
         assert "breakout" in result.lower()
@@ -214,17 +214,17 @@ class TestAgentTools:
         """Test Intelligence Agent tool functions"""
         agent = IntelligenceAgent()
         
-        # Test analyze_player_stats
-        stats_result = agent._analyze_player_stats("Ja Morant")
+        # Test analyze_player_stats (enhanced version)
+        stats_result = agent._analyze_player_stats_enhanced("Ja Morant")
         assert "Ja Morant" in stats_result
         assert "PG" in stats_result
         
-        # Test find_sleeper_candidates
-        sleepers_result = agent._find_sleeper_candidates("")
+        # Test find_sleeper_candidates (enhanced version)
+        sleepers_result = agent._find_sleeper_candidates_enhanced("")
         assert "Sengun" in sleepers_result or "sleeper" in sleepers_result.lower()
         
-        # Test identify_breakout_candidates
-        breakout_result = agent._identify_breakout_candidates("")
+        # Test identify_breakout_candidates (enhanced version)
+        breakout_result = agent._identify_breakout_candidates_enhanced("")
         assert "Banchero" in breakout_result or "breakout" in breakout_result.lower()
     
     def test_draftprep_agent_tools(self, mock_db_with_data):

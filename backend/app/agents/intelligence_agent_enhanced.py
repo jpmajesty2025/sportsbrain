@@ -100,6 +100,17 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 handle_parsing_errors=True
             )
     
+    def _get_supported_tasks(self) -> List[str]:
+        """Return list of supported tasks"""
+        return [
+            "analyze player statistics with trends",
+            "find sleeper candidates with reasoning",
+            "identify breakout candidates with evidence",
+            "project player performance with context",
+            "compare players with detailed analysis",
+            "analyze player consistency and risk"
+        ]
+    
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         """Process message with enhanced reasoning"""
         if not self.agent_executor:
@@ -146,7 +157,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
             # Get comprehensive player data including historical context
             result = db.execute(text("""
                 SELECT 
-                    p.name, p.position, p.team, p.age,
+                    p.name, p.position, p.team,
+                    EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
                     f.adp_rank, f.adp_round,
                     f.projected_ppg, f.projected_rpg, f.projected_apg,
                     f.projected_spg, f.projected_bpg,
@@ -165,7 +177,6 @@ class IntelligenceAgentEnhanced(BaseAgent):
                            AVG(rebounds) as rpg, 
                            AVG(assists) as apg
                     FROM game_stats
-                    WHERE season_year = 2024
                     GROUP BY player_id
                 ) gs ON p.id = gs.player_id
                 WHERE LOWER(p.name) LIKE LOWER(:name)
@@ -177,13 +188,16 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 response = f"**{player.name}** ({player.position}, {player.team}) - Detailed Analysis:\n\n"
                 
                 # Age and career stage context
-                response += f"**Profile**: {player.age} years old, "
-                if player.age < 25:
-                    response += "entering prime development years\n"
-                elif player.age <= 29:
-                    response += "in statistical prime\n"
+                if player.age:
+                    response += f"**Profile**: {player.age} years old, "
+                    if player.age < 25:
+                        response += "entering prime development years\n"
+                    elif player.age <= 29:
+                        response += "in statistical prime\n"
+                    else:
+                        response += "veteran with established role\n"
                 else:
-                    response += "veteran with established role\n"
+                    response += f"**Profile**: {player.position}, {player.team}\n"
                 
                 # Draft value analysis
                 response += f"\n**Draft Value**:\n"
@@ -194,37 +208,52 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 
                 # Points analysis
                 if player.last_season_ppg:
-                    ppg_change = ((player.projected_ppg - player.last_season_ppg) / player.last_season_ppg * 100)
-                    response += f"• Points: {player.projected_ppg:.1f} PPG "
-                    response += f"({ppg_change:+.1f}% from last season's {player.last_season_ppg:.1f})\n"
-                    if ppg_change > 10:
-                        response += f"  → Significant scoring increase expected due to expanded role\n"
-                    elif ppg_change < -10:
-                        response += f"  → Scoring decrease likely due to roster changes\n"
+                    proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
+                    last_ppg = float(player.last_season_ppg) if player.last_season_ppg else 0
+                    if last_ppg > 0:
+                        ppg_change = ((proj_ppg - last_ppg) / last_ppg * 100)
+                        response += f"• Points: {proj_ppg:.1f} PPG "
+                        response += f"({ppg_change:+.1f}% from last season's {last_ppg:.1f})\n"
+                        if ppg_change > 10:
+                            response += f"  → Significant scoring increase expected due to expanded role\n"
+                        elif ppg_change < -10:
+                            response += f"  → Scoring decrease likely due to roster changes\n"
+                    else:
+                        response += f"• Points: {proj_ppg:.1f} PPG\n"
                 else:
-                    response += f"• Points: {player.projected_ppg:.1f} PPG (rookie/no prior data)\n"
+                    proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
+                    response += f"• Points: {proj_ppg:.1f} PPG (rookie/no prior data)\n"
                 
                 # Rebounds and assists
-                response += f"• Rebounds: {player.projected_rpg:.1f} RPG\n"
-                response += f"• Assists: {player.projected_apg:.1f} APG\n"
+                proj_rpg = float(player.projected_rpg) if player.projected_rpg else 0
+                proj_apg = float(player.projected_apg) if player.projected_apg else 0
+                response += f"• Rebounds: {proj_rpg:.1f} RPG\n"
+                response += f"• Assists: {proj_apg:.1f} APG\n"
                 
                 # Defensive stats
-                if player.projected_spg >= 1.0 or player.projected_bpg >= 1.0:
-                    response += f"• Defensive Impact: {player.projected_spg:.1f} STL, {player.projected_bpg:.1f} BLK\n"
-                    if player.projected_bpg >= 1.5:
+                proj_spg = float(player.projected_spg) if player.projected_spg else 0
+                proj_bpg = float(player.projected_bpg) if player.projected_bpg else 0
+                if proj_spg >= 1.0 or proj_bpg >= 1.0:
+                    response += f"• Defensive Impact: {proj_spg:.1f} STL, {proj_bpg:.1f} BLK\n"
+                    if proj_bpg >= 1.5:
                         response += f"  → Elite shot-blocking provides significant fantasy value\n"
                 
                 # Shooting efficiency
-                response += f"• Shooting: {player.projected_fg_pct:.1%} FG%, {player.projected_ft_pct:.1%} FT%, {player.projected_3pm:.1f} 3PM\n"
+                proj_fg_pct = float(player.projected_fg_pct) if player.projected_fg_pct else 0
+                proj_ft_pct = float(player.projected_ft_pct) if player.projected_ft_pct else 0
+                proj_3pm = float(player.projected_3pm) if player.projected_3pm else 0
+                response += f"• Shooting: {proj_fg_pct:.1%} FG%, {proj_ft_pct:.1%} FT%, {proj_3pm:.1f} 3PM\n"
                 
                 # Fantasy impact assessment
                 response += f"\n**Fantasy Impact**:\n"
-                response += f"• Projected Fantasy Points: {player.projected_fantasy_ppg:.1f} per game\n"
-                response += f"• Consistency Rating: {player.consistency_rating:.2f}/1.0\n"
+                proj_fantasy_ppg = float(player.projected_fantasy_ppg) if player.projected_fantasy_ppg else 0
+                consistency = float(player.consistency_rating) if player.consistency_rating else 0
+                response += f"• Projected Fantasy Points: {proj_fantasy_ppg:.1f} per game\n"
+                response += f"• Consistency Rating: {consistency:.2f}/1.0\n"
                 
-                if player.consistency_rating > 0.7:
+                if consistency > 0.7:
                     response += "  → High consistency makes them a reliable fantasy starter\n"
-                elif player.consistency_rating < 0.5:
+                elif consistency < 0.5:
                     response += "  → Volatility suggests streaming candidate or bench player\n"
                 
                 # Risk factors
@@ -252,14 +281,15 @@ class IntelligenceAgentEnhanced(BaseAgent):
             
             result = db.execute(text("""
                 SELECT 
-                    p.name, p.position, p.team, p.age,
+                    p.name, p.position, p.team,
+                    EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
                     f.adp_rank, f.adp_round,
                     f.sleeper_score, 
                     f.projected_fantasy_ppg,
                     f.consistency_rating,
                     f.projected_ppg, f.projected_rpg, f.projected_apg,
                     CASE 
-                        WHEN p.age < 24 THEN 'Young player development'
+                        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) < 24 THEN 'Young player development'
                         WHEN f.adp_rank > 100 THEN 'Late-round value'
                         WHEN p.team IN ('DET', 'HOU', 'ORL', 'OKC') THEN 'Improving team context'
                         ELSE 'Opportunity increase'
@@ -284,11 +314,11 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     response += f"• **Why They're a Sleeper**: {s.sleeper_reason}\n"
                     
                     # Add specific reasoning based on data
-                    if s.age < 24:
+                    if s.age and s.age < 24:
                         response += f"  → At age {s.age}, entering prime development window\n"
                     if s.adp_rank > 100:
                         response += f"  → Available after round 8, exceptional value potential\n"
-                    if s.consistency_rating > 0.65:
+                    if s.consistency_rating and s.consistency_rating > 0.65:
                         response += f"  → Consistency rating {s.consistency_rating:.2f} suggests reliable production\n"
                     
                     response += "\n"
@@ -310,7 +340,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
             
             result = db.execute(text("""
                 SELECT 
-                    p.name, p.position, p.team, p.age,
+                    p.name, p.position, p.team,
+                    EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
                     f.adp_rank, f.adp_round,
                     f.projected_fantasy_ppg,
                     f.projected_ppg, f.projected_rpg, f.projected_apg,
@@ -318,7 +349,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     gs.ppg as last_season_ppg,
                     gs.games_played as last_season_games,
                     CASE
-                        WHEN p.age BETWEEN 22 AND 25 THEN 'Sophomore/Junior leap expected'
+                        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) BETWEEN 22 AND 25 THEN 'Sophomore/Junior leap expected'
                         WHEN gs.ppg IS NULL THEN 'Rookie with high upside'
                         WHEN f.projected_ppg > gs.ppg * 1.2 THEN 'Major role expansion'
                         ELSE 'System/coaching change benefit'
@@ -330,7 +361,6 @@ class IntelligenceAgentEnhanced(BaseAgent):
                            AVG(points) as ppg,
                            COUNT(*) as games_played
                     FROM game_stats
-                    WHERE season_year = 2024
                     GROUP BY player_id
                 ) gs ON p.id = gs.player_id
                 WHERE f.breakout_candidate = true
@@ -362,10 +392,11 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     response += f"• **Breakout Catalyst**: {b.breakout_reason}\n"
                     
                     # Age-specific analysis
-                    if b.age <= 23:
-                        response += f"  → Young player trajectory suggests continued growth\n"
-                    elif b.age <= 26:
-                        response += f"  → Entering statistical prime years\n"
+                    if b.age:
+                        if b.age <= 23:
+                            response += f"  → Young player trajectory suggests continued growth\n"
+                        elif b.age <= 26:
+                            response += f"  → Entering statistical prime years\n"
                     
                     response += "\n"
                 
@@ -393,7 +424,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
             
             result = db.execute(text("""
                 SELECT 
-                    p.name, p.position, p.team, p.age,
+                    p.name, p.position, p.team,
+                    EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
                     f.*,
                     gs.ppg as last_ppg,
                     gs.rpg as last_rpg,
@@ -408,7 +440,6 @@ class IntelligenceAgentEnhanced(BaseAgent):
                            AVG(assists) as apg,
                            COUNT(*) as games_played
                     FROM game_stats
-                    WHERE season_year = 2024
                     GROUP BY player_id
                 ) gs ON p.id = gs.player_id
                 WHERE LOWER(p.name) LIKE LOWER(:name)
@@ -421,7 +452,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 response += f"**Player Context**:\n"
                 response += f"• Team: {player.team}\n"
                 response += f"• Position: {player.position}\n"
-                response += f"• Age: {player.age} years old\n"
+                if player.age:
+                    response += f"• Age: {player.age} years old\n"
                 
                 if player.games_played:
                     response += f"• Last Season: {player.games_played} games played\n"
@@ -481,7 +513,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
             for name in names:
                 result = db.execute(text("""
                     SELECT 
-                        p.name, p.position, p.team, p.age,
+                        p.name, p.position, p.team,
+                        EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
                         f.*
                     FROM players p
                     JOIN fantasy_data f ON p.id = f.player_id
