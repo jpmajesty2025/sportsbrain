@@ -61,7 +61,7 @@ class UserPreferencesResponse(BaseModel):
     show_advanced_stats: bool
 
 @router.get("/preferences", response_model=UserPreferencesResponse)
-def get_user_preferences(
+async def get_user_preferences(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -80,7 +80,7 @@ def get_user_preferences(
     return preferences
 
 @router.put("/preferences", response_model=UserPreferencesResponse)
-def update_user_preferences(
+async def update_user_preferences(
     preferences_update: UserPreferencesUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -106,7 +106,7 @@ def update_user_preferences(
     return preferences
 
 @router.patch("/preferences/theme", response_model=dict)
-def toggle_theme_mode(
+async def toggle_theme_mode(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -130,7 +130,7 @@ def toggle_theme_mode(
     return {"theme_mode": preferences.theme_mode}
 
 @router.post("/preferences/reset", response_model=UserPreferencesResponse)
-def reset_user_preferences(
+async def reset_user_preferences(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
