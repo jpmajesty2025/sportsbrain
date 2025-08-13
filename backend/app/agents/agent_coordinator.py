@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
-from .intelligence_agent import IntelligenceAgent
+from .intelligence_agent_enhanced import IntelligenceAgentEnhanced as IntelligenceAgent
 from .chat_agent import ChatAgent
 from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
 from .trade_impact_agent_tools import TradeImpactAgent  # Use enhanced version with tools
