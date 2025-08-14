@@ -84,8 +84,8 @@ class DraftPrepAgent(BaseAgent):
         ]
         
         super().__init__(
-            name="DraftPrep Agent",
-            description="Expert in keeper leagues, ADP analysis, punt strategies, and mock drafts",
+            name="DraftPrep Agent (Beta)",
+            description="[BETA] Draft expert - keeper decisions, ADP analysis, punt strategies. Note: Currently using optimized direct routing for most queries.",
             tools=tools
         )
     
@@ -129,8 +129,9 @@ You have access to the following tools:"""
                     content=tool_result,
                     metadata={
                         "context": context,
-                        "agent_type": "draft_prep",
-                        "method": "direct_tool_call"
+                        "agent_type": "draft_prep_beta",
+                        "method": "direct_tool_call",
+                        "beta_note": "Using optimized direct routing"
                     },
                     tools_used=["calculate_keeper_value"],
                     confidence=0.95
@@ -146,7 +147,7 @@ You have access to the following tools:"""
                     content=tool_result,
                     metadata={
                         "context": context,
-                        "agent_type": "draft_prep",
+                        "agent_type": "draft_prep_beta",
                         "method": "direct_tool_call"
                     },
                     tools_used=["build_punt_strategy"],
@@ -163,7 +164,7 @@ You have access to the following tools:"""
                     content=tool_result,
                     metadata={
                         "context": context,
-                        "agent_type": "draft_prep",
+                        "agent_type": "draft_prep_beta",
                         "method": "direct_tool_call"
                     },
                     tools_used=["analyze_adp_value"],
@@ -180,7 +181,7 @@ You have access to the following tools:"""
                     content=tool_result,
                     metadata={
                         "context": context,
-                        "agent_type": "draft_prep",
+                        "agent_type": "draft_prep_beta",
                         "method": "direct_tool_call"
                     },
                     tools_used=["simulate_draft_pick"],
@@ -212,7 +213,7 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
                 content=result,
                 metadata={
                     "context": context,
-                    "agent_type": "draft_prep",
+                    "agent_type": "draft_prep_beta",
                     "method": "agent_reasoning"
                 },
                 tools_used=[tool.name for tool in self.tools],

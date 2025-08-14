@@ -37,6 +37,7 @@ interface AgentCard {
   icon: React.ReactNode;
   color: string;
   examples: string[];
+  isBeta?: boolean;
 }
 
 const agents: AgentCard[] = [
@@ -59,6 +60,7 @@ const agents: AgentCard[] = [
     description: 'Keeper decisions, ADP analysis, and punt strategies',
     icon: <TrophyIcon sx={{ fontSize: 40 }} />,
     color: '#10B981',
+    isBeta: true,
     examples: [
       'Should I keep Ja Morant in round 3?',
       'Best punt FT% build',
@@ -188,9 +190,23 @@ const Dashboard: React.FC = () => {
                     {agent.icon}
                   </Avatar>
                   <Box>
-                    <Typography variant="h6" fontWeight="bold">
-                      {agent.name}
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography variant="h6" fontWeight="bold">
+                        {agent.name}
+                      </Typography>
+                      {agent.isBeta && (
+                        <Chip
+                          label="BETA"
+                          size="small"
+                          sx={{
+                            bgcolor: '#f39c12',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            fontSize: '0.7rem'
+                          }}
+                        />
+                      )}
+                    </Box>
                     {selectedAgent === agent.id && (
                       <Chip
                         label="Active"
@@ -223,9 +239,23 @@ const Dashboard: React.FC = () => {
         }}
       >
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h5" gutterBottom fontWeight="bold">
-            Ask {selectedAgentData?.name}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+            <Typography variant="h5" fontWeight="bold">
+              Ask {selectedAgentData?.name}
+            </Typography>
+            {selectedAgentData?.isBeta && (
+              <Chip
+                label="BETA"
+                size="small"
+                sx={{
+                  bgcolor: '#f39c12',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: '0.7rem'
+                }}
+              />
+            )}
+          </Box>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             Try one of these examples or ask your own question:
           </Typography>
