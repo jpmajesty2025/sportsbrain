@@ -305,7 +305,10 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
             
             # Calculate keeper value
             if keeper_round:
-                value_diff = player.adp_round - keeper_round
+                # value_diff: How many rounds LATER you get to keep vs their ADP
+                # Positive = getting them LATER than ADP (good value)
+                # Negative = keeping them EARLIER than ADP (bad value)
+                value_diff = keeper_round - player.adp_round
                 
                 if value_diff >= 3:
                     recommendation = "EXCEPTIONAL VALUE - Must keep!"
@@ -314,9 +317,19 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
                 elif value_diff >= 1:
                     recommendation = "GOOD VALUE - Worth keeping"
                 elif value_diff == 0:
-                    recommendation = "FAIR VALUE - Consider other options"
+                    recommendation = "FAIR VALUE - Neutral, consider other options"
+                elif value_diff == -1:
+                    recommendation = "SLIGHT OVERPAY - Probably pass"
                 else:
                     recommendation = "POOR VALUE - Do not keep"
+                
+                # Format the advantage/disadvantage text correctly
+                if value_diff > 0:
+                    advantage_text = f"That's a {value_diff} round discount!"
+                elif value_diff < 0:
+                    advantage_text = f"That's {abs(value_diff)} round(s) too expensive!"
+                else:
+                    advantage_text = "That's exactly at market value."
                 
                 response = f"""
 **Keeper Analysis for {clean_unicode(player.name)}**
@@ -331,7 +344,7 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
 
 [VALUE] **Value Analysis**:
 - You'd be getting a Round {player.adp_round} player in Round {keeper_round}
-- That's a {value_diff} round advantage!
+- {advantage_text}
 - Projected Fantasy PPG: {player.projected_fantasy_ppg:.1f}
 - Consistency: {player.consistency_rating:.2f} | Injury Risk: {player.injury_risk}
 
