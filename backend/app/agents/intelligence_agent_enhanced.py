@@ -301,6 +301,31 @@ class IntelligenceAgentEnhanced(BaseAgent):
     def _find_sleeper_candidates_enhanced(self, criteria: str = "") -> str:
         """Find sleeper candidates with detailed reasoning for each"""
         try:
+            # Check if this is a "players like X" query
+            if "like" in criteria.lower():
+                # Extract player name after "like"
+                import re
+                match = re.search(r'like\s+(.+?)(?:\s|$)', criteria.lower())
+                if match:
+                    player_name = match.group(1).strip()
+                    # Clean up common words that might follow
+                    for suffix in ['who', 'that', 'with', 'but', 'and']:
+                        if player_name.endswith(suffix):
+                            player_name = player_name[:-len(suffix)].strip()
+                    
+                    # Try to find the full player name in our database
+                    db = next(get_db())
+                    result = db.execute(text("""
+                        SELECT name FROM players 
+                        WHERE LOWER(name) LIKE LOWER(:name)
+                        LIMIT 1
+                    """), {"name": f"%{player_name}%"})
+                    
+                    player = result.fetchone()
+                    if player:
+                        return self._find_similar_players(player.name)
+            
+            # Original sleeper finding logic
             db = next(get_db())
             
             result = db.execute(text("""
@@ -807,3 +832,129 @@ class IntelligenceAgentEnhanced(BaseAgent):
         except Exception as e:
             logger.error(f"Error characterizing player {player_name}: {str(e)}")
             return None
+    
+    def _find_similar_players(self, reference_player: str, min_sleeper_score: float = 0.6) -> str:
+        """Find players similar to a reference player using shot distributions and playing style"""
+        try:
+            # First characterize the reference player
+            ref_profile = self._characterize_player(reference_player)
+            if not ref_profile:
+                return f"Could not find player '{reference_player}' in database"
+            
+            db = next(get_db())
+            
+            # Get reference player's shot distribution for comparison
+            ref_shot_dist = ref_profile['shot_distribution']
+            if isinstance(ref_shot_dist, str):
+                import json
+                ref_shot_dist = json.loads(ref_shot_dist)
+            
+            # Find similar players based on multiple factors
+            result = db.execute(text("""
+                WITH similarity_scores AS (
+                    SELECT 
+                        p.id,
+                        p.name,
+                        p.position,
+                        p.team,
+                        p.playing_style,
+                        fd.sleeper_score,
+                        fd.adp_rank,
+                        fd.shot_distribution,
+                        fd.projected_fantasy_ppg,
+                        -- Calculate similarity based on position and style
+                        CASE 
+                            WHEN p.position = :ref_position THEN 0.3
+                            WHEN p.position IN ('PG', 'SG') AND :ref_position IN ('PG', 'SG') THEN 0.2
+                            WHEN p.position IN ('SF', 'PF') AND :ref_position IN ('SF', 'PF') THEN 0.2
+                            ELSE 0
+                        END as position_similarity,
+                        CASE
+                            WHEN p.playing_style = :ref_style THEN 0.3
+                            ELSE 0
+                        END as style_similarity
+                    FROM players p
+                    JOIN fantasy_data fd ON p.id = fd.player_id
+                    WHERE p.name != :ref_name
+                        AND fd.sleeper_score >= :min_sleeper
+                        AND fd.shot_distribution IS NOT NULL
+                )
+                SELECT *
+                FROM similarity_scores
+                ORDER BY (position_similarity + style_similarity + sleeper_score) DESC
+                LIMIT 10
+            """), {
+                "ref_name": ref_profile['name'],
+                "ref_position": ref_profile['position'],
+                "ref_style": ref_profile['playing_style'],
+                "min_sleeper": min_sleeper_score
+            })
+            
+            similar_players = result.fetchall()
+            
+            if not similar_players:
+                return f"No similar sleeper candidates found for {ref_profile['name']}"
+            
+            # Calculate shot distribution similarity for each player
+            import json
+            import math
+            
+            def calculate_shot_similarity(dist1, dist2):
+                """Calculate Euclidean distance between shot distributions"""
+                if isinstance(dist1, str):
+                    dist1 = json.loads(dist1)
+                if isinstance(dist2, str):
+                    dist2 = json.loads(dist2)
+                
+                # Calculate Euclidean distance
+                distance = math.sqrt(
+                    (dist1.get('3PT', 0) - dist2.get('3PT', 0))**2 +
+                    (dist1.get('midrange', 0) - dist2.get('midrange', 0))**2 +
+                    (dist1.get('paint', 0) - dist2.get('paint', 0))**2
+                )
+                # Convert to similarity score (0-1, where 1 is identical)
+                return max(0, 1 - distance)
+            
+            # Build response with detailed similarity analysis
+            response = f"**Players Similar to {ref_profile['name']}** "
+            response += f"({ref_profile['position']}, {ref_profile['playing_style']})\n"
+            response += f"Reference Profile: {ref_profile['characteristics']['avg_3pa']:.1f} 3PA/game, "
+            response += f"{ref_profile['characteristics']['usage_rate']:.1f}% usage\n\n"
+            
+            response += "**Top Similar Sleeper Candidates:**\n\n"
+            
+            for i, player in enumerate(similar_players[:5], 1):
+                shot_sim = calculate_shot_similarity(ref_shot_dist, player.shot_distribution)
+                
+                # Parse player's shot distribution for display
+                player_dist = player.shot_distribution
+                if isinstance(player_dist, str):
+                    player_dist = json.loads(player_dist)
+                
+                response += f"{i}. **{player.name}** ({player.position}, {player.team})\n"
+                response += f"   • Sleeper Score: {player.sleeper_score:.2f} | ADP: #{player.adp_rank}\n"
+                response += f"   • Playing Style: {player.playing_style}\n"
+                response += f"   • Shot Profile: {player_dist.get('3PT', 0)*100:.0f}% 3PT, "
+                response += f"{player_dist.get('midrange', 0)*100:.0f}% Mid, "
+                response += f"{player_dist.get('paint', 0)*100:.0f}% Paint\n"
+                response += f"   • Shot Similarity: {shot_sim:.0%}\n"
+                response += f"   • Fantasy Projection: {player.projected_fantasy_ppg:.1f} FP/game\n"
+                
+                # Add specific similarity insights
+                if player.position == ref_profile['position']:
+                    response += f"   • ✓ Same position ({player.position})\n"
+                if player.playing_style == ref_profile['playing_style']:
+                    response += f"   • ✓ Same playing style ({player.playing_style})\n"
+                if shot_sim > 0.8:
+                    response += f"   • ✓ Very similar shot distribution\n"
+                
+                response += "\n"
+            
+            response += f"\n**Key Insight**: These players share similar profiles to {ref_profile['name']} "
+            response += "but may be available later in drafts, offering excellent value.\n"
+            
+            return response
+            
+        except Exception as e:
+            logger.error(f"Error finding similar players: {str(e)}")
+            return f"Error finding similar players: {str(e)}"
