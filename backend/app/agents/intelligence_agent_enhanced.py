@@ -23,6 +23,13 @@ When analyzing players or making recommendations, you MUST:
 3. Consider team context and role changes
 4. Give 2-3 concrete reasons for each recommendation
 
+IMPORTANT: When users ask for players "like" someone (e.g., "Find sleepers like Jordan Poole"):
+- First identify the reference player's KEY characteristics (play style, stats, role)
+- Explain what makes them notable (3PT volume, scoring patterns, team situation)
+- Find players with SIMILAR characteristics, not just any sleepers
+- Explicitly compare each recommendation to the reference player
+- Include statistical evidence showing the similarities
+
 Current date: August 2025 (off-season, preparing for drafts)
 
 User Question: {question}
@@ -120,13 +127,30 @@ class IntelligenceAgentEnhanced(BaseAgent):
             )
         
         try:
+            # Detect if user is asking for similar players
+            similarity_keywords = ['like', 'similar to', 'comparable to', 'in the style of', 'resembles']
+            is_similarity_query = any(keyword in message.lower() for keyword in similarity_keywords)
+            
             # Add context about current date and enhance the query
-            enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
-            
-            User Query: {message}
-            
-            Instructions: Provide detailed analysis with specific statistics and reasoning for each recommendation.
-            Include year-over-year comparisons where relevant."""
+            if is_similarity_query:
+                enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
+                
+                User Query: {message}
+                
+                SIMILARITY REQUEST DETECTED: The user is asking for players similar to a reference player.
+                Instructions: 
+                1. First identify and profile the reference player (stats, style, role)
+                2. Find players with SIMILAR characteristics (not just any good players)
+                3. Explain specifically HOW each player is similar to the reference
+                4. Include comparative statistics showing the similarities
+                5. Focus on players who are also sleepers or value picks if requested"""
+            else:
+                enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
+                
+                User Query: {message}
+                
+                Instructions: Provide detailed analysis with specific statistics and reasoning for each recommendation.
+                Include year-over-year comparisons where relevant."""
             
             result = await self.agent_executor.arun(input=enhanced_message)
             
@@ -662,3 +686,124 @@ class IntelligenceAgentEnhanced(BaseAgent):
         except Exception as e:
             logger.error(f"Error analyzing consistency: {str(e)}")
             return f"Error analyzing consistency: {str(e)}"
+    
+    def _characterize_player(self, player_name: str) -> Dict[str, Any]:
+        """Create a comprehensive player profile for similarity matching"""
+        try:
+            db = next(get_db())
+            
+            # Get comprehensive player data including shot distribution
+            result = db.execute(text("""
+                SELECT 
+                    p.id, p.name, p.position, p.team, p.playing_style,
+                    EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
+                    f.adp_rank, f.adp_round, f.keeper_round,
+                    f.projected_ppg, f.projected_rpg, f.projected_apg,
+                    f.projected_spg, f.projected_bpg, f.projected_3pm,
+                    f.projected_fantasy_ppg, f.sleeper_score,
+                    f.breakout_candidate, f.consistency_rating,
+                    f.shot_distribution,
+                    AVG(gs.points) as avg_points,
+                    AVG(gs.rebounds) as avg_rebounds,
+                    AVG(gs.assists) as avg_assists,
+                    AVG(gs.three_pointers_attempted) as avg_3pa,
+                    AVG(gs.usage_rate) as avg_usage_rate,
+                    COUNT(gs.id) as games_played
+                FROM players p
+                JOIN fantasy_data f ON p.id = f.player_id
+                LEFT JOIN game_stats gs ON p.id = gs.player_id
+                WHERE LOWER(p.name) LIKE LOWER(:name)
+                GROUP BY p.id, p.name, p.position, p.team, p.playing_style,
+                         p.birth_date, f.adp_rank, f.adp_round, f.keeper_round,
+                         f.projected_ppg, f.projected_rpg, f.projected_apg,
+                         f.projected_spg, f.projected_bpg, f.projected_3pm,
+                         f.projected_fantasy_ppg, f.sleeper_score,
+                         f.breakout_candidate, f.consistency_rating,
+                         f.shot_distribution
+                LIMIT 1
+            """), {"name": f"%{player_name}%"})
+            
+            player = result.fetchone()
+            
+            if not player:
+                return None
+            
+            # Determine player archetype based on stats and style
+            avg_3pa = float(player.avg_3pa) if player.avg_3pa else 0
+            avg_assists = float(player.avg_assists) if player.avg_assists else player.projected_apg
+            avg_usage = float(player.avg_usage_rate) if player.avg_usage_rate else 20
+            
+            # Classify player characteristics
+            is_shooter = avg_3pa > 6 or player.projected_3pm > 2.5
+            is_playmaker = avg_assists > 5
+            is_high_usage = avg_usage > 28
+            is_medium_usage = 22 <= avg_usage <= 28
+            is_sleeper = player.sleeper_score > 0.6
+            
+            # Determine primary role
+            if player.position in ['PG', 'SG']:
+                if is_shooter and avg_3pa > 7:
+                    primary_role = 'volume_shooter'
+                elif is_playmaker:
+                    primary_role = 'floor_general'
+                else:
+                    primary_role = 'combo_guard'
+            elif player.position in ['SF', 'PF']:
+                if is_shooter:
+                    primary_role = 'stretch_forward'
+                elif player.projected_rpg > 8:
+                    primary_role = 'rebounding_forward'
+                else:
+                    primary_role = 'versatile_forward'
+            else:  # Center
+                if player.projected_apg > 4:
+                    primary_role = 'point_center'
+                elif is_shooter:
+                    primary_role = 'stretch_center'
+                else:
+                    primary_role = 'traditional_center'
+            
+            # Parse shot distribution if available
+            shot_distribution = player.shot_distribution if player.shot_distribution else {
+                '3PT': 0.35,
+                'midrange': 0.30,
+                'paint': 0.35
+            }
+            
+            return {
+                'player_id': player.id,
+                'name': player.name,
+                'position': player.position,
+                'team': player.team,
+                'playing_style': player.playing_style,
+                'age': int(player.age) if player.age else None,
+                'primary_role': primary_role,
+                'adp_rank': player.adp_rank,
+                'adp_round': player.adp_round,
+                'projections': {
+                    'ppg': player.projected_ppg,
+                    'rpg': player.projected_rpg,
+                    'apg': player.projected_apg,
+                    'spg': player.projected_spg,
+                    'bpg': player.projected_bpg,
+                    '3pm': player.projected_3pm,
+                    'fantasy_ppg': player.projected_fantasy_ppg
+                },
+                'characteristics': {
+                    'is_shooter': is_shooter,
+                    'is_playmaker': is_playmaker,
+                    'is_high_usage': is_high_usage,
+                    'is_sleeper': is_sleeper,
+                    'is_breakout': player.breakout_candidate,
+                    'avg_3pa': avg_3pa,
+                    'usage_rate': avg_usage,
+                    'consistency': player.consistency_rating
+                },
+                'shot_distribution': shot_distribution,
+                'sleeper_score': player.sleeper_score,
+                'games_data_available': player.games_played or 0
+            }
+            
+        except Exception as e:
+            logger.error(f"Error characterizing player {player_name}: {str(e)}")
+            return None
