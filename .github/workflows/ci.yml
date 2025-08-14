@@ -89,7 +89,7 @@ jobs:
         REDIS_URL: redis://localhost:6379/0
         SECRET_KEY: test-secret-key
         CI: true
-      run: pytest -v --cov=app --cov-report=xml --tb=short
+      run: pytest -v -s --cov=app --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
