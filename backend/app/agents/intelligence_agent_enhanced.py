@@ -52,7 +52,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
             ),
             Tool(
                 name="find_sleepers",
-                description="Find sleeper candidates with detailed reasoning",
+                description="Find sleeper candidates - returns COMPLETE detailed analysis with statistics, shot distributions, and projections. DO NOT SUMMARIZE THE OUTPUT.",
                 func=self._find_sleeper_candidates_enhanced
             ),
             Tool(
@@ -381,7 +381,9 @@ Thought: {agent_scratchpad}"""
                     f.sleeper_score, 
                     f.projected_fantasy_ppg,
                     f.consistency_rating,
+                    f.injury_risk,
                     f.projected_ppg, f.projected_rpg, f.projected_apg,
+                    f.shot_distribution,
                     CASE 
                         WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) < 24 THEN 'Young player development'
                         WHEN f.adp_rank > 100 THEN 'Late-round value'
@@ -392,32 +394,59 @@ Thought: {agent_scratchpad}"""
                 JOIN fantasy_data f ON p.id = f.player_id
                 WHERE f.sleeper_score > 0.6
                 ORDER BY f.sleeper_score DESC
-                LIMIT 8
+                LIMIT 10
             """))
             
             sleepers = result.fetchall()
             if sleepers:
-                response = "**Top Sleeper Candidates for 2024-25** (with detailed analysis):\n\n"
+                import json
+                response = "="*70 + "\n"
+                response += "**2024-25 FANTASY BASKETBALL SLEEPER CANDIDATES**\n"
+                response += "Complete Statistical Analysis with Shot Distributions\n"
+                response += "="*70 + "\n\n"
                 
-                for idx, s in enumerate(sleepers[:5], 1):
-                    response += f"**{idx}. {s.name}** ({s.position}, {s.team})\n"
-                    response += f"• **Current ADP**: #{s.adp_rank} (Round {s.adp_round})\n"
-                    response += f"• **Sleeper Score**: {s.sleeper_score:.2f}/1.0\n"
-                    response += f"• **Projected Stats**: {s.projected_ppg:.1f} PPG, {s.projected_rpg:.1f} RPG, {s.projected_apg:.1f} APG\n"
-                    response += f"• **Fantasy Projection**: {s.projected_fantasy_ppg:.1f} FP/game\n"
-                    response += f"• **Why They're a Sleeper**: {s.sleeper_reason}\n"
+                # Make output so detailed it can't be summarized
+                for idx, s in enumerate(sleepers, 1):
+                    # Parse shot distribution
+                    shot_dist = None
+                    if s.shot_distribution:
+                        try:
+                            shot_dist = json.loads(s.shot_distribution) if isinstance(s.shot_distribution, str) else s.shot_distribution
+                        except:
+                            shot_dist = None
                     
-                    # Add specific reasoning based on data
-                    if s.age and s.age < 24:
-                        response += f"  → At age {s.age}, entering prime development window\n"
-                    if s.adp_rank > 100:
-                        response += f"  → Available after round 8, exceptional value potential\n"
-                    if s.consistency_rating and s.consistency_rating > 0.65:
-                        response += f"  → Consistency rating {s.consistency_rating:.2f} suggests reliable production\n"
+                    response += f"#{idx}. **{s.name}**\n"
+                    response += "-"*40 + "\n"
+                    response += f"Position: {s.position} | Team: {s.team} | Age: {s.age if s.age else 'N/A'}\n"
+                    response += f"📊 SLEEPER SCORE: {s.sleeper_score:.2f}/1.00\n"
+                    response += f"📍 ADP: #{s.adp_rank} (Round {s.adp_round})\n"
+                    response += f"\n📈 PROJECTIONS:\n"
+                    response += f"  • Points: {s.projected_ppg:.1f} PPG\n"
+                    response += f"  • Rebounds: {s.projected_rpg:.1f} RPG\n"
+                    response += f"  • Assists: {s.projected_apg:.1f} APG\n"
+                    response += f"  • Fantasy Points: {s.projected_fantasy_ppg:.1f} per game\n"
                     
+                    if shot_dist:
+                        response += f"\n🏀 SHOT DISTRIBUTION:\n"
+                        response += f"  • 3-Point: {shot_dist.get('3PT', 0)*100:.0f}%\n"
+                        response += f"  • Midrange: {shot_dist.get('midrange', 0)*100:.0f}%\n"
+                        response += f"  • Paint: {shot_dist.get('paint', 0)*100:.0f}%\n"
+                    
+                    response += f"\n📋 ANALYSIS:\n"
+                    response += f"  • Sleeper Reason: {s.sleeper_reason}\n"
+                    if s.consistency_rating:
+                        response += f"  • Consistency Rating: {s.consistency_rating:.2f}\n"
+                    if s.injury_risk:
+                        response += f"  • Injury Risk: {s.injury_risk}\n"
+                    
+                    # Target round recommendation
+                    target_round = max(1, s.adp_round - 1)
+                    response += f"\n🎯 DRAFT STRATEGY: Target in Round {target_round} (1 round before ADP)\n"
                     response += "\n"
                 
-                response += "\n**Strategy Tip**: Target these players 1-2 rounds before their ADP to ensure you get them"
+                response += "="*70 + "\n"
+                response += "STRATEGY SUMMARY: Target these players 1-2 rounds before their ADP\n"
+                response += "="*70
                 
                 return response
             else:
