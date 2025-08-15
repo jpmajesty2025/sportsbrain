@@ -348,6 +348,12 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
 - Projected Fantasy PPG: {player.projected_fantasy_ppg:.1f}
 - Consistency: {player.consistency_rating:.2f} | Injury Risk: {player.injury_risk}
 
+[STRATEGY] **Strategic Insights**:
+- Opportunity Cost: {"Low - great value allows flexibility" if value_diff >= 2 else "High - limits draft options" if value_diff <= -1 else "Moderate - standard keeper play"}
+- Alternative Strategy: {"Look for better keeper options" if value_diff < 0 else f"Lock this in and build around {player.position} strength"}
+- Build Synergy: {"Punt FT% friendly" if player.position in ["C", "PF"] else "Balanced build friendly"}
+- Draft Capital Saved: {max(0, value_diff)} rounds of value to invest elsewhere
+
 [TIP] **Bottom Line**: {"Keep him!" if value_diff > 0 else "Pass and draft someone else"}
 """
             else:
@@ -597,27 +603,51 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
                 response += "- Target elite big men like Giannis, Gobert\n"
                 response += "- Focus on FG%, REB, BLK, STL\n"
                 response += "- Avoid guards who only provide FT% and 3PM\n"
+                response += "\n**Synergistic Categories**: You'll dominate FG%, REB, BLK\n"
+                response += "**Complementary Picks**: Look for Centers and PFs with 55%+ FG\n"
+                response += "**Round-by-Round**: R1-2: Elite bigs, R3-5: Rebounding wings, R6+: FG% specialists\n"
+                response += "**Position Scarcity**: Lock up Centers early (limited pool of elite ones)\n"
             elif punt_cat == "Assists":
                 response += "- Target scoring bigs and wings\n"
                 response += "- Focus on PTS, REB, stocks (STL+BLK)\n"
                 response += "- Avoid traditional point guards\n"
+                response += "\n**Synergistic Categories**: Strong in PTS, REB, and defensive stats\n"
+                response += "**Complementary Picks**: Scoring forwards and combo guards\n"
+                response += "**Round-by-Round**: R1-3: Elite scorers, R4-6: 3&D wings, R7+: Defensive bigs\n"
+                response += "**Position Scarcity**: Wings become crucial (need scoring without assists)\n"
             elif punt_cat == "Rebounds":
                 response += "- Target elite guards and perimeter players\n"
                 response += "- Focus on AST, STL, 3PM, FT%\n"
                 response += "- Avoid traditional big men and rebounding specialists\n"
                 response += "- Look for guards with high usage rates\n"
+                response += "\n**Synergistic Categories**: Excel in AST, STL, 3PM, FT%\n"
+                response += "**Complementary Picks**: High-usage guards and stretch forwards\n"
+                response += "**Round-by-Round**: R1-2: Elite guards, R3-5: 3PT specialists, R6+: Assist/steals guys\n"
+                response += "**Position Scarcity**: PG/SG heavy - grab them early and often\n"
             elif punt_cat == "Points":
                 response += "- Target defensive specialists and facilitators\n"
                 response += "- Focus on REB, AST, STL, BLK, FG%\n"
                 response += "- Look for players like Draymond Green, Marcus Smart\n"
+                response += "\n**Synergistic Categories**: Dominate defensive stats and percentages\n"
+                response += "**Complementary Picks**: Glue guys and defensive anchors\n"
+                response += "**Round-by-Round**: R1-3: Elite defenders, R4-7: Facilitators, R8+: Specialists\n"
+                response += "**Position Scarcity**: Very unique build - few players fit perfectly\n"
             elif punt_cat == "Steals":
                 response += "- Target traditional big men\n"
                 response += "- Focus on REB, BLK, FG%, points in the paint\n"
                 response += "- Avoid guard-heavy builds\n"
+                response += "\n**Synergistic Categories**: Elite in REB, BLK, FG%\n"
+                response += "**Complementary Picks**: Traditional centers and rebounding PFs\n"
+                response += "**Round-by-Round**: R1-3: Elite bigs, R4-6: Rebounding specialists, R7+: Block specialists\n"
+                response += "**Position Scarcity**: Center-heavy build - secure them early\n"
             elif punt_cat == "Blocks":
                 response += "- Target guards and wings\n"
                 response += "- Focus on AST, STL, 3PM, FT%\n"
                 response += "- Avoid traditional centers\n"
+                response += "\n**Synergistic Categories**: Strong in perimeter stats and percentages\n"
+                response += "**Complementary Picks**: Ball-handling wings and combo guards\n"
+                response += "**Round-by-Round**: R1-3: Elite guards/wings, R4-7: 3&D players, R8+: Assist specialists\n"
+                response += "**Position Scarcity**: Guard/Wing focused - balanced availability\n"
             
             return response
             

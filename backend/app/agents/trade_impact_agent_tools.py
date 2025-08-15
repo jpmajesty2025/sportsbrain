@@ -219,6 +219,27 @@ With Porzingis providing elite spacing and rim protection, Tatum gets:
 - Reduced defensive burden (can focus on offense)
 - MVP-caliber opportunity in improved system
 
+[STRATEGY] **Winner/Loser Analysis**:
+- **Winner**: Tatum (increased efficiency, MVP narrative)
+- **Slight Loser**: Brown (usage dip, but better shot quality)
+- **Neutral**: Porzingis (similar stats, new system)
+
+[TIMELINE] **Impact Timeline**:
+- Immediate (Games 1-20): Adjustment period, slight dip possible
+- Short-term (Games 21-40): Chemistry building, stats trending up
+- Long-term (Games 41+): Full integration, peak fantasy value
+
+[CATEGORIES] **Category Impact Breakdown**:
+- Points: +2-3 PPG for Tatum
+- Assists: +0.8 APG (more playmaking)
+- FG%: +1.5% (better shot selection)
+- 3PM: +0.3 per game (more open looks)
+- Rebounds: -0.5 RPG (Porzingis presence)
+
+[ALTERNATIVES] **Alternative Trade Targets**:
+- If you own Tatum: Hold and enjoy the boost
+- Similar beneficiaries: Brunson (with Towns), Booker (with Durant)
+
 [TARGET] **Fantasy Impact**: POSITIVE - Tatum becomes top-3 fantasy option
 """
             elif "lillard" in query.lower() and "giannis" in query.lower():
@@ -236,6 +257,33 @@ With Porzingis providing elite spacing and rim protection, Tatum gets:
 - Better shot quality with Giannis gravity
 - More catch-and-shoot 3s
 - Fewer isolation possessions
+
+[STRATEGY] **Winner/Loser Analysis**:
+- **Winner**: Giannis (efficiency skyrockets, easier baskets)
+- **Slight Winner**: Lillard (less wear, better teammates)
+- **Loser**: Middleton (third option, reduced touches)
+- **Deep League Winner**: Lopez (more open 3s from Giannis gravity)
+
+[TIMELINE] **Impact Timeline**:
+- Immediate: Chemistry questions, both slight dip
+- By All-Star Break: Fully integrated, both top-8 fantasy
+- Playoffs: Peak chemistry, championship window open
+
+[CATEGORIES] **Category Breakdown**:
+**Giannis**: 
+- FG%: +2% (better spacing)
+- Assists: -1 APG (Lillard handles)
+- Points: -1 PPG but more efficient
+
+**Lillard**:
+- Points: -3 PPG (less volume)
+- Assists: +1 APG (better shooters)
+- 3PM: Similar volume, better quality
+
+[ALTERNATIVES] **Similar Situations**:
+- Booker/Durant in Phoenix
+- Brunson/Towns in New York
+- Murray/Jokic continued excellence
 
 [TARGET] **Fantasy Impact**: Both remain elite top-10 options with complementary skills
 """

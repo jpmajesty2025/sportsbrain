@@ -396,9 +396,55 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     if s.injury_risk:
                         response += f"  • Injury Risk: {s.injury_risk}\n"
                     
-                    # Target round recommendation
+                    # Enhanced strategic insights
+                    response += f"\n🎯 STRATEGIC INSIGHTS:\n"
+                    
+                    # Draft timing recommendation
                     target_round = max(1, s.adp_round - 1)
-                    response += f"\n🎯 DRAFT STRATEGY: Target in Round {target_round} (1 round before ADP)\n"
+                    response += f"  • Optimal Draft Window: Rounds {target_round}-{s.adp_round}\n"
+                    response += f"  • Reach Threshold: Round {max(1, s.adp_round - 2)} (aggressive)\n"
+                    
+                    # Role-based analysis
+                    if s.projected_ppg >= 20:
+                        response += f"  • Role Profile: Primary Scorer - Build around as core piece\n"
+                    elif s.projected_ppg >= 15:
+                        response += f"  • Role Profile: Secondary Scorer - Excellent complement to stars\n"
+                    elif s.projected_apg >= 5:
+                        response += f"  • Role Profile: Playmaker - Boosts team assist totals\n"
+                    else:
+                        response += f"  • Role Profile: Role Player - Specialist for specific categories\n"
+                    
+                    # Team fit considerations
+                    response += f"  • Best Fit: "
+                    if shot_dist and shot_dist.get('3PT', 0) > 0.35:
+                        response += "Teams needing 3PT production\n"
+                    elif s.projected_rpg >= 8:
+                        response += "Teams needing rebounding help\n"
+                    elif s.projected_apg >= 5:
+                        response += "Teams needing playmaking\n"
+                    else:
+                        response += "Balanced roster construction\n"
+                    
+                    # Risk/Reward Score
+                    risk_score = 0
+                    if s.injury_risk == "High":
+                        risk_score += 3
+                    elif s.injury_risk == "Medium":
+                        risk_score += 2
+                    else:
+                        risk_score += 1
+                    
+                    reward_score = min(5, s.sleeper_score * 5)
+                    risk_reward_ratio = reward_score / risk_score
+                    
+                    response += f"  • Risk/Reward Score: {risk_reward_ratio:.2f} "
+                    if risk_reward_ratio >= 3:
+                        response += "(Excellent value)\n"
+                    elif risk_reward_ratio >= 2:
+                        response += "(Good value)\n"
+                    else:
+                        response += "(Moderate value)\n"
+                    
                     response += "\n"
                 
                 response += "="*70 + "\n"
@@ -477,6 +523,26 @@ class IntelligenceAgentEnhanced(BaseAgent):
                             response += f"  → Young player trajectory suggests continued growth\n"
                         elif b.age <= 26:
                             response += f"  → Entering statistical prime years\n"
+                    
+                    # Strategic draft recommendations
+                    response += f"\n**Draft Strategy**:\n"
+                    response += f"  • Target Round: {max(1, b.adp_round - 1)} (before consensus)\n"
+                    response += f"  • Pairing Suggestions: "
+                    if b.projected_apg >= 6:
+                        response += "Pair with elite scorers who need a playmaker\n"
+                    elif b.projected_rpg >= 8:
+                        response += "Pair with guards to balance rebounding\n"
+                    else:
+                        response += "Versatile - fits most roster constructions\n"
+                    
+                    # Risk assessment
+                    response += f"  • Breakout Confidence: "
+                    if b.sleeper_score >= 0.8:
+                        response += "High (80%+ probability)\n"
+                    elif b.sleeper_score >= 0.6:
+                        response += "Moderate (60-80% probability)\n"
+                    else:
+                        response += "Speculative (sub-60% probability)\n"
                     
                     response += "\n"
                 
