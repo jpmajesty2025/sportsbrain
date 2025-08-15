@@ -415,6 +415,30 @@ railway up  # Auto-deploys from master branch
 
 ---
 
+## 🔐 DATABASE CONNECTIONS (for local testing)
+
+The `.env` file in the root folder contains credentials for all databases:
+
+### PostgreSQL
+- **Connection**: Use `DATABASE_URL` environment variable
+- **Contains**: 151 fantasy-relevant players with projections, shot distributions, sleeper scores
+
+### Milvus (Vector DB)
+- **Host**: `MILVUS_HOST` 
+- **Token**: `MILVUS_TOKEN`
+- **Cloud**: Hosted on Zilliz Cloud
+- **Contains**: 572 player embeddings
+
+### Neo4j (Graph DB)
+- **URI**: `NEO4J_URI`
+- **Username**: `NEO4J_USERNAME`
+- **Password**: `NEO4J_PASSWORD`
+- **Contains**: Player-team relationships
+
+For local testing, ensure `.env` is loaded with `python-dotenv` and use these credentials directly.
+
+---
+
 ## 📊 GRADING SUMMARY
 
 | Criteria | Status | Score |
