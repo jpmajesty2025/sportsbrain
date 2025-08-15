@@ -74,6 +74,11 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 name="analyze_consistency",
                 description="Analyze player consistency and risk factors, check injury risk, evaluate consistency rating, assess player reliability",
                 func=self._analyze_consistency_enhanced
+            ),
+            Tool(
+                name="evaluate_player_draft_value",
+                description="Check if a specific player is worth drafting, evaluate draft value for a player, should I draft this player",
+                func=self._evaluate_player_draft_value
             )
         ]
         
@@ -763,6 +768,61 @@ class IntelligenceAgentEnhanced(BaseAgent):
         except Exception as e:
             logger.error(f"Error comparing players: {str(e)}")
             return f"Error comparing players: {str(e)}"
+    
+    def _evaluate_player_draft_value(self, player_name: str = "") -> str:
+        """Evaluate if a specific player is worth drafting"""
+        try:
+            if not player_name:
+                return "Please specify a player name to evaluate."
+            
+            db = next(get_db())
+            
+            # Clean the player name
+            clean_name = player_name.replace("?", "").strip()
+            
+            # Look for the player
+            result = db.execute(text("""
+                SELECT p.name, f.sleeper_score, f.adp_rank, f.adp_round,
+                       f.projected_fantasy_ppg, f.consistency_rating,
+                       f.injury_risk
+                FROM players p
+                JOIN fantasy_data f ON p.id = f.player_id
+                WHERE LOWER(p.name) LIKE LOWER(:pattern)
+                LIMIT 1
+            """), {"pattern": f"%{clean_name}%"})
+            
+            player = result.fetchone()
+            if not player:
+                return f"Could not find player matching '{player_name}'"
+            
+            # Evaluate draft value based on sleeper score
+            if player.sleeper_score >= 0.8:
+                verdict = "EXCELLENT VALUE - Definitely worth drafting!"
+                recommendation = f"Target {player.name} 1-2 rounds before their ADP of Round {player.adp_round}."
+            elif player.sleeper_score >= 0.7:
+                verdict = "GOOD VALUE - Worth drafting"
+                recommendation = f"Draft {player.name} at or slightly before their ADP of Round {player.adp_round}."
+            elif player.sleeper_score >= 0.5:
+                verdict = "FAIR VALUE - Decent pick at ADP"
+                recommendation = f"{player.name} is appropriately valued. Draft at ADP (Round {player.adp_round}) if they fit your build."
+            else:
+                verdict = "POOR VALUE - Better options available"
+                recommendation = f"Only draft {player.name} if they fall 2+ rounds past their ADP of Round {player.adp_round}."
+            
+            response = f"**{player.name} Draft Analysis**\n\n"
+            response += f"**Verdict**: {verdict}\n"
+            response += f"• **Sleeper Score**: {player.sleeper_score:.2f}/1.00\n"
+            response += f"• **ADP**: #{player.adp_rank} (Round {player.adp_round})\n"
+            response += f"• **Projected Fantasy PPG**: {player.projected_fantasy_ppg:.1f}\n"
+            response += f"• **Consistency**: {player.consistency_rating}\n"
+            response += f"• **Injury Risk**: {player.injury_risk}\n\n"
+            response += f"**Recommendation**: {recommendation}"
+            
+            return response
+            
+        except Exception as e:
+            logger.error(f"Error evaluating player draft value: {str(e)}")
+            return f"Error evaluating {player_name}: {str(e)}"
     
     def _analyze_consistency_enhanced(self, player_name: str) -> str:
         """Analyze player consistency with risk assessment"""

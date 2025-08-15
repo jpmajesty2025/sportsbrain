@@ -889,4 +889,13 @@ Assessment of Intelligence Agent Response Quality
   This suggests a hybrid approach where we detect query patterns and automatically     
    switch modes, rather than requiring users to explicitly request "detailed
   mode."
+  ---
+  1. "Is Gary Trent Jr. worth drafting?" - Should now work with the sleeper tool       
+  2. "What makes Paolo Banchero a breakout candidate?" - Should trigger more
+  detailed analysis
+  3. "Find breakout candidates" - Should still return the full list with details       
+
+  The Intelligence Agent is now more robust and can handle varied phrasings
+  without timing out. This demonstrates good agentic behavior - the agent reasons      
+  about which tool to use and provides appropriate responses based on query type.
   
