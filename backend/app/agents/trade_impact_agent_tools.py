@@ -34,31 +34,65 @@ class TradeImpactAgent(BaseAgent):
             # Trade Analysis Tools
             Tool(
                 name="search_trade_documents",
-                description="Search Milvus for trade analysis documents",
+                description=(
+                    "Search for trade analysis documents, trade information, deal details, "
+                    "transaction history, trade rumors, completed trades. "
+                    "Use for: trade search, find trades, trade documents, deal info, "
+                    "transaction details, trade database. "
+                    "Answers: What trades happened? Trade details? Recent transactions?"
+                ),
                 func=self._search_trade_documents
             ),
             Tool(
                 name="analyze_trade_impact",
-                description="Analyze how a specific trade affects player fantasy values",
+                description=(
+                    "Analyze trade impact on players, how trades affect fantasy value, "
+                    "role changes from trades, opportunity shifts, statistical impacts. "
+                    "Use for: trade impact, affect, influence, change, shift, "
+                    "Porzingis trade, Lillard trade, player impact, fantasy effect. "
+                    "Answers: How does Porzingis trade affect Tatum? Impact of Lillard trade? "
+                    "Trade effects on player X? Fantasy impact of trade?"
+                ),
                 func=self._analyze_trade_impact
             ),
             
             # Usage Rate Tools
             Tool(
                 name="calculate_usage_change",
-                description="Calculate projected usage rate changes after trades",
+                description=(
+                    "Calculate usage rate changes, touches, shot attempts, offensive role, "
+                    "ball handling responsibility, scoring burden after trades. "
+                    "Use for: usage rate, usage change, touches, attempts, role change, "
+                    "offensive load, scoring responsibility. "
+                    "Answers: Usage rate after trade? How much will usage change? "
+                    "More shots for player X? Offensive role impact?"
+                ),
                 func=self._calculate_usage_change
             ),
             Tool(
                 name="find_trade_beneficiaries",
-                description="Find players who benefit most from recent trades",
+                description=(
+                    "Find trade beneficiaries, winners, players who benefit, improved situations, "
+                    "better opportunities, fantasy winners from trades. "
+                    "Use for: benefited, benefit, winners, gainers, improved, helped, "
+                    "boosted, trade winners, who gained, positive impact. "
+                    "Answers: Who benefited from trades? Trade winners? Players helped by trades? "
+                    "Which players gained from Lillard trade? Beneficiaries of recent moves?"
+                ),
                 func=self._find_trade_beneficiaries
             ),
             
             # Depth Chart Tools
             Tool(
                 name="analyze_depth_chart",
-                description="Analyze depth chart changes and opportunity shifts",
+                description=(
+                    "Analyze depth charts, rotation changes, playing time shifts, "
+                    "starter vs bench roles, minutes distribution, lineup changes. "
+                    "Use for: depth chart, rotation, playing time, minutes, starters, "
+                    "bench, lineup, role in rotation. "
+                    "Answers: Depth chart after trade? Rotation impact? Minutes change? "
+                    "Starting lineup? Bench roles? Playing time shifts?"
+                ),
                 func=self._analyze_depth_chart
             )
         ]
@@ -91,8 +125,12 @@ class TradeImpactAgent(BaseAgent):
             )
         
         try:
-            # Add context about trade analysis
-            enhanced_message = f"[Context: Analyzing NBA trades and their fantasy basketball impact for 2024-25 season]\n{message}"
+            # Let the agent handle all queries with enhanced tool descriptions
+            enhanced_message = f"""[Context: Analyzing NBA trades and their fantasy basketball impact for 2024-25 season]
+
+User Query: {message}
+
+Instructions: Use the appropriate tool based on the query. Do not summarize tool outputs."""
             
             # Add timeout to prevent hanging
             result = await asyncio.wait_for(

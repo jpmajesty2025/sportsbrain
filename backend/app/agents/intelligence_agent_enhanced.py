@@ -47,37 +47,86 @@ class IntelligenceAgentEnhanced(BaseAgent):
         tools = [
             Tool(
                 name="analyze_player_stats",
-                description="Analyze detailed player statistics with trends, check player stats, get player projections, view player performance",
+                description=(
+                    "Analyze detailed player statistics, performance trends, and projections. "
+                    "Use for: player stats, performance analysis, statistical trends, player data, "
+                    "season stats, career stats, recent performance, stats comparison. "
+                    "Answers questions like: How did player X perform? What are player's stats? "
+                    "Show me player's numbers. Player analysis. Statistical breakdown."
+                ),
                 func=self._analyze_player_stats_enhanced
             ),
             Tool(
                 name="find_sleepers",
-                description="Find sleeper candidates, undervalued players, check if players are worth drafting, evaluate draft value, get sleeper scores, find late-round value - returns COMPLETE detailed analysis with statistics, shot distributions, and projections. DO NOT SUMMARIZE THE OUTPUT.",
+                description=(
+                    "Find sleeper candidates, undervalued players, hidden gems, late-round targets, "
+                    "draft steals, value picks, under-the-radar players, cheap DFS plays. "
+                    "Use for: sleepers, undervalued, hidden gems, late rounds, value, cheap, steals, "
+                    "deep league targets, waiver wire adds, unknown players, upside plays. "
+                    "Answers: Find sleepers, sleeper centers, sleepers like X, underrated players, "
+                    "who to target late, value picks, best late-round players. "
+                    "RETURNS COMPLETE ANALYSIS - DO NOT SUMMARIZE."
+                ),
                 func=self._find_sleeper_candidates_enhanced
             ),
             Tool(
                 name="identify_breakouts", 
-                description="Identify breakout candidates, breakout players, sophomore leaps, check if a player is a breakout candidate, find breakout players, get breakout analysis",
+                description=(
+                    "Identify breakout candidates, sophomore leap players, third-year jumps, "
+                    "most improved candidates, players ready to explode, ascending players. "
+                    "Use for: breakout, sophomore, second-year, third-year, improvement, "
+                    "leap, explosion, ascending, rising, emerging, developing players. "
+                    "Answers: Which sophomores will break out? Breakout candidates? "
+                    "Who will improve most? Rising stars? Players to watch? MIP candidates?"
+                ),
                 func=self._identify_breakout_candidates_enhanced
             ),
             Tool(
                 name="project_performance",
-                description="Project player performance with context, get player projections, forecast stats, predict performance",
+                description=(
+                    "Project future performance, season projections, statistical forecasts, "
+                    "2024-25 predictions, expected stats, outlook, ceiling and floor. "
+                    "Use for: projections, predictions, forecast, outlook, expected, "
+                    "will player X score, next season stats, 2024-25 numbers. "
+                    "Answers: Project player's stats, what will player average? "
+                    "Season predictions? Expected performance? Statistical projections?"
+                ),
                 func=self._project_player_performance_enhanced
             ),
             Tool(
                 name="compare_players",
-                description="Compare players with detailed analysis, player comparisons, head-to-head analysis, which player is better",
+                description=(
+                    "Compare two or more players head-to-head, versus analysis, player battles, "
+                    "who is better, side-by-side comparison, player A vs player B analysis. "
+                    "Use for: compare, versus, vs, better than, comparison, head-to-head, "
+                    "player A or B, choose between, pick one, who to draft. "
+                    "Answers: Compare X vs Y, who is better? Player A or Player B? "
+                    "Barnes vs Banchero? Which player to choose?"
+                ),
                 func=self._compare_players_enhanced
             ),
             Tool(
                 name="analyze_consistency",
-                description="Analyze player consistency and risk factors, check injury risk, evaluate consistency rating, assess player reliability",
+                description=(
+                    "Analyze consistency, reliability, injury risk, volatility, floor/ceiling, "
+                    "boom/bust potential, risk assessment, durability, health concerns. "
+                    "Use for: consistency, reliable, injury, risk, volatile, boom/bust, "
+                    "floor, ceiling, durability, health, games played, availability. "
+                    "Answers: How consistent is player? Injury risk? Reliable option? "
+                    "Boom or bust? High floor? Safe pick? Risky player?"
+                ),
                 func=self._analyze_consistency_enhanced
             ),
             Tool(
                 name="evaluate_player_draft_value",
-                description="Check if a specific player is worth drafting, evaluate draft value for a player, should I draft this player",
+                description=(
+                    "Evaluate if specific player is worth drafting, draft value analysis, "
+                    "should I draft player X, is player draftable, worth a pick, draft or pass. "
+                    "Use for: worth drafting, should I draft, draft value, draftable, "
+                    "worth picking, draft or not, good pick, bad pick, draft advice. "
+                    "Answers: Is Gary Trent Jr. worth drafting? Should I draft player X? "
+                    "Worth a pick? Draft or pass? Good value? Worth rostering?"
+                ),
                 func=self._evaluate_player_draft_value
             )
         ]
@@ -134,71 +183,14 @@ class IntelligenceAgentEnhanced(BaseAgent):
             )
         
         try:
-            # Direct routing for common query patterns that fail with the agent
-            message_lower = message.lower()
+            # Let the agent handle all queries with enhanced tool descriptions
+            # Add context to help the agent understand the request better
+            enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
             
-            # Handle "worth drafting" queries directly
-            if "worth drafting" in message_lower or "should i draft" in message_lower:
-                # Extract player name - look for capitalized words
-                import re
-                words = message.split()
-                player_name_parts = []
-                for word in words:
-                    # Check if word is capitalized and not a common word
-                    if word[0].isupper() and word.lower() not in ['is', 'worth', 'drafting', 'should', 'i', 'draft']:
-                        player_name_parts.append(word.replace('?', ''))
-                
-                if player_name_parts:
-                    player_name = ' '.join(player_name_parts)
-                    result = self._evaluate_player_draft_value(player_name)
-                    return AgentResponse(
-                        content=result,
-                        metadata={"direct_routing": True, "query_type": "draft_value"},
-                        tools_used=["evaluate_player_draft_value"],
-                        confidence=0.95
-                    )
+            User Query: {message}
             
-            # Handle "is X a breakout candidate" queries directly
-            if "breakout candidate" in message_lower:
-                # Extract player name
-                import re
-                # Pattern to extract name between "is" and "a breakout"
-                pattern = r'is\s+(.+?)\s+(?:a\s+)?breakout'
-                match = re.search(pattern, message_lower)
-                if match:
-                    player_name = match.group(1).strip()
-                    result = self._identify_breakout_candidates_enhanced(player_name)
-                    return AgentResponse(
-                        content=result,
-                        metadata={"direct_routing": True, "query_type": "breakout_check"},
-                        tools_used=["identify_breakouts"],
-                        confidence=0.95
-                    )
-            
-            # Detect if user is asking for similar players
-            similarity_keywords = ['like', 'similar to', 'comparable to', 'in the style of', 'resembles']
-            is_similarity_query = any(keyword in message_lower for keyword in similarity_keywords)
-            
-            # Add context about current date and enhance the query
-            if is_similarity_query:
-                enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
-                
-                User Query: {message}
-                
-                SIMILARITY REQUEST DETECTED: The user is asking for players similar to a reference player.
-                Instructions: 
-                1. First identify and profile the reference player (stats, style, role)
-                2. Find players with SIMILAR characteristics (not just any good players)
-                3. Explain specifically HOW each player is similar to the reference
-                4. Include comparative statistics showing the similarities
-                5. Focus on players who are also sleepers or value picks if requested"""
-            else:
-                enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
-                
-                User Query: {message}
-                
-                Instructions: Provide detailed analysis with specific statistics and reasoning for each recommendation.
-                Include year-over-year comparisons where relevant."""
+            Instructions: Provide detailed analysis with specific statistics and reasoning.
+            Use the appropriate tool based on the query type. Do not summarize tool outputs."""
             
             result = await self.agent_executor.arun(input=enhanced_message)
             

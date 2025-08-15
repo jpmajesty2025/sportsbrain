@@ -47,38 +47,77 @@ class DraftPrepAgent(BaseAgent):
             # Keeper Decision Tools
             Tool(
                 name="calculate_keeper_value",
-                description="Calculate if a player should be kept in a specific round",
+                description=(
+                    "Calculate keeper value, should I keep player X in round Y, is player worth keeping, "
+                    "keeper decision analysis, retention value, keep or drop decision. "
+                    "Use for: keep, keeper, retain, worth keeping, should I keep, keeper round, "
+                    "keeper value, retention, hold, preserve. "
+                    "Answers: Should I keep Ja Morant in round 3? Is LaMelo worth keeping in round 4? "
+                    "Keep or drop player X? Keeper advice for player Y?"
+                ),
                 func=self._calculate_keeper_value
             ),
             
             # ADP Analysis Tools
             Tool(
                 name="analyze_adp_value",
-                description="Find players with good value relative to their ADP",
+                description=(
+                    "Find ADP value picks, players falling in drafts, overvalued/undervalued by ADP, "
+                    "draft steals, reaches to avoid, value relative to ranking. "
+                    "Use for: ADP value, falling, rising, overvalued, undervalued, draft steal, "
+                    "reach, value pick, ADP bargain, mispriced. "
+                    "Answers: Who offers good ADP value? Undervalued players? Overvalued to avoid?"
+                ),
                 func=self._analyze_adp_value
             ),
             Tool(
                 name="get_adp_rankings",
-                description="Get current ADP rankings for players",
+                description=(
+                    "Get current ADP rankings, draft rankings, where players are being drafted, "
+                    "consensus rankings, mock draft data, average draft position. "
+                    "Use for: ADP, rankings, draft position, where drafted, consensus rank, "
+                    "mock draft results, typical draft spot. "
+                    "Answers: What's the ADP? Current rankings? Where is player going? Draft board?"
+                ),
                 func=self._get_adp_rankings
             ),
             
             # Punt Strategy Tools
             Tool(
                 name="build_punt_strategy",
-                description="Build a punt strategy team around a specific category",
+                description=(
+                    "Build punt strategy, punt FT%, punt FG%, punt assists, punt 3s, punt points, "
+                    "punt rebounds, punt steals, punt blocks, category punting, build around player. "
+                    "Use for: punt, punting, ignore category, sacrifice, tank, build around, "
+                    "strategy, team build, categorical approach. "
+                    "Answers: Build punt FT% team, punt assists build, best punt for Giannis? "
+                    "Punt strategy around player X? Category to punt?"
+                ),
                 func=self._build_punt_strategy
             ),
             Tool(
                 name="find_punt_fits",
-                description="Find players that fit a specific punt build",
+                description=(
+                    "Find players for punt builds, who fits punt FT%, punt FG% targets, "
+                    "punt assist players, category specialists, punt build targets. "
+                    "Use for: punt fit, category fit, punt target, specialist, fits build, "
+                    "punt complement, synergy, categorical fit. "
+                    "Answers: Who fits punt FT%? Best centers for punt FT? Punt assist targets?"
+                ),
                 func=self._find_punt_fits
             ),
             
             # Mock Draft Tools
             Tool(
                 name="simulate_draft_pick",
-                description="Simulate best available players at a draft position",
+                description=(
+                    "Mock draft simulation, best available at pick X, who to draft at pick 12, "
+                    "draft board at position, available players, mock draft pick, BPA. "
+                    "Use for: mock draft, pick X, draft position, best available, BPA, "
+                    "who to draft, draft simulation, pick recommendation. "
+                    "Answers: Mock draft for pick 12? Best available at pick 24? "
+                    "Who should I take with pick 8? Draft board for round 3?"
+                ),
                 func=self._simulate_draft_pick
             )
         ]
@@ -118,104 +157,6 @@ You have access to the following tools:"""
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
         """Process a draft-related query"""
         
-        # DIRECT TOOL ROUTING - bypass agent for common queries
-        message_lower = message.lower()
-        
-        # Keeper queries
-        if "keep" in message_lower or "keeper" in message_lower:
-            try:
-                tool_result = self._calculate_keeper_value(message)
-                return AgentResponse(
-                    content=tool_result,
-                    metadata={
-                        "context": context,
-                        "agent_type": "draft_prep_beta",
-                        "method": "direct_tool_call",
-                        "beta_note": "Using optimized direct routing"
-                    },
-                    tools_used=["calculate_keeper_value"],
-                    confidence=0.95
-                )
-            except Exception as e:
-                pass  # Fall through to agent
-        
-        # Punt strategy queries
-        elif "punt" in message_lower:
-            try:
-                tool_result = self._build_punt_strategy(message)
-                return AgentResponse(
-                    content=tool_result,
-                    metadata={
-                        "context": context,
-                        "agent_type": "draft_prep_beta",
-                        "method": "direct_tool_call"
-                    },
-                    tools_used=["build_punt_strategy"],
-                    confidence=0.95
-                )
-            except Exception as e:
-                pass  # Fall through to agent
-        
-        # ADP/value queries  
-        elif "adp" in message_lower or "value" in message_lower:
-            try:
-                tool_result = self._analyze_adp_value(message)
-                return AgentResponse(
-                    content=tool_result,
-                    metadata={
-                        "context": context,
-                        "agent_type": "draft_prep_beta",
-                        "method": "direct_tool_call"
-                    },
-                    tools_used=["analyze_adp_value"],
-                    confidence=0.95
-                )
-            except Exception as e:
-                pass  # Fall through to agent
-        
-        # Draft strategy queries - provide basic guidance
-        elif "strategy" in message_lower and ("pick" in message_lower or "draft" in message_lower):
-            return AgentResponse(
-                content="""For comprehensive draft strategy, I recommend:
-
-1. **Use the mock draft tool** to see available players at your pick
-2. **Check keeper values** for any keeper decisions
-3. **Review punt strategies** if you want to build around specific categories
-
-Example queries:
-- "Show mock draft for pick 12" - See available players
-- "Build punt FT% team" - Get category-specific strategy
-- "Should I keep Giannis in round 2?" - Keeper decisions
-
-For pick-specific strategy, consider:
-- Picks 1-3: Elite tier (Jokic, Giannis, Luka)
-- Picks 4-8: Balanced stars (Tatum, Haliburton, SGA)
-- Picks 9-12: Best available + quick turn
-- Picks 13+: Value hunting
-
-Note: Full round-by-round strategy requires more context about your league settings.""",
-                metadata={"note": "Generic strategy provided - full builder not implemented"},
-                confidence=0.7
-            )
-        
-        # Mock draft queries
-        elif "mock" in message_lower or ("draft" in message_lower and "strategy" not in message_lower) or ("pick" in message_lower and "strategy" not in message_lower):
-            try:
-                tool_result = self._simulate_draft_pick(message)
-                return AgentResponse(
-                    content=tool_result,
-                    metadata={
-                        "context": context,
-                        "agent_type": "draft_prep_beta",
-                        "method": "direct_tool_call"
-                    },
-                    tools_used=["simulate_draft_pick"],
-                    confidence=0.95
-                )
-            except Exception as e:
-                pass  # Fall through to agent
-        
-        # FALLBACK TO AGENT for complex or unclear queries
         if not self.agent_executor:
             return AgentResponse(
                 content="DraftPrep agent not properly initialized. Please check OpenAI API key.",
@@ -223,11 +164,13 @@ Note: Full round-by-round strategy requires more context about your league setti
             )
         
         try:
-            # Use agent for complex queries that don't match patterns
+            # Let the agent handle all queries with enhanced tool descriptions
             enhanced_message = f"""[Context: Fantasy basketball draft preparation for 2024-25 season]
-{message}
 
-Pass the COMPLETE user query to the tool, including all details like round numbers, player names, and categories."""
+User Query: {message}
+
+Instructions: Use the appropriate tool based on the query. Pass the COMPLETE user query to the tool, 
+including all details like round numbers, player names, and categories. Do not summarize tool outputs."""
             
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
