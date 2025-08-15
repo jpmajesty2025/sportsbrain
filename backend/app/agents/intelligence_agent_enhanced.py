@@ -97,14 +97,59 @@ class IntelligenceAgentEnhanced(BaseAgent):
     def _initialize_agent(self):
         """Initialize the enhanced agent with reasoning capabilities"""
         if settings.OPENAI_API_KEY:
+            from langchain.prompts import PromptTemplate
+            from langchain.agents import AgentExecutor, create_react_agent
+            
             llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.3)
-            self.agent_executor = initialize_agent(
-                tools=self.tools,
+            
+            # Custom prompt that preserves tool output detail
+            prefix = """You are an elite NBA fantasy basketball analyst preparing for the 2024-25 season.
+            
+CRITICAL INSTRUCTIONS:
+1. When a tool returns detailed output (statistics, lists, analysis), you MUST preserve ALL the details
+2. DO NOT summarize or condense tool outputs - present them in full
+3. You can add context or explanations, but NEVER remove information from tool outputs
+4. If a tool returns formatted output with bullet points or statistics, maintain that formatting
+
+You have access to the following tools:
+
+{tools}
+
+Use the following format:
+
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action (PRESERVE THIS ENTIRELY - DO NOT SUMMARIZE)
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question (INCLUDE ALL DETAILS FROM OBSERVATIONS)
+
+Begin!
+
+Question: {input}
+Thought: {agent_scratchpad}"""
+            
+            prompt = PromptTemplate(
+                input_variables=["input", "tools", "tool_names", "agent_scratchpad"],
+                template=prefix
+            )
+            
+            # Create agent with custom prompt
+            agent = create_react_agent(
                 llm=llm,
-                agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+                tools=self.tools,
+                prompt=prompt
+            )
+            
+            self.agent_executor = AgentExecutor(
+                agent=agent,
+                tools=self.tools,
                 verbose=True,
                 max_iterations=3,
-                handle_parsing_errors=True
+                handle_parsing_errors=True,
+                return_intermediate_steps=False
             )
     
     def _get_supported_tasks(self) -> List[str]:
