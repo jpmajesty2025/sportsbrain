@@ -278,8 +278,17 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
 
 ### Known Issues (Non-Critical)
 - ⚠️ **DraftPrep Agent**: In BETA - uses workaround for LangChain issues
+- ⚠️ **Intelligence Agent**: LangChain ReAct agent summarizes detailed tool outputs (agentic behavior working correctly, output condensation is a LangChain limitation)
 - ⚠️ **Milvus**: Some collections have schema mismatches
 - ⚠️ **Dependencies**: LangChain deprecation warnings
+
+### Output Detail Limitation
+The Intelligence Agent uses LangChain's ReAct pattern for agentic reasoning. While it correctly:
+- ✅ Reasons about which tool to use
+- ✅ Calls tools with appropriate parameters
+- ✅ Retrieves detailed data (shot distributions, statistics)
+
+The ReAct agent tends to summarize tool outputs. This is a known LangChain limitation where the LLM prioritizes concise responses over preserving all details. Users get accurate but condensed information. Future enhancement: Migrate to LangGraph for full output control.
 
 ### In Progress - Intelligence Agent Enhancement (Day 2-3)
 Following the plan in `find_sleepers_like_x_enhancement.md`:
