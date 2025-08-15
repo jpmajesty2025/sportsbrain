@@ -173,6 +173,31 @@ You have access to the following tools:"""
             except Exception as e:
                 pass  # Fall through to agent
         
+        # Draft strategy queries - provide basic guidance
+        elif "strategy" in message_lower and ("pick" in message_lower or "draft" in message_lower):
+            return AgentResponse(
+                content="""For comprehensive draft strategy, I recommend:
+
+1. **Use the mock draft tool** to see available players at your pick
+2. **Check keeper values** for any keeper decisions
+3. **Review punt strategies** if you want to build around specific categories
+
+Example queries:
+- "Show mock draft for pick 12" - See available players
+- "Build punt FT% team" - Get category-specific strategy
+- "Should I keep Giannis in round 2?" - Keeper decisions
+
+For pick-specific strategy, consider:
+- Picks 1-3: Elite tier (Jokic, Giannis, Luka)
+- Picks 4-8: Balanced stars (Tatum, Haliburton, SGA)
+- Picks 9-12: Best available + quick turn
+- Picks 13+: Value hunting
+
+Note: Full round-by-round strategy requires more context about your league settings.""",
+                metadata={"note": "Generic strategy provided - full builder not implemented"},
+                confidence=0.7
+            )
+        
         # Mock draft queries
         elif "mock" in message_lower or ("draft" in message_lower and "strategy" not in message_lower) or ("pick" in message_lower and "strategy" not in message_lower):
             try:
