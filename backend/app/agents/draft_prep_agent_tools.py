@@ -174,7 +174,7 @@ You have access to the following tools:"""
                 pass  # Fall through to agent
         
         # Mock draft queries
-        elif "mock" in message_lower or "draft" in message_lower or "pick" in message_lower:
+        elif "mock" in message_lower or ("draft" in message_lower and "strategy" not in message_lower) or ("pick" in message_lower and "strategy" not in message_lower):
             try:
                 tool_result = self._simulate_draft_pick(message)
                 return AgentResponse(
@@ -729,15 +729,19 @@ Pass the COMPLETE user query to the tool, including all details like round numbe
             pick_match = re.search(r'pick\s*(\d+)|round\s*(\d+)', pick_info.lower())
             
             if pick_match:
+                # Check if it explicitly says "round" vs "pick"
+                is_round = 'round' in pick_info.lower() and 'pick' not in pick_info.lower()
                 pick_num = int(pick_match.group(1) or pick_match.group(2))
-                if pick_num <= 15:  # Assume it's a round number
-                    # Convert to pick number (assuming 12-team league)
+                
+                if is_round:
+                    # User specified a round number
                     pick_start = (pick_num - 1) * 12 + 1
                     pick_end = pick_num * 12
                 else:
-                    # Direct pick number
+                    # User specified a pick number (default assumption)
+                    # Show players available around that pick
                     pick_start = max(1, pick_num - 3)
-                    pick_end = pick_num + 8
+                    pick_end = min(150, pick_num + 8)
             else:
                 # Default to first round
                 pick_start = 1
