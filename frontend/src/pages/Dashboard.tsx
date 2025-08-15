@@ -48,10 +48,10 @@ const agents: AgentCard[] = [
     icon: <PsychologyIcon sx={{ fontSize: 40 }} />,
     color: '#3B82F6',
     examples: [
-      'Find sleepers like Sengun',
-      'Which sophomores will break out?',
-      'Analyze player consistency',
-      'Compare Player A vs Player B'
+      'Find sleeper centers like Alperen Sengun',
+      'Which sophomores will break out in 2024-25?',
+      'Is Gary Trent Jr. worth drafting?',
+      'Compare Scottie Barnes vs Paolo Banchero'
     ]
   },
   {
@@ -63,9 +63,9 @@ const agents: AgentCard[] = [
     isBeta: true,
     examples: [
       'Should I keep Ja Morant in round 3?',
-      'Best punt FT% build',
-      'Mock draft for pick 7',
-      'Top value picks by ADP'
+      'Build a punt FT% team around Giannis',
+      'Show mock draft for pick 12',
+      'Is LaMelo Ball worth keeping in round 4?'
     ]
   },
   {
@@ -76,9 +76,9 @@ const agents: AgentCard[] = [
     color: '#F59E0B',
     examples: [
       'How does Porzingis trade affect Tatum?',
-      'Trade impact on team depth',
-      'Usage rate changes',
-      'Find trade beneficiaries'
+      'If Lakers trade for Trae Young, what happens to Reaves?',
+      'Which players benefited from the Lillard to Bucks trade?',
+      'How did the OG Anunoby trade affect Knicks usage rates?'
     ]
   }
 ];

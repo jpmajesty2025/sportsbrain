@@ -398,7 +398,29 @@ class IntelligenceAgentEnhanced(BaseAgent):
             # Original sleeper finding logic
             db = next(get_db())
             
-            result = db.execute(text("""
+            # Check for position filtering in criteria
+            position_filter = ""
+            criteria_lower = criteria.lower() if criteria else ""
+            
+            # Map position keywords to database positions
+            if "point guard" in criteria_lower or "pg" in criteria_lower:
+                position_filter = "AND p.position = 'PG'"
+            elif "shooting guard" in criteria_lower or "sg" in criteria_lower:
+                position_filter = "AND p.position = 'SG'"
+            elif "small forward" in criteria_lower or "sf" in criteria_lower:
+                position_filter = "AND p.position = 'SF'"
+            elif "power forward" in criteria_lower or "pf" in criteria_lower:
+                position_filter = "AND p.position = 'PF'"
+            elif "center" in criteria_lower or "centers" in criteria_lower:
+                position_filter = "AND p.position = 'C'"
+            elif "guard" in criteria_lower:
+                position_filter = "AND p.position IN ('PG', 'SG')"
+            elif "forward" in criteria_lower:
+                position_filter = "AND p.position IN ('SF', 'PF')"
+            elif "big" in criteria_lower or "bigs" in criteria_lower:
+                position_filter = "AND p.position IN ('PF', 'C')"
+            
+            query = f"""
                 SELECT 
                     p.name, p.position, p.team,
                     EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) as age,
@@ -418,15 +440,40 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 FROM players p
                 JOIN fantasy_data f ON p.id = f.player_id
                 WHERE f.sleeper_score > 0.6
+                {position_filter}
                 ORDER BY f.sleeper_score DESC
                 LIMIT 10
-            """))
+            """
+            
+            result = db.execute(text(query))
             
             sleepers = result.fetchall()
             if sleepers:
                 import json
                 response = "="*70 + "\n"
-                response += "**2024-25 FANTASY BASKETBALL SLEEPER CANDIDATES**\n"
+                if position_filter:
+                    # Extract position from filter for display
+                    if "SG" in position_filter:
+                        pos_display = "SHOOTING GUARD"
+                    elif "PG" in position_filter:
+                        pos_display = "POINT GUARD"
+                    elif "SF" in position_filter:
+                        pos_display = "SMALL FORWARD"
+                    elif "PF" in position_filter:
+                        pos_display = "POWER FORWARD"
+                    elif "C" in position_filter and "(" not in position_filter:
+                        pos_display = "CENTER"
+                    elif "'PG', 'SG'" in position_filter:
+                        pos_display = "GUARD"
+                    elif "'SF', 'PF'" in position_filter:
+                        pos_display = "FORWARD"
+                    elif "'PF', 'C'" in position_filter:
+                        pos_display = "BIG MAN"
+                    else:
+                        pos_display = "FILTERED"
+                    response += f"**2024-25 {pos_display} SLEEPER CANDIDATES**\n"
+                else:
+                    response += "**2024-25 FANTASY BASKETBALL SLEEPER CANDIDATES**\n"
                 response += "Complete Statistical Analysis with Shot Distributions\n"
                 response += "="*70 + "\n\n"
                 
