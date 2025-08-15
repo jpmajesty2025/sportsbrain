@@ -62,6 +62,7 @@ class InputValidator:
     ALLOWED_PATTERNS = [
         r"keeper.*round",
         r"should.*i.*draft",
+        r"worth.*draft",  # Added for "Is X worth drafting?"
         r"trade.*for",
         r"punt.*strategy",
         r"sleeper.*picks",
@@ -85,6 +86,7 @@ class InputValidator:
         r"rookie",
         r"veteran",
         r"breakout",
+        r"breakout.*candidate",  # Added for "Is X a breakout candidate?"
         r"bust",
         r"value.*pick",
     ]
