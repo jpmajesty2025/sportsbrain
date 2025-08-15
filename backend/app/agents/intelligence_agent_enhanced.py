@@ -134,9 +134,50 @@ class IntelligenceAgentEnhanced(BaseAgent):
             )
         
         try:
+            # Direct routing for common query patterns that fail with the agent
+            message_lower = message.lower()
+            
+            # Handle "worth drafting" queries directly
+            if "worth drafting" in message_lower or "should i draft" in message_lower:
+                # Extract player name - look for capitalized words
+                import re
+                words = message.split()
+                player_name_parts = []
+                for word in words:
+                    # Check if word is capitalized and not a common word
+                    if word[0].isupper() and word.lower() not in ['is', 'worth', 'drafting', 'should', 'i', 'draft']:
+                        player_name_parts.append(word.replace('?', ''))
+                
+                if player_name_parts:
+                    player_name = ' '.join(player_name_parts)
+                    result = self._evaluate_player_draft_value(player_name)
+                    return AgentResponse(
+                        content=result,
+                        metadata={"direct_routing": True, "query_type": "draft_value"},
+                        tools_used=["evaluate_player_draft_value"],
+                        confidence=0.95
+                    )
+            
+            # Handle "is X a breakout candidate" queries directly
+            if "breakout candidate" in message_lower:
+                # Extract player name
+                import re
+                # Pattern to extract name between "is" and "a breakout"
+                pattern = r'is\s+(.+?)\s+(?:a\s+)?breakout'
+                match = re.search(pattern, message_lower)
+                if match:
+                    player_name = match.group(1).strip()
+                    result = self._identify_breakout_candidates_enhanced(player_name)
+                    return AgentResponse(
+                        content=result,
+                        metadata={"direct_routing": True, "query_type": "breakout_check"},
+                        tools_used=["identify_breakouts"],
+                        confidence=0.95
+                    )
+            
             # Detect if user is asking for similar players
             similarity_keywords = ['like', 'similar to', 'comparable to', 'in the style of', 'resembles']
-            is_similarity_query = any(keyword in message.lower() for keyword in similarity_keywords)
+            is_similarity_query = any(keyword in message_lower for keyword in similarity_keywords)
             
             # Add context about current date and enhance the query
             if is_similarity_query:
