@@ -47,32 +47,32 @@ class IntelligenceAgentEnhanced(BaseAgent):
         tools = [
             Tool(
                 name="analyze_player_stats",
-                description="Analyze detailed player statistics with trends",
+                description="Analyze detailed player statistics with trends, check player stats, get player projections, view player performance",
                 func=self._analyze_player_stats_enhanced
             ),
             Tool(
                 name="find_sleepers",
-                description="Find sleeper candidates - returns COMPLETE detailed analysis with statistics, shot distributions, and projections. DO NOT SUMMARIZE THE OUTPUT.",
+                description="Find sleeper candidates, undervalued players, check if players are worth drafting, evaluate draft value, get sleeper scores, find late-round value - returns COMPLETE detailed analysis with statistics, shot distributions, and projections. DO NOT SUMMARIZE THE OUTPUT.",
                 func=self._find_sleeper_candidates_enhanced
             ),
             Tool(
                 name="identify_breakouts", 
-                description="Identify breakout candidates with statistical support",
+                description="Identify breakout candidates, breakout players, sophomore leaps, check if a player is a breakout candidate, find breakout players, get breakout analysis",
                 func=self._identify_breakout_candidates_enhanced
             ),
             Tool(
                 name="project_performance",
-                description="Project player performance with context",
+                description="Project player performance with context, get player projections, forecast stats, predict performance",
                 func=self._project_player_performance_enhanced
             ),
             Tool(
                 name="compare_players",
-                description="Compare players with detailed analysis",
+                description="Compare players with detailed analysis, player comparisons, head-to-head analysis, which player is better",
                 func=self._compare_players_enhanced
             ),
             Tool(
                 name="analyze_consistency",
-                description="Analyze player consistency and risk factors",
+                description="Analyze player consistency and risk factors, check injury risk, evaluate consistency rating, assess player reliability",
                 func=self._analyze_consistency_enhanced
             )
         ]
@@ -303,6 +303,28 @@ class IntelligenceAgentEnhanced(BaseAgent):
     def _find_sleeper_candidates_enhanced(self, criteria: str = "") -> str:
         """Find sleeper candidates with detailed reasoning for each"""
         try:
+            db = next(get_db())
+            
+            # Check if asking about a specific player's draft value
+            if criteria and ("worth" in criteria.lower() or "draft" in criteria.lower()):
+                # Look for player names in the criteria
+                player_check = db.execute(text("""
+                    SELECT p.name, f.sleeper_score, f.adp_rank, f.adp_round,
+                           f.projected_fantasy_ppg
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE LOWER(p.name) LIKE LOWER(:pattern)
+                """), {"pattern": f"%{criteria.replace('worth', '').replace('drafting', '').replace('draft', '').replace('?', '').strip()}%"})
+                
+                player_result = player_check.fetchone()
+                if player_result:
+                    if player_result.sleeper_score >= 0.7:
+                        return f"Yes, {player_result.name} is definitely worth drafting! Sleeper score: {player_result.sleeper_score:.2f}/1.00, ADP: Round {player_result.adp_round} (#{player_result.adp_rank}). They project for {player_result.projected_fantasy_ppg:.1f} fantasy PPG. Target them 1-2 rounds before their ADP."
+                    elif player_result.sleeper_score >= 0.5:
+                        return f"{player_result.name} is a decent value at their ADP. Sleeper score: {player_result.sleeper_score:.2f}/1.00, ADP: Round {player_result.adp_round} (#{player_result.adp_rank}). They're worth drafting at or slightly before their ADP."
+                    else:
+                        return f"{player_result.name} is not a great value. Sleeper score: {player_result.sleeper_score:.2f}/1.00, ADP: Round {player_result.adp_round} (#{player_result.adp_rank}). Consider other options unless they fall 2+ rounds past ADP."
+            
             # Check if this is a "players like X" query
             if "like" in criteria.lower():
                 # Extract player name after "like"
@@ -464,6 +486,24 @@ class IntelligenceAgentEnhanced(BaseAgent):
         try:
             db = next(get_db())
             
+            # Check if asking about a specific player
+            if criteria:
+                # Look for player names in the criteria
+                player_check = db.execute(text("""
+                    SELECT p.name, f.breakout_candidate
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE LOWER(p.name) LIKE LOWER(:pattern)
+                """), {"pattern": f"%{criteria}%"})
+                
+                player_result = player_check.fetchone()
+                if player_result:
+                    if player_result.breakout_candidate:
+                        return f"Yes, {player_result.name} is a breakout candidate for 2024-25. They are expected to significantly improve their fantasy production based on age, role expansion, and team situation."
+                    else:
+                        return f"No, {player_result.name} is not considered a breakout candidate. They are either already established or not expected to have a significant leap in production."
+            
+            # Default behavior - return all breakout candidates
             result = db.execute(text("""
                 SELECT 
                     p.name, p.position, p.team,
