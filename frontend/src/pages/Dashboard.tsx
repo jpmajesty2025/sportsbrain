@@ -71,14 +71,14 @@ const agents: AgentCard[] = [
   {
     id: 'trade_impact',
     name: 'TradeImpact Agent',
-    description: 'Trade analysis, usage projections, and depth charts',
+    description: 'Analysis of recent NBA trades and their fantasy impact',
     icon: <SwapHorizIcon sx={{ fontSize: 40 }} />,
     color: '#F59E0B',
     examples: [
       'How does Porzingis trade affect Tatum?',
-      'If Lakers trade for Trae Young, what happens to Reaves?',
       'Which players benefited from the Lillard to Bucks trade?',
-      'How did the OG Anunoby trade affect Knicks usage rates?'
+      'What was the fantasy impact of the Porzingis trade?',
+      'How did Lillard trade affect Giannis usage rate?'
     ]
   }
 ];

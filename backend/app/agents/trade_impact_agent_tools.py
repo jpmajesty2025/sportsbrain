@@ -288,7 +288,44 @@ With Porzingis providing elite spacing and rim protection, Tatum gets:
 [TARGET] **Fantasy Impact**: Both remain elite top-10 options with complementary skills
 """
             else:
-                return "Trade scenario not found. Please specify player names or trade details."
+                return """
+**Trade Analysis Limitations**
+
+I can analyze the fantasy impact of these actual NBA trades from my database:
+- Kristaps Porzingis to Boston (impact on Tatum, Brown)
+- Damian Lillard to Milwaukee (impact on Giannis, Middleton)
+- Marcus Smart to Memphis (impact on Grizzlies rotation)
+
+**For Hypothetical Trades:**
+I don't have predictive modeling capabilities for trades that haven't happened. 
+Analyzing hypothetical trades properly would require:
+- Team depth chart data
+- Coaching system preferences
+- Historical role change patterns
+- Usage rate redistribution models
+
+**Manual Analysis Guide for Hypothetical Trades:**
+
+1. **Position Overlap Impact**:
+   - Same position = -30-40% usage for incumbent
+   - Adjacent position = -15-20% usage
+   - Different position = -5-10% usage
+
+2. **Star Addition Effects**:
+   - Role players lose 3-5 fantasy PPG
+   - Secondary stars lose 15-20% usage
+   - Efficiency may improve with less defensive focus
+
+3. **Historical Patterns**:
+   - Point guards affect entire team's assist totals
+   - Elite scorers reduce everyone's shot attempts
+   - Defensive specialists don't impact offensive stats much
+
+**Recommended Resources:**
+- ESPN Trade Machine for roster fit
+- FantasyPros trade analyzer for projections
+- Reddit r/fantasybball for community analysis
+"""
                 
         except Exception as e:
             return f"Error in fallback analysis: {str(e)}"
@@ -304,9 +341,16 @@ With Porzingis providing elite spacing and rim protection, Tatum gets:
             # Then add PostgreSQL analysis for current stats
             db = next(get_db())
             
-            # Extract player names from query
+            # Extract player names from query - expanded list
             player_names = []
-            for name in ["Tatum", "Porzingis", "Giannis", "Lillard", "Brown", "Holiday"]:
+            common_players = [
+                "Tatum", "Porzingis", "Giannis", "Lillard", "Brown", "Holiday",
+                "Trae", "Young", "Reaves", "LeBron", "Davis", "Mitchell", "Bam", 
+                "Adebayo", "Towns", "KAT", "Brunson", "Randle", "Booker", "Durant",
+                "Embiid", "Maxey", "Harden", "George", "Kawhi", "Leonard", "Curry",
+                "Doncic", "Irving", "Jokic", "Murray", "Porter", "Gordon"
+            ]
+            for name in common_players:
                 if name.lower() in query.lower():
                     player_names.append(name)
             
