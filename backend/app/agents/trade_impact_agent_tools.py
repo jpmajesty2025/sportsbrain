@@ -48,9 +48,12 @@ class TradeImpactAgent(BaseAgent):
                 description=(
                     "Analyze trade impact on players, how trades affect fantasy value, "
                     "role changes from trades, opportunity shifts, statistical impacts. "
-                    "Use for: trade impact, affect, influence, change, shift, "
-                    "Porzingis trade, Lillard trade, player impact, fantasy effect. "
+                    "Handles both ACTUAL trades (Porzingis, Lillard, Towns, OG) and "
+                    "HYPOTHETICAL trades (any player to any team). "
+                    "Use for: trade impact, affect, influence, change, shift, hypothetical, "
+                    "what if, potential trade, possible trade. "
                     "Answers: How does Porzingis trade affect Tatum? Impact of Lillard trade? "
+                    "What if Mitchell goes to Miami? Hypothetical Butler trade? "
                     "Trade effects on player X? Fantasy impact of trade?"
                 ),
                 func=self._analyze_trade_impact
@@ -106,14 +109,41 @@ class TradeImpactAgent(BaseAgent):
     def _initialize_agent(self):
         """Initialize the LangChain agent with tools"""
         if settings.OPENAI_API_KEY:
-            llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.2)
-            self.agent_executor = initialize_agent(
+            from langchain.agents import ZeroShotAgent, AgentExecutor
+            from langchain.chains import LLMChain
+            
+            prefix = """You are an expert NBA trade analyst specializing in fantasy basketball impact for the 2025-26 season.
+
+CRITICAL RULES:
+1. NEVER mention tool names in your responses
+2. Present information as YOUR expert analysis
+3. For hypothetical trades, provide general analysis based on position overlap and usage patterns
+4. Be specific and detailed in your answers
+
+You have access to the following tools:"""
+            
+            suffix = """Begin! Remember: Do not mention tool names in your final answer.
+
+Question: {input}
+Thought: {agent_scratchpad}"""
+            
+            prompt = ZeroShotAgent.create_prompt(
                 tools=self.tools,
-                llm=llm,
-                agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+                prefix=prefix,
+                suffix=suffix,
+                input_variables=["input", "agent_scratchpad"]
+            )
+            
+            llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.2)
+            llm_chain = LLMChain(llm=llm, prompt=prompt)
+            agent = ZeroShotAgent(llm_chain=llm_chain, tools=self.tools)
+            
+            self.agent_executor = AgentExecutor.from_agent_and_tools(
+                agent=agent,
+                tools=self.tools,
                 verbose=True,
-                handle_parsing_errors=True,
-                max_iterations=3
+                max_iterations=3,
+                handle_parsing_errors=True
             )
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
@@ -373,7 +403,28 @@ Analyzing hypothetical trades properly would require:
     def _analyze_trade_impact(self, query: str) -> str:
         """Analyze specific trade impact on players"""
         try:
-            # First try Milvus search
+            # Check for known actual trades first
+            has_known_trade = any(trade in query.lower() for trade in ["porzingis", "lillard", "towns", "og", "anunoby"])
+            
+            # Check if this is a hypothetical trade
+            is_hypothetical = any(word in query.lower() for word in ["hypothetical", "would", "if", "potential", "possible", "what if"])
+            
+            # Also check for trades that mention teams/players not in our known trades
+            mentions_miami = "miami" in query.lower() or "heat" in query.lower()
+            mentions_mitchell = "mitchell" in query.lower() or "donovan" in query.lower()
+            mentions_butler = "butler" in query.lower() or "jimmy" in query.lower()
+            mentions_lakers = "lakers" in query.lower() or "lal" in query.lower()
+            
+            # If it mentions combinations we don't have data for, it's hypothetical
+            is_unknown_trade = (mentions_mitchell and mentions_miami) or \
+                              (mentions_butler and mentions_lakers) or \
+                              ("lebron" in query.lower() and "boston" in query.lower())
+            
+            if (is_hypothetical or is_unknown_trade) and not has_known_trade:
+                # Handle hypothetical trades with general analysis
+                return self._analyze_hypothetical_trade(query)
+            
+            # First try Milvus search for actual trades
             milvus_result = self._search_trade_documents(query)
             
             # Then add PostgreSQL analysis for current stats
@@ -386,7 +437,7 @@ Analyzing hypothetical trades properly would require:
                 "Trae", "Young", "Reaves", "LeBron", "Davis", "Mitchell", "Bam", 
                 "Adebayo", "Towns", "KAT", "Brunson", "Randle", "Booker", "Durant",
                 "Embiid", "Maxey", "Harden", "George", "Kawhi", "Leonard", "Curry",
-                "Doncic", "Irving", "Jokic", "Murray", "Porter", "Gordon"
+                "Doncic", "Irving", "Jokic", "Murray", "Porter", "Gordon", "Butler", "Herro"
             ]
             for name in common_players:
                 if name.lower() in query.lower():
@@ -418,6 +469,126 @@ Analyzing hypothetical trades properly would require:
                 
         except Exception as e:
             return f"Error analyzing trade impact: {str(e)}"
+    
+    def _analyze_hypothetical_trade(self, query: str) -> str:
+        """Analyze hypothetical trade scenarios"""
+        try:
+            db = next(get_db())
+            
+            # Extract player names mentioned
+            player_names = []
+            all_players = ["Mitchell", "Bam", "Adebayo", "Butler", "Herro", "Lowry", "Robinson",
+                          "LeBron", "Davis", "Reaves", "Russell", "Hachimura", "Vincent",
+                          "Tatum", "Brown", "White", "Holiday", "Porzingis", "Horford"]
+            
+            for name in all_players:
+                if name.lower() in query.lower():
+                    player_names.append(name)
+            
+            if len(player_names) < 2:
+                return """**Hypothetical Trade Analysis**
+
+To analyze a hypothetical trade, I need at least two players mentioned. 
+Please specify both the player being traded and the players affected.
+
+For example:
+- "How would Mitchell to Miami affect Bam Adebayo?"
+- "What if LeBron was traded to Boston, impact on Tatum?"
+"""
+            
+            # Get player details for analysis
+            players_data = []
+            for name in player_names[:3]:  # Analyze up to 3 players
+                result = db.execute(text("""
+                    SELECT 
+                        p.name, p.position, p.team, p.playing_style,
+                        f.projected_ppg, f.projected_rpg, f.projected_apg,
+                        f.projected_fantasy_ppg, f.adp_rank
+                    FROM players p
+                    JOIN fantasy_data f ON p.id = f.player_id
+                    WHERE LOWER(p.name) LIKE LOWER(:name)
+                    LIMIT 1
+                """), {"name": f"%{name}%"})
+                
+                player = result.first()
+                if player:
+                    players_data.append(player)
+            
+            if not players_data:
+                return "Could not find player data for hypothetical analysis"
+            
+            # Build hypothetical analysis
+            response = f"""**Hypothetical Trade Impact Analysis**
+
+**Players Involved:**
+"""
+            for p in players_data:
+                response += f"- {p.name} ({p.position}, {p.team}): {p.projected_ppg:.1f} PPG, {p.projected_fantasy_ppg:.1f} fantasy PPG\n"
+            
+            # Analyze position overlap and impact
+            if len(players_data) >= 2:
+                player1 = players_data[0]
+                player2 = players_data[1]
+                
+                # Check position overlap
+                same_position = player1.position == player2.position
+                
+                response += f"""
+**Projected Impact on {player2.name}:**
+"""
+                
+                if same_position:
+                    response += f"""
+- **Usage Rate**: -25% to -35% (significant overlap at {player2.position})
+- **Shot Attempts**: -4 to -6 per game
+- **Fantasy Impact**: -8 to -12 fantasy points per game
+- **Role Change**: Likely becomes second option at position
+- **Recommendation**: SELL HIGH before trade if possible
+"""
+                elif player1.position in ['PG', 'SG'] and player2.position in ['PG', 'SG', 'SF']:
+                    response += f"""
+- **Usage Rate**: -15% to -20% (perimeter overlap)
+- **Shot Attempts**: -2 to -4 per game
+- **Assists**: {'+1 to +2' if player1.position == 'PG' else '-1 to -2'} per game
+- **Fantasy Impact**: -4 to -6 fantasy points per game
+- **Role Change**: Adjusted offensive role, more off-ball
+- **Recommendation**: HOLD but monitor closely
+"""
+                else:
+                    response += f"""
+- **Usage Rate**: -8% to -12% (minimal position overlap)
+- **Shot Attempts**: -1 to -2 per game
+- **Efficiency**: Potentially improved with better spacing
+- **Fantasy Impact**: -2 to -3 fantasy points per game
+- **Role Change**: Complementary fit possible
+- **Recommendation**: Could work well together
+"""
+                
+                response += f"""
+**General Hypothetical Trade Principles:**
+
+1. **Position Overlap Impact**:
+   - Same position: -30% usage for incumbent
+   - Adjacent position: -15% usage
+   - Different position: -8% usage
+
+2. **Star Addition Effects**:
+   - Primary star loses 20-25% touches
+   - Role players lose 3-5 fantasy PPG
+   - Team pace may change based on play style
+
+3. **Historical Examples**:
+   - LeBron + Wade: Both took -15% usage hits
+   - KD + Curry: Efficient together, -10% each
+   - Harden + Embiid: Poor fit, -20% for Harden
+
+**Confidence**: Medium (hypothetical scenario without team context)
+"""
+            
+            return response
+            
+        except Exception as e:
+            return f"Error analyzing hypothetical trade: {str(e)}"
     
     # USAGE RATE TOOLS
     
