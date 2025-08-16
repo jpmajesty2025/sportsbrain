@@ -375,12 +375,44 @@ including all details like round numbers, player names, and categories. Do not s
             return f"Error analyzing ADP value: {str(e)}"
     
     def _get_adp_rankings(self, position: str = "") -> str:
-        """Get current ADP rankings, optionally filtered by position"""
+        """Get current ADP rankings, optionally filtered by position or player"""
         try:
             db = next(get_db())
             
+            # Check if asking about a specific player
+            position_lower = position.lower()
+            if "adp" in position_lower or "ranking" in position_lower:
+                # Extract player name from queries like "What's LaMelo Ball's ADP?"
+                import re
+                # Look for capitalized names
+                names = re.findall(r'[A-Z][a-z]+(?: [A-Z][a-z]+)*', position)
+                if names:
+                    player_name = ' '.join(names)
+                    # Look up specific player
+                    result = db.execute(text("""
+                        SELECT p.name, p.position, p.team, f.adp_rank, f.adp_round, 
+                               f.projected_fantasy_ppg
+                        FROM players p
+                        JOIN fantasy_data f ON p.id = f.player_id
+                        WHERE LOWER(p.name) LIKE LOWER(:name)
+                        LIMIT 1
+                    """), {"name": f"%{player_name}%"})
+                    
+                    player = result.first()
+                    if player:
+                        return f"""**{clean_unicode(player.name)} ADP Information**:
+                        
+• **Current ADP**: #{player.adp_rank} (Round {player.adp_round})
+• **Position**: {player.position}
+• **Team**: {player.team}
+• **Projected Fantasy PPG**: {player.projected_fantasy_ppg:.1f}
+
+[TIP] Draft Window: Target 3-5 picks before ADP#{player.adp_rank}"""
+                    else:
+                        position = ""  # Fall through to general rankings
+            
             # Build query based on position filter
-            if position:
+            if position and position.upper() in ['PG', 'SG', 'SF', 'PF', 'C']:
                 query = text("""
                     SELECT p.name, p.position, p.team, f.adp_rank, f.adp_round
                     FROM players p
@@ -694,26 +726,35 @@ including all details like round numbers, player names, and categories. Do not s
         try:
             # Extract round/pick number
             import re
-            pick_match = re.search(r'pick\s*(\d+)|round\s*(\d+)', pick_info.lower())
             
-            if pick_match:
-                # Check if it explicitly says "round" vs "pick"
-                is_round = 'round' in pick_info.lower() and 'pick' not in pick_info.lower()
-                pick_num = int(pick_match.group(1) or pick_match.group(2))
-                
-                if is_round:
-                    # User specified a round number
-                    pick_start = (pick_num - 1) * 12 + 1
-                    pick_end = pick_num * 12
-                else:
-                    # User specified a pick number (default assumption)
-                    # Show players available around that pick
-                    pick_start = max(1, pick_num - 3)
-                    pick_end = min(150, pick_num + 8)
+            # Check for round range (e.g., "rounds 8-10")
+            range_match = re.search(r'rounds?\s*(\d+)\s*[-–]\s*(\d+)', pick_info.lower())
+            if range_match:
+                start_round = int(range_match.group(1))
+                end_round = int(range_match.group(2))
+                pick_start = (start_round - 1) * 12 + 1
+                pick_end = end_round * 12
             else:
-                # Default to first round
-                pick_start = 1
-                pick_end = 15
+                pick_match = re.search(r'pick\s*(\d+)|round\s*(\d+)', pick_info.lower())
+                
+                if pick_match:
+                    # Check if it explicitly says "round" vs "pick"
+                    is_round = 'round' in pick_info.lower() and 'pick' not in pick_info.lower()
+                    pick_num = int(pick_match.group(1) or pick_match.group(2))
+                    
+                    if is_round:
+                        # User specified a round number
+                        pick_start = (pick_num - 1) * 12 + 1
+                        pick_end = pick_num * 12
+                    else:
+                        # User specified a pick number (default assumption)
+                        # Show players available around that pick
+                        pick_start = max(1, pick_num - 3)
+                        pick_end = min(150, pick_num + 8)
+                else:
+                    # Default to first round
+                    pick_start = 1
+                    pick_end = 15
             
             db = next(get_db())
             

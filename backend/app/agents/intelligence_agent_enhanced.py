@@ -253,13 +253,19 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 
                 # Age and career stage context
                 if player.age:
-                    response += f"**Profile**: {player.age} years old, "
-                    if player.age < 25:
-                        response += "entering prime development years\n"
-                    elif player.age <= 29:
-                        response += "in statistical prime\n"
-                    else:
-                        response += "veteran with established role\n"
+                    try:
+                        age = int(player.age) if player.age else 0
+                    except (ValueError, TypeError):
+                        age = 0
+                    
+                    if age > 0:
+                        response += f"**Profile**: {age} years old, "
+                        if age < 25:
+                            response += "entering prime development years\n"
+                        elif age <= 29:
+                            response += "in statistical prime\n"
+                        else:
+                            response += "veteran with established role\n"
                 else:
                     response += f"**Profile**: {player.position}, {player.team}\n"
                 
@@ -272,8 +278,13 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 
                 # Points analysis
                 if player.last_season_ppg:
-                    proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
-                    last_ppg = float(player.last_season_ppg) if player.last_season_ppg else 0
+                    try:
+                        proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
+                        last_ppg = float(player.last_season_ppg) if player.last_season_ppg else 0
+                    except (ValueError, TypeError):
+                        proj_ppg = 0
+                        last_ppg = 0
+                    
                     if last_ppg > 0:
                         ppg_change = ((proj_ppg - last_ppg) / last_ppg * 100)
                         response += f"• Points: {proj_ppg:.1f} PPG "
@@ -767,13 +778,24 @@ class IntelligenceAgentEnhanced(BaseAgent):
     def _compare_players_enhanced(self, players: str) -> str:
         """Compare players with detailed statistical analysis"""
         try:
-            # Parse player names (expecting format: "Player1 vs Player2")
-            if " vs " in players.lower():
+            # Parse player names - handle multiple formats
+            players_lower = players.lower()
+            if " vs " in players_lower:
                 names = players.split(" vs ")
-            elif " or " in players.lower():
+            elif " versus " in players_lower:
+                names = players.split(" versus ")
+            elif " or " in players_lower:
                 names = players.split(" or ")
+            elif " and " in players_lower:
+                names = players.split(" and ")
+            elif ", " in players:
+                names = players.split(", ")
             else:
-                return "Please provide two players to compare (e.g., 'LeBron vs Durant')"
+                # Try to extract capitalized names
+                import re
+                names = re.findall(r'[A-Z][a-z]+(?: [A-Z][a-z]+)*', players)
+                if len(names) != 2:
+                    return "Please provide two players to compare (e.g., 'LeBron vs Durant' or 'Barnes and Banchero')"
             
             if len(names) != 2:
                 return "Please provide exactly two players to compare"

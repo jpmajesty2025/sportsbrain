@@ -447,6 +447,22 @@ Analyzing hypothetical trades properly would require:
                     "Jalen Brunson": -1.5,
                     "Julius Randle": -4.0,  # Traded away
                     "Donte DiVincenzo": +2.0
+                },
+                "og" : {  # OG Anunoby trade to Knicks
+                    "OG Anunoby": +2.0,  # More touches in NY system
+                    "Jalen Brunson": -1.0,  # Slight usage dip with another scorer
+                    "Julius Randle": -2.0,  # Reduced when healthy
+                    "RJ Barrett": +3.0,  # Increased role in Toronto
+                    "Scottie Barnes": +1.5,  # More playmaking with RJ
+                    "Pascal Siakam": -1.0  # Before his own trade
+                },
+                "anunoby": {  # Alias for OG trade
+                    "OG Anunoby": +2.0,
+                    "Jalen Brunson": -1.0,
+                    "Julius Randle": -2.0,
+                    "RJ Barrett": +3.0,
+                    "Scottie Barnes": +1.5,
+                    "Pascal Siakam": -1.0
                 }
             }
             
@@ -458,7 +474,7 @@ Analyzing hypothetical trades properly would require:
                     break
             
             if not trade_key:
-                return "Please specify a trade (e.g., Porzingis, Lillard, Towns trade)"
+                return "Please specify a trade (e.g., Porzingis, Lillard, Towns, OG/Anunoby trade)"
             
             response = f"[STATS] **Usage Rate Changes from {trade_key.title()} Trade**:\n\n"
             
