@@ -51,10 +51,11 @@ class TradeImpactAgent(BaseAgent):
                     "Handles both ACTUAL trades (Porzingis, Lillard, Towns, OG) and "
                     "HYPOTHETICAL trades (any player to any team). "
                     "Use for: trade impact, affect, influence, change, shift, hypothetical, "
-                    "what if, potential trade, possible trade. "
-                    "Answers: How does Porzingis trade affect Tatum? Impact of Lillard trade? "
-                    "What if Mitchell goes to Miami? Hypothetical Butler trade? "
-                    "Trade effects on player X? Fantasy impact of trade?"
+                    "what if, potential trade, possible trade, Mitchell to Miami, Butler to Lakers. "
+                    "INPUT: Just pass the original query text as-is. "
+                    "Examples: 'How would a hypothetical Donovan Mitchell to Miami trade affect Bam Adebayo?', "
+                    "'What was the fantasy impact of the Porzingis trade?', "
+                    "'If the Lakers trade for Trae Young, what happens to Austin Reaves?'"
                 ),
                 func=self._analyze_trade_impact
             ),
@@ -589,12 +590,13 @@ Analyzing hypothetical trades properly would require:
                           "Tatum", "Brown", "White", "Holiday", "Porzingis", "Horford",
                           "Trae", "Young", "Austin", "Donovan", "Jimmy"]
             
-            # Check for "trade for" pattern to identify incoming player
+            # Check for trade patterns to identify incoming player
             incoming_player = None
-            if "trade for" in query.lower():
-                # The player after "trade for" is the incoming player
-                after_trade_for = query.lower().split("trade for")[1]
-                # Check for full names first
+            query_lower = query.lower()
+            
+            # Pattern 1: "trade for X"
+            if "trade for" in query_lower:
+                after_trade_for = query_lower.split("trade for")[1]
                 if "trae young" in after_trade_for:
                     incoming_player = "Trae Young"
                 elif "austin reaves" in after_trade_for:
@@ -605,8 +607,36 @@ Analyzing hypothetical trades properly would require:
                             incoming_player = name
                             break
             
+            # Pattern 2: "X to [team]" (e.g., "Mitchell to Miami")
+            elif " to miami" in query_lower:
+                before_to_miami = query_lower.split(" to miami")[0]
+                if "mitchell" in before_to_miami or "donovan" in before_to_miami:
+                    incoming_player = "Donovan Mitchell"
+            elif " to lakers" in query_lower or " to los angeles" in query_lower:
+                before_to_team = query_lower.split(" to ")[0]
+                if "trae" in before_to_team or "young" in before_to_team:
+                    incoming_player = "Trae Young"
+                elif "butler" in before_to_team or "jimmy" in before_to_team:
+                    incoming_player = "Jimmy Butler"
+            
+            # Identify the affected player (usually after "affect" or "impact on")
+            affected_player = None
+            if "affect" in query_lower:
+                after_affect = query_lower.split("affect")[-1]
+                if "bam" in after_affect or "adebayo" in after_affect:
+                    affected_player = "Bam Adebayo"
+                elif "reaves" in after_affect or "austin" in after_affect:
+                    affected_player = "Austin Reaves"
+                elif "tatum" in after_affect:
+                    affected_player = "Jayson Tatum"
+            elif "impact on" in query_lower:
+                after_impact = query_lower.split("impact on")[-1]
+                if "bam" in after_impact or "adebayo" in after_impact:
+                    affected_player = "Bam Adebayo"
+                elif "reaves" in after_impact or "austin" in after_impact:
+                    affected_player = "Austin Reaves"
+            
             # Extract full names first, then individual names
-            query_lower = query.lower()
             if "trae young" in query_lower and "Trae Young" not in player_names:
                 player_names.append("Trae Young")
             if "austin reaves" in query_lower and "Austin Reaves" not in player_names:
@@ -631,11 +661,24 @@ Analyzing hypothetical trades properly would require:
                             continue
                         player_names.append(name)
             
-            # Make sure incoming player is first if identified
-            if incoming_player:
+            # Order the players correctly: incoming player first, affected player second
+            if incoming_player and affected_player:
+                # Remove them from list if present
+                if incoming_player in player_names:
+                    player_names.remove(incoming_player)
+                if affected_player in player_names:
+                    player_names.remove(affected_player)
+                # Add in correct order
+                player_names = [incoming_player, affected_player] + player_names
+            elif incoming_player:
                 if incoming_player in player_names:
                     player_names.remove(incoming_player)
                 player_names.insert(0, incoming_player)
+            elif affected_player:
+                # Make sure affected player is second if we have another player
+                if affected_player in player_names and len(player_names) > 1:
+                    player_names.remove(affected_player)
+                    player_names.insert(1, affected_player)
             
             if len(player_names) < 2:
                 return """**Hypothetical Trade Analysis**
