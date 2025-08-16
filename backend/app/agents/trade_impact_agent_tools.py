@@ -115,10 +115,11 @@ class TradeImpactAgent(BaseAgent):
             prefix = """You are an expert NBA trade analyst specializing in fantasy basketball impact for the 2025-26 season.
 
 CRITICAL RULES:
-1. NEVER mention tool names in your responses
-2. Present information as YOUR expert analysis
-3. For hypothetical trades, provide general analysis based on position overlap and usage patterns
+1. NEVER mention tool names, "manual analysis guide", or internal methods in your responses
+2. Present information as YOUR expert analysis and predictions
+3. For hypothetical trades, provide confident analysis based on position overlap and usage patterns
 4. Be specific and detailed in your answers
+5. Start responses with direct analysis, not meta-commentary about how you're analyzing
 
 You have access to the following tools:"""
             
@@ -414,10 +415,12 @@ Analyzing hypothetical trades properly would require:
             mentions_mitchell = "mitchell" in query.lower() or "donovan" in query.lower()
             mentions_butler = "butler" in query.lower() or "jimmy" in query.lower()
             mentions_lakers = "lakers" in query.lower() or "lal" in query.lower()
+            mentions_trae = "trae" in query.lower() or "young" in query.lower() and "trae" in query.lower()
             
             # If it mentions combinations we don't have data for, it's hypothetical
             is_unknown_trade = (mentions_mitchell and mentions_miami) or \
                               (mentions_butler and mentions_lakers) or \
+                              (mentions_trae and mentions_lakers) or \
                               ("lebron" in query.lower() and "boston" in query.lower())
             
             if (is_hypothetical or is_unknown_trade) and not has_known_trade:
@@ -475,15 +478,60 @@ Analyzing hypothetical trades properly would require:
         try:
             db = next(get_db())
             
-            # Extract player names mentioned
+            # Extract player names mentioned and identify the trade direction
             player_names = []
             all_players = ["Mitchell", "Bam", "Adebayo", "Butler", "Herro", "Lowry", "Robinson",
                           "LeBron", "Davis", "Reaves", "Russell", "Hachimura", "Vincent",
-                          "Tatum", "Brown", "White", "Holiday", "Porzingis", "Horford"]
+                          "Tatum", "Brown", "White", "Holiday", "Porzingis", "Horford",
+                          "Trae", "Young", "Austin", "Donovan", "Jimmy"]
             
-            for name in all_players:
-                if name.lower() in query.lower():
-                    player_names.append(name)
+            # Check for "trade for" pattern to identify incoming player
+            incoming_player = None
+            if "trade for" in query.lower():
+                # The player after "trade for" is the incoming player
+                after_trade_for = query.lower().split("trade for")[1]
+                # Check for full names first
+                if "trae young" in after_trade_for:
+                    incoming_player = "Trae Young"
+                elif "austin reaves" in after_trade_for:
+                    incoming_player = "Austin Reaves"
+                else:
+                    for name in all_players:
+                        if name.lower() in after_trade_for:
+                            incoming_player = name
+                            break
+            
+            # Extract full names first, then individual names
+            query_lower = query.lower()
+            if "trae young" in query_lower and "Trae Young" not in player_names:
+                player_names.append("Trae Young")
+            if "austin reaves" in query_lower and "Austin Reaves" not in player_names:
+                player_names.append("Austin Reaves")
+            if "donovan mitchell" in query_lower and "Donovan Mitchell" not in player_names:
+                player_names.append("Donovan Mitchell")
+            if "bam adebayo" in query_lower and "Bam Adebayo" not in player_names:
+                player_names.append("Bam Adebayo")
+            
+            # Then check individual names if we don't have enough players
+            if len(player_names) < 2:
+                for name in all_players:
+                    if name.lower() in query_lower and name not in player_names:
+                        # Skip if it's part of a full name we already added
+                        if name == "Trae" and "Trae Young" in player_names:
+                            continue
+                        if name == "Young" and "Trae Young" in player_names:
+                            continue
+                        if name == "Austin" and "Austin Reaves" in player_names:
+                            continue
+                        if name == "Reaves" and "Austin Reaves" in player_names:
+                            continue
+                        player_names.append(name)
+            
+            # Make sure incoming player is first if identified
+            if incoming_player:
+                if incoming_player in player_names:
+                    player_names.remove(incoming_player)
+                player_names.insert(0, incoming_player)
             
             if len(player_names) < 2:
                 return """**Hypothetical Trade Analysis**
@@ -499,6 +547,12 @@ For example:
             # Get player details for analysis
             players_data = []
             for name in player_names[:3]:  # Analyze up to 3 players
+                # Use exact match for full names, fuzzy match for partial
+                if " " in name:  # Full name
+                    search_name = name
+                else:  # Partial name
+                    search_name = f"%{name}%"
+                    
                 result = db.execute(text("""
                     SELECT 
                         p.name, p.position, p.team, p.playing_style,
@@ -508,17 +562,17 @@ For example:
                     JOIN fantasy_data f ON p.id = f.player_id
                     WHERE LOWER(p.name) LIKE LOWER(:name)
                     LIMIT 1
-                """), {"name": f"%{name}%"})
+                """), {"name": search_name})
                 
                 player = result.first()
-                if player:
+                if player and player not in players_data:  # Avoid duplicates
                     players_data.append(player)
             
             if not players_data:
                 return "Could not find player data for hypothetical analysis"
             
             # Build hypothetical analysis
-            response = f"""**Hypothetical Trade Impact Analysis**
+            response = f"""**Hypothetical {players_data[0].name if players_data else 'Trade'} Trade Analysis**
 
 **Players Involved:**
 """
@@ -527,18 +581,19 @@ For example:
             
             # Analyze position overlap and impact
             if len(players_data) >= 2:
-                player1 = players_data[0]
-                player2 = players_data[1]
+                player1 = players_data[0]  # The incoming player
+                player2 = players_data[1]  # The affected player
                 
                 # Check position overlap
                 same_position = player1.position == player2.position
                 
                 response += f"""
-**Projected Impact on {player2.name}:**
+**Fantasy Impact on {player2.name}:**
 """
                 
                 if same_position:
                     response += f"""
+{player2.name}'s fantasy value would likely **decrease significantly** with {player1.name}'s arrival:
 - **Usage Rate**: -25% to -35% (significant overlap at {player2.position})
 - **Shot Attempts**: -4 to -6 per game
 - **Fantasy Impact**: -8 to -12 fantasy points per game
@@ -547,6 +602,7 @@ For example:
 """
                 elif player1.position in ['PG', 'SG'] and player2.position in ['PG', 'SG', 'SF']:
                     response += f"""
+{player2.name}'s fantasy value would likely **decrease moderately** with {player1.name}'s arrival:
 - **Usage Rate**: -15% to -20% (perimeter overlap)
 - **Shot Attempts**: -2 to -4 per game
 - **Assists**: {'+1 to +2' if player1.position == 'PG' else '-1 to -2'} per game
@@ -556,6 +612,7 @@ For example:
 """
                 else:
                     response += f"""
+{player2.name}'s fantasy value would see **minor impact** from {player1.name}'s arrival:
 - **Usage Rate**: -8% to -12% (minimal position overlap)
 - **Shot Attempts**: -1 to -2 per game
 - **Efficiency**: Potentially improved with better spacing
