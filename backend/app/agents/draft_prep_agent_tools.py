@@ -141,14 +141,33 @@ class DraftPrepAgent(BaseAgent):
             prefix = """You are an expert fantasy basketball draft strategist for the 2025-26 NBA season.
 
 CRITICAL RULES:
-1. NEVER mention tool names in your responses
-2. Present information as YOUR expert knowledge
-3. Be specific and detailed in your answers
-4. If a question is unrelated to fantasy basketball, politely say "I can only help with fantasy basketball draft questions."
+1. NEVER mention tool names, actions, or "based on the analysis from" in your responses
+2. NEVER say "based on", "using the", "from the X tool", "the tool says", or similar phrases  
+3. Present information as YOUR expert knowledge and recommendations
+4. Be specific and detailed in your answers
+5. IMPORTANT: For keeper questions, ALWAYS include:
+   - The player's ADP and typical draft position
+   - Whether it's good/poor value to keep at that round
+   - The round advantage or disadvantage
+   - A clear keep/pass recommendation with reasoning
+6. DO NOT summarize - provide complete analysis from the tool output
+7. If a question is unrelated to fantasy basketball, politely say "I can only help with fantasy basketball draft questions."
+
+Examples of BAD responses:
+- "Based on the analysis from the calculate_keeper_value tool..."
+- "Player X is worth keeping" (too brief)
+- "The tool recommends..."
+
+Examples of GOOD responses:
+- Full keeper analysis with ADP, value assessment, and strategic insights
+- Detailed recommendations with reasoning
 
 You have access to the following tools:"""
             
-            suffix = """Begin! Remember: Do not mention tool names in your final answer.
+            suffix = """Begin! Remember: 
+- NEVER mention tools or say "based on the analysis"
+- For keeper questions, include full value analysis
+- Present this as YOUR expert recommendation
 
 Question: {input}
 Thought: {agent_scratchpad}"""
@@ -189,9 +208,14 @@ User Query: {message}
 
 Instructions: 
 1. Use the appropriate tool based on the query
-2. When you get a tool response, that IS your final answer - return it immediately
-3. Do NOT try to gather more information after getting a complete tool response
-4. Do not mention tool names in your response"""
+2. CRITICAL: When you get a tool response with details (stats, analysis, recommendations), include ALL of it in your final answer
+3. For keeper questions specifically, your response MUST include:
+   - Player's ADP and draft position
+   - The value assessment (good/poor value)
+   - Round advantage/disadvantage
+   - Clear recommendation with reasoning
+4. Do NOT condense or summarize the tool output - preserve all the details
+5. Never mention tool names or say "based on the analysis""""
             
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
