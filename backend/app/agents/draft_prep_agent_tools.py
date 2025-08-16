@@ -89,12 +89,12 @@ class DraftPrepAgent(BaseAgent):
             Tool(
                 name="build_punt_strategy",
                 description=(
-                    "Build punt strategy, punt FT%, punt FG%, punt assists, punt 3s, punt points, "
-                    "punt rebounds, punt steals, punt blocks, category punting, build around player. "
-                    "Use for: punt, punting, ignore category, sacrifice, tank, build around, "
-                    "strategy, team build, categorical approach. "
-                    "Answers: Build punt FT% team, punt assists build, best punt for Giannis? "
-                    "Punt strategy around player X? Category to punt?"
+                    "Build punt strategy team. Handles: punt FT%, punt FG%, punt assists, punt 3s, punt points, "
+                    "punt rebounds, punt steals, punt blocks, build team around Giannis, build around any player. "
+                    "ALWAYS use this for any query containing: 'punt', 'punting', 'build team around', "
+                    "'build around', 'ignore category', 'sacrifice stat'. "
+                    "Example queries: 'Build a punt FT% team around Giannis', 'Build punt FT% team', "
+                    "'punt assists build', 'best punt for Giannis', 'punt strategy around player X'"
                 ),
                 func=self._build_punt_strategy
             ),
@@ -475,6 +475,22 @@ Instructions:
     def _build_punt_strategy(self, strategy: str) -> str:
         """Build a complete punt strategy around a category"""
         try:
+            # Check if a specific player is mentioned (e.g., "around Giannis")
+            player_mentioned = None
+            if "giannis" in strategy.lower():
+                player_mentioned = "Giannis Antetokounmpo"
+                # Giannis is typically associated with punt FT%
+                if "ft" not in strategy.lower():
+                    strategy = strategy + " FT%"
+            elif "simmons" in strategy.lower() or "ben simmons" in strategy.lower():
+                player_mentioned = "Ben Simmons"
+                if "ft" not in strategy.lower():
+                    strategy = strategy + " FT%"
+            elif "gobert" in strategy.lower():
+                player_mentioned = "Rudy Gobert"
+                if "ft" not in strategy.lower():
+                    strategy = strategy + " FT%"
+            
             # Parse the punt category
             punt_cat = None
             if "ft" in strategy.lower() or "free throw" in strategy.lower():
@@ -595,7 +611,12 @@ Instructions:
             
             players = result.fetchall()
             
-            response = f"[TARGET] **Punt {punt_cat} Strategy Build**:\n\n"
+            # Build response with player-specific mention if applicable
+            if player_mentioned:
+                response = f"[TARGET] **Punt {punt_cat} Team Build Around {player_mentioned}**:\n\n"
+            else:
+                response = f"[TARGET] **Punt {punt_cat} Strategy Build**:\n\n"
+            
             response += f"**Core Targets** (Players who excel despite weak {punt_cat}):\n\n"
             
             # Group by rounds
@@ -624,9 +645,14 @@ Instructions:
             
             response += f"\n[TIP] **Strategy Tips**:\n"
             if punt_cat == "FT%":
-                response += "- Target elite big men like Giannis, Gobert\n"
-                response += "- Focus on FG%, REB, BLK, STL\n"
-                response += "- Avoid guards who only provide FT% and 3PM\n"
+                if player_mentioned == "Giannis Antetokounmpo":
+                    response += "- With Giannis as your cornerstone, you're already punting FT%\n"
+                    response += "- Target other elite bigs: Gobert, Claxton, Capela\n"
+                    response += "- Focus on maximizing FG%, REB, BLK to pair with Giannis' elite scoring\n"
+                else:
+                    response += "- Target elite big men like Giannis, Gobert\n"
+                    response += "- Focus on FG%, REB, BLK, STL\n"
+                    response += "- Avoid guards who only provide FT% and 3PM\n"
                 response += "\n**Synergistic Categories**: You'll dominate FG%, REB, BLK\n"
                 response += "**Complementary Picks**: Look for Centers and PFs with 55%+ FG\n"
                 response += "**Round-by-Round**: R1-2: Elite bigs, R3-5: Rebounding wings, R6+: FG% specialists\n"
