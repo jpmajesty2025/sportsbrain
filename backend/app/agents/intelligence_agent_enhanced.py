@@ -252,9 +252,9 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 response = f"**{player.name}** ({player.position}, {player.team}) - Detailed Analysis:\n\n"
                 
                 # Age and career stage context
-                if player.age:
+                if player.age is not None:
                     try:
-                        age = int(player.age) if player.age else 0
+                        age = int(player.age)
                     except (ValueError, TypeError):
                         age = 0
                     
@@ -266,6 +266,8 @@ class IntelligenceAgentEnhanced(BaseAgent):
                             response += "in statistical prime\n"
                         else:
                             response += "veteran with established role\n"
+                    else:
+                        response += f"**Profile**: {player.position}, {player.team}\n"
                 else:
                     response += f"**Profile**: {player.position}, {player.team}\n"
                 
@@ -277,12 +279,12 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 response += f"\n**2024-25 Projections with Analysis**:\n"
                 
                 # Points analysis
-                if player.last_season_ppg:
+                if player.last_season_ppg is not None:
                     try:
                         proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
-                        last_ppg = float(player.last_season_ppg) if player.last_season_ppg else 0
+                        last_ppg = float(player.last_season_ppg)
                     except (ValueError, TypeError):
-                        proj_ppg = 0
+                        proj_ppg = float(player.projected_ppg) if player.projected_ppg else 0
                         last_ppg = 0
                     
                     if last_ppg > 0:
@@ -332,8 +334,14 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     response += "  → Volatility suggests streaming candidate or bench player\n"
                 
                 # Risk factors
-                if player.injury_risk and player.injury_risk > 0.3:
-                    response += f"• Injury Risk: {player.injury_risk:.1%} - Monitor health closely\n"
+                if player.injury_risk:
+                    try:
+                        risk = float(player.injury_risk)
+                        if risk > 0.3:
+                            response += f"• Injury Risk: {risk:.1%} - Monitor health closely\n"
+                    except (ValueError, TypeError):
+                        # injury_risk might be a string like "Low", "Medium", "High"
+                        response += f"• Injury Risk: {player.injury_risk}\n"
                 
                 # Special designations
                 if player.breakout_candidate:
@@ -346,7 +354,9 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 return f"No data found for player matching '{player_name}'"
                 
         except Exception as e:
+            import traceback
             logger.error(f"Error analyzing player stats: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return f"Error analyzing player: {str(e)}"
     
     def _find_sleeper_candidates_enhanced(self, criteria: str = "") -> str:
@@ -595,9 +605,39 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 player_result = player_check.fetchone()
                 if player_result:
                     if player_result.breakout_candidate:
-                        return f"Yes, {player_result.name} is a breakout candidate for 2024-25. They are expected to significantly improve their fantasy production based on age, role expansion, and team situation."
+                        # Get additional details for a complete answer
+                        details = db.execute(text("""
+                            SELECT p.name, p.position, p.team,
+                                   f.adp_rank, f.adp_round,
+                                   f.projected_ppg, f.projected_rpg, f.projected_apg,
+                                   f.projected_fantasy_ppg, f.sleeper_score
+                            FROM players p
+                            JOIN fantasy_data f ON p.id = f.player_id
+                            WHERE LOWER(p.name) LIKE LOWER(:pattern)
+                        """), {"pattern": f"%{criteria}%"})
+                        
+                        player_data = details.fetchone()
+                        if player_data:
+                            return f"""**ANSWER: YES - {player_data.name} IS A BREAKOUT CANDIDATE**
+
+**Player Profile**:
+• Position: {player_data.position}
+• Team: {player_data.team}
+• ADP: #{player_data.adp_rank} (Round {player_data.adp_round})
+
+**2024-25 Projections**:
+• Points: {player_data.projected_ppg:.1f} PPG
+• Rebounds: {player_data.projected_rpg:.1f} RPG
+• Assists: {player_data.projected_apg:.1f} APG
+• Fantasy Points: {player_data.projected_fantasy_ppg:.1f} per game
+
+**Breakout Rationale**: Expected to significantly improve fantasy production based on age progression, expanded role, and favorable team situation. Sleeper score: {player_data.sleeper_score:.2f}
+
+**Recommendation**: Target 1-2 rounds before ADP for maximum value."""
+                        else:
+                            return f"Yes, {player_result.name} is a breakout candidate for 2024-25. They are expected to significantly improve their fantasy production based on age, role expansion, and team situation."
                     else:
-                        return f"No, {player_result.name} is not considered a breakout candidate. They are either already established or not expected to have a significant leap in production."
+                        return f"**ANSWER: NO - {player_result.name} is NOT a breakout candidate**. They are either already established at their ceiling or not expected to have a significant statistical leap in production for the 2024-25 season."
             
             # Default behavior - return all breakout candidates
             result = db.execute(text("""
@@ -613,7 +653,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     CASE
                         WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, p.birth_date)) BETWEEN 22 AND 25 THEN 'Sophomore/Junior leap expected'
                         WHEN gs.ppg IS NULL THEN 'Rookie with high upside'
-                        WHEN f.projected_ppg > gs.ppg * 1.2 THEN 'Major role expansion'
+                        WHEN f.projected_ppg > CAST(gs.ppg AS FLOAT) * 1.2 THEN 'Major role expansion'
                         ELSE 'System/coaching change benefit'
                     END as breakout_reason
                 FROM players p
@@ -643,9 +683,14 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     
                     # Year-over-year comparison if available
                     if b.last_season_ppg:
-                        improvement = ((b.projected_ppg - b.last_season_ppg) / b.last_season_ppg * 100)
-                        response += f"• **Scoring Projection**: {b.projected_ppg:.1f} PPG "
-                        response += f"(+{improvement:.1f}% from {b.last_season_ppg:.1f} last season)\n"
+                        try:
+                            last_ppg = float(b.last_season_ppg)
+                            proj_ppg = float(b.projected_ppg)
+                            improvement = ((proj_ppg - last_ppg) / last_ppg * 100)
+                            response += f"• **Scoring Projection**: {proj_ppg:.1f} PPG "
+                            response += f"(+{improvement:.1f}% from {last_ppg:.1f} last season)\n"
+                        except (ValueError, TypeError, ZeroDivisionError):
+                            response += f"• **Scoring Projection**: {b.projected_ppg:.1f} PPG\n"
                     else:
                         response += f"• **Scoring Projection**: {b.projected_ppg:.1f} PPG (rookie season)\n"
                     

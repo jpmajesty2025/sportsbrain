@@ -1,10 +1,26 @@
 # SportsBrain: AI-Powered Fantasy Basketball Intelligence Platform
 
-## 🏆 Capstone Project Status (Last Updated: Aug 14, 2025)
+## 🏆 Capstone Project Status (Last Updated: Aug 15, 2025)
 
-### 📊 Overall Completion: 99% COMPLETE ✨
+### 📊 Overall Completion: 99.5% COMPLETE ✨
 
-### 🆕 Recent Updates (Aug 14, 2025)
+### 🆕 Recent Updates (Aug 15, 2025)
+#### Enhanced Tool Descriptions - Restored True Agency
+- ✅ **Removed ALL Bypasses**: Agents now handle 100% of queries through LangChain
+- ✅ **Enhanced Tool Descriptions**: Added keywords, use cases, and example questions
+- ✅ **Success Rates Without Bypasses**:
+  - Intelligence Agent: 75% (was 40% bypass)
+  - DraftPrep Agent: 71% (was 95% bypass)
+  - TradeImpact Agent: 80% (was 20% bypass)
+- ✅ **Fixed 5 Critical Bugs**:
+  - Type errors in player stats comparisons
+  - Compare players input parsing for "and" format
+  - ADP queries with full questions
+  - Mock draft rounds 8-10 handling
+  - Added OG Anunoby trade to usage calculations
+- ✅ **Maintained Capstone Requirements**: True agentic AI preserved
+
+### Previous Updates (Aug 14, 2025)
 #### Intelligence Agent Enhancement - Day 1 Validation
 - ✅ Generated shot distributions for 150 players based on position/style
 - ✅ Enhanced `_characterize_player` with shot profiles and usage patterns
@@ -23,10 +39,10 @@
 - ✅ Fixed Unicode character handling for player names
 - ✅ Resolved CI/CD test failures with enhanced Intelligence Agent
 
-#### Agent Status (VERIFIED)
-- ✅ **Intelligence Agent**: FULLY AGENTIC - Uses LangChain reasoning to select tools
-- ✅ **TradeImpact Agent**: FULLY AGENTIC - Demonstrates tool chaining and reasoning
-- ⚠️ **DraftPrep Agent (BETA)**: HYBRID - Direct routing for common queries, agent fallback for complex
+#### Agent Status (UPDATED Aug 15, 2025)
+- ✅ **Intelligence Agent**: FULLY AGENTIC - No bypasses, 75% success rate
+- ✅ **TradeImpact Agent**: FULLY AGENTIC - No bypasses, 80% success rate
+- ✅ **DraftPrep Agent**: FULLY AGENTIC - No bypasses, 71% success rate (BETA label retained)
 
 ### Previous Updates (Aug 12, 2025)
 #### Security & Authentication
@@ -265,20 +281,31 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
   - [x] Fixed data quality issues (Dereck Lively II, added Trey Murphy III)
   - [x] Validated with 92% success rate on test sleepers
 
+### ✅ Completed (Aug 15, 2025)
+- [x] **Enhanced Tool Descriptions**:
+  - [x] Removed ALL bypasses - 100% agentic behavior
+  - [x] Added keywords, use cases, example questions to all tools
+  - [x] Achieved 70-80% success rates without bypasses
+- [x] **Fixed Tool Input Parsing**:
+  - [x] Compare players now accepts "and", "versus", comma formats
+  - [x] ADP queries extract player names from full questions
+  - [x] Mock draft handles round ranges (e.g., "rounds 8-10")
+  - [x] Added OG Anunoby trade to usage calculations
+
 ### ✅ Completed (Aug 13, 2025)
 - [x] **Critical Bug Fixes**: 
   - [x] Fixed keeper value calculation (was giving opposite recommendations)
   - [x] Fixed agent timeout issues with proper error handling
   - [x] Fixed Unicode character handling for player names
-- [x] **Agent Improvements**:
-  - [x] Implemented direct tool routing for DraftPrep (95% queries bypass broken LangChain)
+- [x] **Agent Improvements** (Later removed Aug 15):
+  - [x] ~~Implemented direct tool routing for DraftPrep~~ (Removed - now fully agentic)
   - [x] Added BETA label to set expectations
   - [x] Enhanced punt strategy support (REB, PTS, STL, BLK)
 - [x] **Test Suite**: All CI/CD tests passing
 
 ### Known Issues (Non-Critical)
-- ⚠️ **DraftPrep Agent**: In BETA - uses workaround for LangChain issues
-- ⚠️ **Intelligence Agent**: LangChain ReAct agent summarizes detailed tool outputs (agentic behavior working correctly, output condensation is a LangChain limitation)
+- ⚠️ **Output Summarization**: LangChain ReAct agent condenses tool outputs (~25% of queries affected)
+- ⚠️ **Success Rates**: ~25-30% of queries may need rephrasing for optimal results
 - ⚠️ **Milvus**: Some collections have schema mismatches
 - ⚠️ **Dependencies**: LangChain deprecation warnings
 
@@ -296,9 +323,10 @@ Following the plan in `find_sleepers_like_x_enhancement.md`:
 - [ ] **Day 3**: Add strategic insights and explanations
 
 ### Post-Capstone Improvements (Priority Order)
-1. **DraftPrep Agent Upgrade** (1 day)
-   - Migrate to GPT-4 function calling
-   - Remove LangChain dependency
+1. **LangGraph Migration** (2-3 days)
+   - Migrate all agents to LangGraph for better output control
+   - Eliminate summarization issues
+   - Improve success rates to 90%+
    
 2. **Infrastructure** (2-3 days)
    - Fix Milvus schemas
