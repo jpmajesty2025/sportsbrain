@@ -15,7 +15,7 @@ from app.db.database import get_db
 logger = logging.getLogger(__name__)
 
 # Enhanced prompt template that forces reasoning
-INTELLIGENCE_PROMPT = """You are an elite NBA fantasy basketball analyst preparing for the 2024-25 season.
+INTELLIGENCE_PROMPT = """You are an elite NBA fantasy basketball analyst preparing for the 2025-26 season.
 
 When analyzing players or making recommendations, you MUST:
 1. Provide specific statistical evidence
@@ -85,9 +85,9 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 name="project_performance",
                 description=(
                     "Project future performance, season projections, statistical forecasts, "
-                    "2024-25 predictions, expected stats, outlook, ceiling and floor. "
+                    "2025-26 predictions, expected stats, outlook, ceiling and floor. "
                     "Use for: projections, predictions, forecast, outlook, expected, "
-                    "will player X score, next season stats, 2024-25 numbers. "
+                    "will player X score, next season stats, 2025-26 numbers. "
                     "Answers: Project player's stats, what will player average? "
                     "Season predictions? Expected performance? Statistical projections?"
                 ),
@@ -151,13 +151,41 @@ class IntelligenceAgentEnhanced(BaseAgent):
     def _initialize_agent(self):
         """Initialize the enhanced agent with reasoning capabilities"""
         if settings.OPENAI_API_KEY:
+            from langchain.agents import ZeroShotAgent
+            from langchain.agents import AgentExecutor
+            from langchain.prompts import PromptTemplate
+            
             llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.3)
             
-            # Simple approach - just use the standard agent but with enhanced tool descriptions
-            self.agent_executor = initialize_agent(
+            # Custom prompt to avoid mentioning tool names
+            prefix = """You are a fantasy basketball expert assistant. Answer the user's questions using the available tools.
+
+CRITICAL RULES:
+1. NEVER mention tool names in your responses
+2. NEVER say "based on the X tool" or "from the Y analysis"
+3. Present information as YOUR expert knowledge
+4. Be specific and detailed in your answers
+
+You have access to the following tools:"""
+            
+            suffix = """Begin! Remember: Do not mention tool names in your final answer.
+
+Question: {input}
+Thought: {agent_scratchpad}"""
+            
+            prompt = ZeroShotAgent.create_prompt(
                 tools=self.tools,
-                llm=llm,
-                agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+                prefix=prefix,
+                suffix=suffix,
+                input_variables=["input", "agent_scratchpad"]
+            )
+            
+            llm_chain = LLMChain(llm=llm, prompt=prompt)
+            agent = ZeroShotAgent(llm_chain=llm_chain, tools=self.tools)
+            
+            self.agent_executor = AgentExecutor.from_agent_and_tools(
+                agent=agent,
+                tools=self.tools,
                 verbose=True,
                 max_iterations=3,
                 handle_parsing_errors=True
@@ -185,12 +213,13 @@ class IntelligenceAgentEnhanced(BaseAgent):
         try:
             # Let the agent handle all queries with enhanced tool descriptions
             # Add context to help the agent understand the request better
-            enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]
+            enhanced_message = f"""[Context: August 2025, NBA off-season, preparing for 2025-26 fantasy drafts]
             
             User Query: {message}
             
             Instructions: Provide detailed analysis with specific statistics and reasoning.
-            Use the appropriate tool based on the query type. Do not summarize tool outputs."""
+            IMPORTANT: Do NOT mention tool names or say things like "based on the X tool" or "using the Y tool".
+            Simply provide the answer directly as if you have the knowledge. Do not summarize tool outputs."""
             
             result = await self.agent_executor.arun(input=enhanced_message)
             
@@ -276,7 +305,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
                 response += f"• ADP: #{player.adp_rank} (Round {player.adp_round})\n"
                 
                 # Statistical projections with reasoning
-                response += f"\n**2024-25 Projections with Analysis**:\n"
+                response += f"\n**2025-26 Projections with Analysis**:\n"
                 
                 # Points analysis
                 if player.last_season_ppg is not None:
@@ -484,9 +513,9 @@ class IntelligenceAgentEnhanced(BaseAgent):
                         pos_display = "BIG MAN"
                     else:
                         pos_display = "FILTERED"
-                    response += f"**2024-25 {pos_display} SLEEPER CANDIDATES**\n"
+                    response += f"**2025-26 {pos_display} SLEEPER CANDIDATES**\n"
                 else:
-                    response += "**2024-25 FANTASY BASKETBALL SLEEPER CANDIDATES**\n"
+                    response += "**2025-26 FANTASY BASKETBALL SLEEPER CANDIDATES**\n"
                 response += "Complete Statistical Analysis with Shot Distributions\n"
                 response += "="*70 + "\n\n"
                 
@@ -625,7 +654,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
 • Team: {player_data.team}
 • ADP: #{player_data.adp_rank} (Round {player_data.adp_round})
 
-**2024-25 Projections**:
+**2025-26 Projections**:
 • Points: {player_data.projected_ppg:.1f} PPG
 • Rebounds: {player_data.projected_rpg:.1f} RPG
 • Assists: {player_data.projected_apg:.1f} APG
@@ -635,9 +664,9 @@ class IntelligenceAgentEnhanced(BaseAgent):
 
 **Recommendation**: Target 1-2 rounds before ADP for maximum value."""
                         else:
-                            return f"Yes, {player_result.name} is a breakout candidate for 2024-25. They are expected to significantly improve their fantasy production based on age, role expansion, and team situation."
+                            return f"Yes, {player_result.name} is a breakout candidate for 2025-26. They are expected to significantly improve their fantasy production based on age, role expansion, and team situation."
                     else:
-                        return f"**ANSWER: NO - {player_result.name} is NOT a breakout candidate**. They are either already established at their ceiling or not expected to have a significant statistical leap in production for the 2024-25 season."
+                        return f"**ANSWER: NO - {player_result.name} is NOT a breakout candidate**. They are either already established at their ceiling or not expected to have a significant statistical leap in production for the 2025-26 season."
             
             # Default behavior - return all breakout candidates
             result = db.execute(text("""
@@ -672,7 +701,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
             
             breakouts = result.fetchall()
             if breakouts:
-                response = "**2024-25 Breakout Candidates** (with statistical evidence):\n\n"
+                response = "**2025-26 Breakout Candidates** (with statistical evidence):\n\n"
                 
                 # Top tier breakouts with detailed analysis
                 response += "**ELITE BREAKOUT TARGETS**:\n\n"
@@ -775,7 +804,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
             
             player = result.fetchone()
             if player:
-                response = f"**2024-25 Projection for {player.name}**:\n\n"
+                response = f"**2025-26 Projection for {player.name}**:\n\n"
                 response += f"**Player Context**:\n"
                 response += f"• Team: {player.team}\n"
                 response += f"• Position: {player.position}\n"
@@ -886,7 +915,7 @@ class IntelligenceAgentEnhanced(BaseAgent):
                     response += f"→ {p2.name} is drafted {p1.adp_rank - p2.adp_rank} spots earlier on average\n"
                 
                 # Statistical comparison
-                response += "\n**Projected Stats (2024-25)**:\n"
+                response += "\n**Projected Stats (2025-26)**:\n"
                 response += f"• Scoring: {p1.name} ({p1.projected_ppg:.1f}) vs {p2.name} ({p2.projected_ppg:.1f})\n"
                 response += f"• Rebounding: {p1.name} ({p1.projected_rpg:.1f}) vs {p2.name} ({p2.projected_rpg:.1f})\n"
                 response += f"• Assists: {p1.name} ({p1.projected_apg:.1f}) vs {p2.name} ({p2.projected_apg:.1f})\n"

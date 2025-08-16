@@ -49,7 +49,7 @@ const agents: AgentCard[] = [
     color: '#3B82F6',
     examples: [
       'Find sleeper centers like Alperen Sengun',
-      'Which sophomores will break out in 2024-25?',
+      'Which sophomores will break out in 2025-26?',
       'Is Gary Trent Jr. worth drafting?',
       'Compare Scottie Barnes vs Paolo Banchero'
     ]
@@ -151,7 +151,7 @@ const Dashboard: React.FC = () => {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Chip 
-            label="2024-25 Season" 
+            label="2025-26 Season" 
             color="primary" 
             variant="outlined"
             icon={<TimelineIcon />}

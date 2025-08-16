@@ -41,7 +41,7 @@ class IntelligenceAgent(BaseAgent):
             ),
             Tool(
                 name="project_performance",
-                description="Project player performance for 2024-25 season",
+                description="Project player performance for 2025-26 season",
                 func=self._project_player_performance
             ),
             
@@ -85,7 +85,7 @@ class IntelligenceAgent(BaseAgent):
         
         try:
             # Add context about current date (off-season)
-            enhanced_message = f"[Context: It's August 2025, NBA off-season, preparing for 2024-25 fantasy drafts]\n{message}"
+            enhanced_message = f"[Context: It's August 2025, NBA off-season, preparing for 2025-26 fantasy drafts]\n{message}"
             
             result = await self.agent_executor.arun(input=enhanced_message)
             
@@ -171,7 +171,7 @@ class IntelligenceAgent(BaseAgent):
             
             sleepers = result.fetchall()
             if sleepers:
-                response = "Top sleeper candidates for 2024-25:\n"
+                response = "Top sleeper candidates for 2025-26:\n"
                 for s in sleepers[:5]:
                     response += (f"- {s.name} ({s.position}, {s.team}): "
                                f"ADP #{s.adp_rank}, Sleeper Score: {s.sleeper_score:.2f}, "
@@ -203,7 +203,7 @@ class IntelligenceAgent(BaseAgent):
             
             breakouts = result.fetchall()
             if breakouts:
-                response = "Breakout candidates for 2024-25 season:\n"
+                response = "Breakout candidates for 2025-26 season:\n"
                 for b in breakouts[:7]:
                     response += (f"- {b.name} ({b.position}, {b.team}): "
                                f"ADP #{b.adp_rank}, Projected: {b.projected_fantasy_ppg:.1f} FP/game\n")
@@ -215,7 +215,7 @@ class IntelligenceAgent(BaseAgent):
             return f"Error identifying breakouts: {str(e)}"
     
     def _project_player_performance(self, player_name: str) -> str:
-        """Project player performance for 2024-25"""
+        """Project player performance for 2025-26"""
         try:
             db = next(get_db())
             
@@ -234,7 +234,7 @@ class IntelligenceAgent(BaseAgent):
             
             player = result.first()
             if player:
-                return (f"2024-25 Projections for {player.name}:\n"
+                return (f"2025-26 Projections for {player.name}:\n"
                        f"Stats: {player.projected_ppg:.1f} PPG, {player.projected_rpg:.1f} RPG, "
                        f"{player.projected_apg:.1f} APG, {player.projected_spg:.1f} SPG, "
                        f"{player.projected_bpg:.1f} BPG, {player.projected_3pm:.1f} 3PM\n"

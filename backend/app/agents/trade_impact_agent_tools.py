@@ -126,7 +126,7 @@ class TradeImpactAgent(BaseAgent):
         
         try:
             # Let the agent handle all queries with enhanced tool descriptions
-            enhanced_message = f"""[Context: Analyzing NBA trades and their fantasy basketball impact for 2024-25 season]
+            enhanced_message = f"""[Context: Analyzing NBA trades and their fantasy basketball impact for 2025-26 season]
 
 User Query: {message}
 
@@ -242,7 +242,7 @@ Instructions: Use the appropriate tool based on the query. Do not summarize tool
             # Common trade scenarios
             if "porzingis" in query.lower() and "tatum" in query.lower():
                 return """
-**Porzingis Trade Impact on Tatum (2024-25)**:
+**Porzingis Trade Impact on Tatum (2025-26)**:
 
 [UP] **Tatum's Projected Changes**:
 - Usage Rate: +2.5% (more offensive responsibility)
@@ -521,7 +521,7 @@ Analyzing hypothetical trades properly would require:
                 {"name": "Chet Holmgren", "team": "OKC", "reason": "Expanded role", "impact": +3.0}
             ]
             
-            response = "[TARGET] **Top Trade Beneficiaries for 2024-25**:\n\n"
+            response = "[TARGET] **Top Trade Beneficiaries for 2025-26**:\n\n"
             
             for i, ben in enumerate(beneficiaries[:5], 1):
                 # Get player stats

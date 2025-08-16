@@ -165,7 +165,7 @@ You have access to the following tools:"""
         
         try:
             # Let the agent handle all queries with enhanced tool descriptions
-            enhanced_message = f"""[Context: Fantasy basketball draft preparation for 2024-25 season]
+            enhanced_message = f"""[Context: Fantasy basketball draft preparation for 2025-26 season]
 
 User Query: {message}
 
@@ -362,7 +362,7 @@ including all details like round numbers, player names, and categories. Do not s
             
             values = result.fetchall()
             
-            response = "[TARGET] **Top ADP Value Picks for 2024-25**:\n\n"
+            response = "[TARGET] **Top ADP Value Picks for 2025-26**:\n\n"
             for i, v in enumerate(values[:7], 1):
                 response += f"{i}. **{v.name}** ({v.position}, {v.team})\n"
                 response += f"   - ADP: #{v.adp_rank} (Round {v.adp_round})\n"
@@ -435,7 +435,7 @@ including all details like round numbers, player names, and categories. Do not s
             players = result.fetchall()
             
             title = f"Top {position.upper()} Rankings" if position else "Top 20 Overall Rankings"
-            response = f"[LIST] **{title} (2024-25 ADP)**:\n\n"
+            response = f"[LIST] **{title} (2025-26 ADP)**:\n\n"
             
             for p in players:
                 name = clean_unicode(p.name)
