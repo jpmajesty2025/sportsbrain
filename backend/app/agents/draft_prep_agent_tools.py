@@ -784,6 +784,7 @@ Instructions:
                 end_round = int(range_match.group(2))
                 pick_start = (start_round - 1) * 12 + 1
                 pick_end = end_round * 12
+                specific_pick = None
             else:
                 pick_match = re.search(r'pick\s*(\d+)|round\s*(\d+)', pick_info.lower())
                 
@@ -796,15 +797,18 @@ Instructions:
                         # User specified a round number
                         pick_start = (pick_num - 1) * 12 + 1
                         pick_end = pick_num * 12
+                        specific_pick = None
                     else:
-                        # User specified a pick number (default assumption)
+                        # User specified a specific pick number
+                        specific_pick = pick_num
                         # Show players available around that pick
-                        pick_start = max(1, pick_num - 3)
-                        pick_end = min(150, pick_num + 8)
+                        pick_start = max(1, pick_num - 2)
+                        pick_end = min(150, pick_num + 10)
                 else:
                     # Default to first round
                     pick_start = 1
                     pick_end = 15
+                    specific_pick = None
             
             db = next(get_db())
             
@@ -813,23 +817,51 @@ Instructions:
                     p.name, p.position, p.team,
                     f.adp_rank, f.adp_round,
                     f.projected_fantasy_ppg,
-                    f.consistency_rating
+                    f.consistency_rating,
+                    f.projected_ppg, f.projected_rpg, f.projected_apg
                 FROM players p
                 JOIN fantasy_data f ON p.id = f.player_id
                 WHERE f.adp_rank BETWEEN :start AND :end
                 ORDER BY f.adp_rank
-                LIMIT 12
+                LIMIT 15
             """), {"start": pick_start, "end": pick_end})
             
             players = result.fetchall()
             
-            response = f"[DICE] **Mock Draft - Best Available (Picks {pick_start}-{pick_end})**:\n\n"
-            
-            for p in players[:8]:
-                name = clean_unicode(p.name)
-                response += f"**Pick {p.adp_rank}: {name}** ({p.position}, {p.team})\n"
-                response += f"- Projected: {p.projected_fantasy_ppg:.1f} FP/game\n"
-                response += f"- Consistency: {p.consistency_rating:.2f}\n\n"
+            # Format response based on whether it's a specific pick or range
+            if specific_pick:
+                response = f"[DICE] **Mock Draft Recommendation for Pick #{specific_pick}**:\n\n"
+                
+                # Find the best player available around that pick
+                best_available = [p for p in players if p.adp_rank >= specific_pick]
+                if best_available:
+                    top_pick = best_available[0]
+                    name = clean_unicode(top_pick.name)
+                    response += f"**RECOMMENDED PICK: {name}** ({top_pick.position}, {top_pick.team})\n"
+                    response += f"- ADP: #{top_pick.adp_rank} (Round {top_pick.adp_round})\n"
+                    response += f"- Projected: {top_pick.projected_fantasy_ppg:.1f} fantasy points/game\n"
+                    response += f"- Stats: {top_pick.projected_ppg:.1f} PPG, {top_pick.projected_rpg:.1f} RPG, {top_pick.projected_apg:.1f} APG\n"
+                    response += f"- Consistency Rating: {top_pick.consistency_rating:.2f}/1.0\n\n"
+                    
+                    response += "**Other Available Options**:\n"
+                    for p in best_available[1:6]:
+                        name = clean_unicode(p.name)
+                        response += f"- Pick #{p.adp_rank}: {name} ({p.position}) - {p.projected_fantasy_ppg:.1f} FP/game\n"
+                else:
+                    # All players already taken, show who was available
+                    response += "All typical picks for this position have been selected.\n\n"
+                    response += "**Players Who Were Available Before This Pick**:\n"
+                    for p in players[:5]:
+                        name = clean_unicode(p.name)
+                        response += f"- Pick #{p.adp_rank}: {name} ({p.position})\n"
+            else:
+                response = f"[DICE] **Mock Draft - Best Available (Picks {pick_start}-{pick_end})**:\n\n"
+                
+                for p in players[:8]:
+                    name = clean_unicode(p.name)
+                    response += f"**Pick {p.adp_rank}: {name}** ({p.position}, {p.team})\n"
+                    response += f"- Projected: {p.projected_fantasy_ppg:.1f} FP/game\n"
+                    response += f"- Consistency: {p.consistency_rating:.2f}\n\n"
             
             return response
             
