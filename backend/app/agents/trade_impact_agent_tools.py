@@ -181,21 +181,26 @@ Instructions: Use the appropriate tool based on the query. Do not summarize tool
                 confidence=0.85
             )
         except asyncio.TimeoutError:
+            from .error_messages import get_friendly_error_message
             return AgentResponse(
-                content="The request took too long to process. Try asking a more specific question about trade impacts, such as 'How does the Porzingis trade affect Tatum?' or 'Which players benefit from recent trades?'",
+                content=get_friendly_error_message("trade_impact", message, "timeout"),
                 confidence=0.5,
                 metadata={"error": "timeout", "agent_type": "trade_impact"}
             )
         except Exception as e:
             error_msg = str(e)
             if "iteration limit" in error_msg.lower() or "time limit" in error_msg.lower():
+                from .error_messages import get_friendly_error_message
                 return AgentResponse(
-                    content="I found relevant trade information but couldn't complete the full analysis. Try asking about specific players or trades.",
+                    content=get_friendly_error_message("trade_impact", message, "iteration_limit"),
                     confidence=0.5,
                     metadata={"error": "iteration_limit", "agent_type": "trade_impact"}
                 )
+            logger.error(f"Unexpected error - Agent: trade_impact, Error: {str(e)}, Query: {message}")
             return AgentResponse(
-                content=f"Error processing trade query: {error_msg}",
+                content=("I apologize for the inconvenience. I am unable to complete your request at this time. "
+                        "At SportsBrain, we're always working hard to improve user experience. "
+                        "This interaction has been logged for later analysis."),
                 confidence=0.0,
                 metadata={"error": str(e), "agent_type": "trade_impact"}
             )

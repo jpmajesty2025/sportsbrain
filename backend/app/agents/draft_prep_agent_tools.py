@@ -15,6 +15,9 @@ import json
 import re
 import unicodedata
 import asyncio
+import logging
+
+logger = logging.getLogger(__name__)
 
 def clean_unicode(text: str) -> str:
     """Remove or replace problematic Unicode characters"""
@@ -206,23 +209,26 @@ Instructions:
                 confidence=0.7  # Lower confidence for agent responses
             )
         except asyncio.TimeoutError:
-            # Try to provide a helpful response even if we timeout
+            from .error_messages import get_friendly_error_message
             return AgentResponse(
-                content="The request took too long to process. For punt strategies, try asking more specific questions like 'Which guards fit a punt FT% build?' or 'What are good targets for punt rebounds strategy?'",
+                content=get_friendly_error_message("draft_prep", message, "timeout"),
                 confidence=0.5,
                 metadata={"error": "timeout", "agent_type": "draft_prep"}
             )
         except Exception as e:
             error_msg = str(e)
             if "iteration limit" in error_msg.lower() or "time limit" in error_msg.lower():
-                # Agent hit iteration limit - provide helpful response
+                from .error_messages import get_friendly_error_message
                 return AgentResponse(
-                    content="I found relevant information but couldn't complete the full analysis. Try asking a more specific question about your punt strategy, keeper decision, or draft targets.",
+                    content=get_friendly_error_message("draft_prep", message, "iteration_limit"),
                     confidence=0.5,
                     metadata={"error": "iteration_limit", "agent_type": "draft_prep"}
                 )
+            logger.error(f"Unexpected error - Agent: draft_prep, Error: {str(e)}, Query: {message}")
             return AgentResponse(
-                content=f"Error processing draft query: {error_msg}",
+                content=("I apologize for the inconvenience. I am unable to complete your request at this time. "
+                        "At SportsBrain, we're always working hard to improve user experience. "
+                        "This interaction has been logged for later analysis."),
                 confidence=0.0,
                 metadata={"error": str(e), "agent_type": "draft_prep"}
             )

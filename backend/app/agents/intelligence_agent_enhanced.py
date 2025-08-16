@@ -1,6 +1,7 @@
 """Enhanced Intelligence Agent with detailed reasoning and analysis"""
 
 import logging
+import asyncio
 from typing import Dict, Any, List, Optional
 from sqlalchemy import text
 from langchain.agents import Tool, AgentType, initialize_agent
@@ -233,11 +234,30 @@ Thought: {agent_scratchpad}"""
                 tools_used=[tool.name for tool in self.tools],
                 confidence=0.90
             )
+        except asyncio.TimeoutError:
+            from .error_messages import get_friendly_error_message
+            return AgentResponse(
+                content=get_friendly_error_message("intelligence_enhanced", message, "timeout"),
+                confidence=0.5,
+                metadata={"error": "timeout", "agent_type": "intelligence_enhanced"}
+            )
         except Exception as e:
             logger.error(f"Error in enhanced intelligence agent: {str(e)}")
+            error_msg = str(e)
+            if "iteration limit" in error_msg.lower() or "time limit" in error_msg.lower():
+                from .error_messages import get_friendly_error_message
+                return AgentResponse(
+                    content=get_friendly_error_message("intelligence_enhanced", message, "iteration_limit"),
+                    confidence=0.5,
+                    metadata={"error": "iteration_limit", "agent_type": "intelligence_enhanced"}
+                )
+            logger.error(f"Unexpected error - Agent: intelligence_enhanced, Error: {str(e)}, Query: {message}")
             return AgentResponse(
-                content=f"Error processing intelligence request: {str(e)}",
-                confidence=0.0
+                content=("I apologize for the inconvenience. I am unable to complete your request at this time. "
+                        "At SportsBrain, we're always working hard to improve user experience. "
+                        "This interaction has been logged for later analysis."),
+                confidence=0.0,
+                metadata={"error": str(e), "agent_type": "intelligence_enhanced"}
             )
     
     # ENHANCED TOOL IMPLEMENTATIONS WITH REASONING
