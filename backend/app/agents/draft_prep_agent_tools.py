@@ -215,7 +215,7 @@ Instructions:
    - Round advantage/disadvantage
    - Clear recommendation with reasoning
 4. Do NOT condense or summarize the tool output - preserve all the details
-5. Never mention tool names or say "based on the analysis""""
+5. Never mention tool names or say "based on the analysis"""
             
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
