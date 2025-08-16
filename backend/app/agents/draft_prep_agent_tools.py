@@ -131,27 +131,42 @@ class DraftPrepAgent(BaseAgent):
     def _initialize_agent(self):
         """Initialize the LangChain agent with tools"""
         if settings.OPENAI_API_KEY:
-            from langchain.prompts import PromptTemplate
+            from langchain.agents import ZeroShotAgent, AgentExecutor
+            from langchain.chains import LLMChain
             
-            # Custom prompt to ensure agent returns tool output
-            prefix = """You are a fantasy basketball draft expert. Answer the following questions as best you can using the available tools.
+            # Custom prompt similar to Intelligence Agent
+            prefix = """You are an expert fantasy basketball draft strategist for the 2025-26 NBA season.
 
-When you use a tool and get results, your Final Answer should BE those results, not a description of what tool you used.
-For example, if someone asks for a punt strategy and you use build_punt_strategy, return the actual player recommendations and tips, not "I used the build_punt_strategy function".
+CRITICAL RULES:
+1. NEVER mention tool names in your responses
+2. Present information as YOUR expert knowledge
+3. Be specific and detailed in your answers
+4. If a question is unrelated to fantasy basketball, politely say "I can only help with fantasy basketball draft questions."
 
 You have access to the following tools:"""
             
-            llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.1)
-            self.agent_executor = initialize_agent(
+            suffix = """Begin! Remember: Do not mention tool names in your final answer.
+
+Question: {input}
+Thought: {agent_scratchpad}"""
+            
+            prompt = ZeroShotAgent.create_prompt(
                 tools=self.tools,
-                llm=llm,
-                agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+                prefix=prefix,
+                suffix=suffix,
+                input_variables=["input", "agent_scratchpad"]
+            )
+            
+            llm = OpenAI(api_key=settings.OPENAI_API_KEY, temperature=0.1)
+            llm_chain = LLMChain(llm=llm, prompt=prompt)
+            agent = ZeroShotAgent(llm_chain=llm_chain, tools=self.tools)
+            
+            self.agent_executor = AgentExecutor.from_agent_and_tools(
+                agent=agent,
+                tools=self.tools,
                 verbose=True,
-                handle_parsing_errors=True,
-                max_iterations=5,
-                agent_kwargs={
-                    "prefix": prefix
-                }
+                max_iterations=3,
+                handle_parsing_errors=True
             )
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
@@ -169,8 +184,11 @@ You have access to the following tools:"""
 
 User Query: {message}
 
-Instructions: Use the appropriate tool based on the query. Pass the COMPLETE user query to the tool, 
-including all details like round numbers, player names, and categories. Do not summarize tool outputs."""
+Instructions: 
+1. Use the appropriate tool based on the query
+2. When you get a tool response, that IS your final answer - return it immediately
+3. Do NOT try to gather more information after getting a complete tool response
+4. Do not mention tool names in your response"""
             
             result = await asyncio.wait_for(
                 self.agent_executor.arun(input=enhanced_message),
