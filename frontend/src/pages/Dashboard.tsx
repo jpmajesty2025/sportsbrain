@@ -64,7 +64,7 @@ const agents: AgentCard[] = [
     examples: [
       'Should I keep Ja Morant in round 3?',
       'Build a punt FT% team around Giannis',
-      'Show mock draft for pick 12',
+      'Who are the best value picks in rounds 3-5?',
       'Is LaMelo Ball worth keeping in round 4?'
     ]
   },
