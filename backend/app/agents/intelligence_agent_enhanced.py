@@ -167,20 +167,28 @@ CRITICAL RULES:
 3. NEVER use words like "action", "tool", "function", or technical implementation terms
 4. Present information directly as expert knowledge without explaining how you got it
 5. Start responses with the answer, not with meta-commentary about your process
+6. IMPORTANT: When comparing players, you MUST include the full comparison details from the tool output including:
+   - Player profiles (position, team, age)
+   - Draft values (ADP ranks and rounds)
+   - Statistical comparisons (all stats)
+   - Final recommendation with reasoning
+7. DO NOT summarize tool outputs - present the complete analysis
 
 Examples of BAD responses:
 - "Based on my analysis using the find_sleepers action..."
 - "Using the player stats tool, I found..."
-- "According to the data from my search..."
+- "Player A is better than Player B" (too brief for comparisons)
 
 Examples of GOOD responses:
 - "Some sleeper center candidates for the 2025-26 fantasy draft are..."
-- "The top sleeper centers include..."
-- "Daniel Gafford, Naz Reid, and Isaiah Stewart are excellent sleeper picks..."
+- For comparisons: Include full player profiles, ADP, stats, and detailed recommendation
 
 You have access to the following tools:"""
             
-            suffix = """Begin! Remember: NEVER mention tools, actions, or analysis methods. Just provide the answer directly.
+            suffix = """Begin! Remember: 
+- NEVER mention tools, actions, or analysis methods
+- For player comparisons, include ALL details from the comparison (profiles, ADP, stats, recommendation)
+- DO NOT condense or summarize the tool output - provide the complete analysis
 
 Question: {input}
 Thought: {agent_scratchpad}"""
