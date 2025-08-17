@@ -245,22 +245,29 @@ Instructions: Use the appropriate tool based on the query. Do not summarize tool
                 "params": {"nprobe": 10}
             }
             
+            # FIXED: Use "vector" field name as defined in milvus_schema.py
             results = collection.search(
                 data=[query_embedding],
-                anns_field="embedding",
+                anns_field="vector",  # FIXED: was "embedding", should be "vector"
                 param=search_params,
                 limit=5,
-                output_fields=["trade_title", "trade_analysis", "affected_players", "fantasy_impact"]
+                output_fields=["text", "metadata"]  # FIXED: use actual fields from schema
             )
             
             if results and results[0]:
                 response = "[DOC] **Relevant Trade Analysis Found**:\n\n"
                 for i, hit in enumerate(results[0][:3], 1):
                     entity = hit.entity
-                    response += f"**{i}. {entity.get('trade_title', 'Trade Document')}**\n"
-                    response += f"Analysis: {entity.get('trade_analysis', 'N/A')[:200]}...\n"
-                    response += f"Affected Players: {entity.get('affected_players', 'N/A')}\n"
-                    response += f"Fantasy Impact: {entity.get('fantasy_impact', 'N/A')}\n\n"
+                    # Extract from metadata JSON field as per schema
+                    metadata = entity.get('metadata', {})
+                    text = entity.get('text', 'No description available')
+                    
+                    response += f"**{i}. Trade Document (Score: {hit.score:.2f})**\n"
+                    response += f"Analysis: {text[:200]}...\n"
+                    if metadata:
+                        response += f"Players Mentioned: {metadata.get('players_mentioned', 'N/A')}\n"
+                        response += f"Teams Involved: {metadata.get('teams_involved', 'N/A')}\n"
+                        response += f"Impact: {metadata.get('impact_analysis', 'N/A')}\n\n"
                 
                 connections.disconnect("default")
                 return response
