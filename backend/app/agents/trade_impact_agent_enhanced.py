@@ -14,6 +14,9 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
         super().__init__()
         self.reranker = None
         self._init_reranker()
+        # Override parent's embedding model to match Milvus dimensions
+        from sentence_transformers import SentenceTransformer
+        self.embedding_model = SentenceTransformer('all-mpnet-base-v2')  # 768 dims
         
     def _init_reranker(self):
         """Initialize reranker (lazy loading)"""
@@ -47,7 +50,7 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             query_embedding = self.embedding_model.encode(query).tolist()
             
             search_params = {
-                "metric_type": "L2",
+                "metric_type": "IP",  # Inner Product - matches collection schema
                 "params": {"nprobe": 10}
             }
             

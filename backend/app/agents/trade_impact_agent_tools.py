@@ -28,7 +28,7 @@ class TradeImpactAgent(BaseAgent):
     
     def __init__(self):
         # Initialize embedding model for Milvus searches
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        self.embedding_model = SentenceTransformer('all-mpnet-base-v2')  # 768 dims to match Milvus
         
         tools = [
             # Trade Analysis Tools
@@ -241,7 +241,7 @@ Instructions: Use the appropriate tool based on the query. Do not summarize tool
             
             # Search for similar trade documents
             search_params = {
-                "metric_type": "L2",
+                "metric_type": "IP",  # Inner Product - matches collection schema
                 "params": {"nprobe": 10}
             }
             
