@@ -2,14 +2,14 @@ flowchart LR
     %% Data Flow Diagram - Actually Implemented
     %% SportsBrain Fantasy Basketball Platform
     
-    subgraph "Data Sources"
-        NBA[NBA Stats API<br/>Live player stats]
-        FANTASY[Fantasy Platforms<br/>ADP, Rankings]
-        MANUAL[Manual Entry<br/>Projections, Strategies]
+    subgraph "Data Sources (Current Implementation)"
+        SYNTHETIC[Synthesized Data<br/>- Player stats<br/>- Game results<br/>- Generated via scripts]
+        HARDCODED[Hardcoded Values<br/>- ADP rankings (1-151)<br/>- Punt fit flags<br/>- Sleeper scores]
+        GENERATED[Algorithm-Generated<br/>- Projections (formula-based)<br/>- Shot distributions<br/>- Strategy documents]
     end
     
     subgraph "Data Ingestion"
-        FETCH[Data Collection Scripts<br/>- fetch_real_nba_data.py<br/>- generate_fantasy_data.py]
+        FETCH[Data Loading Scripts<br/>- load_postgres_draft_data.py<br/>- generate_shot_distributions.py<br/>- load_to_milvus.py]
         QUALITY[Quality Checks<br/>- Validation<br/>- Deduplication<br/>- Enrichment]
     end
     
@@ -31,8 +31,8 @@ flowchart LR
             NEO4J_WRITE[(Neo4j Write<br/>- Player nodes<br/>- Team relationships<br/>- Trade connections)]
         end
         
-        subgraph "Cache Layer"
-            REDIS_WRITE[(Redis Cache<br/>- Query results<br/>- Session data)]
+        subgraph "Cache Layer (Configured but not implemented)"
+            REDIS_WRITE[(Redis<br/>- Infrastructure ready<br/>- Not currently used)]
         end
     end
     
@@ -52,8 +52,6 @@ flowchart LR
             CALC_TOOL[Calculation Tools<br/>Keeper value, etc.]
         end
         
-        CACHE_CHECK{Cache<br/>Hit?}
-        
         RESPONSE_GEN[Response Generation<br/>LangChain + GPT-3.5]
         
         OUTPUT_FILTER[Output Filter<br/>Remove sensitive data<br/>Hide tool names]
@@ -61,18 +59,18 @@ flowchart LR
         USER_RESP[Formatted Response<br/>to Dashboard]
     end
     
-    subgraph "Data Update Flow"
-        DAILY_UPDATE[Daily Updates<br/>- New stats<br/>- Injuries<br/>- Trades]
+    subgraph "Data Update Flow (Planned, Not Implemented)"
+        DAILY_UPDATE[Future: Daily Updates<br/>- New stats<br/>- Injuries<br/>- Trades]
         
-        INCREMENTAL[Incremental Load<br/>- Update existing<br/>- Add new players]
+        INCREMENTAL[Future: Incremental Load<br/>- Update existing<br/>- Add new players]
         
-        REINDEX[Reindex Vectors<br/>Update embeddings]
+        REINDEX[Future: Reindex Vectors<br/>Update embeddings]
     end
     
     %% Flow connections
-    NBA --> FETCH
-    FANTASY --> FETCH
-    MANUAL --> FETCH
+    SYNTHETIC --> FETCH
+    HARDCODED --> FETCH
+    GENERATED --> FETCH
     
     FETCH --> QUALITY
     QUALITY --> TRANSFORM
@@ -85,28 +83,19 @@ flowchart LR
     SECURITY --> AGENT_ROUTER
     AGENT_ROUTER --> TOOL_SELECT
     
-    TOOL_SELECT --> CACHE_CHECK
-    CACHE_CHECK -->|Hit| RESPONSE_GEN
-    CACHE_CHECK -->|Miss| SQL_TOOL
-    CACHE_CHECK -->|Miss| VECTOR_TOOL
-    CACHE_CHECK -->|Miss| GRAPH_TOOL
-    CACHE_CHECK -->|Miss| CALC_TOOL
+    TOOL_SELECT --> SQL_TOOL
+    TOOL_SELECT --> VECTOR_TOOL
+    TOOL_SELECT --> GRAPH_TOOL
+    TOOL_SELECT --> CALC_TOOL
     
     SQL_TOOL --> PG_WRITE
     VECTOR_TOOL --> MILVUS_WRITE
     GRAPH_TOOL --> NEO4J_WRITE
     
-    SQL_TOOL --> REDIS_WRITE
-    VECTOR_TOOL --> REDIS_WRITE
-    GRAPH_TOOL --> REDIS_WRITE
-    CALC_TOOL --> REDIS_WRITE
-    
     SQL_TOOL --> RESPONSE_GEN
     VECTOR_TOOL --> RESPONSE_GEN
     GRAPH_TOOL --> RESPONSE_GEN
     CALC_TOOL --> RESPONSE_GEN
-    
-    REDIS_WRITE --> RESPONSE_GEN
     
     RESPONSE_GEN --> OUTPUT_FILTER
     OUTPUT_FILTER --> USER_RESP
