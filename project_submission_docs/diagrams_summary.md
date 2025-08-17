@@ -10,10 +10,11 @@
   - User authentication and preferences
   - 151 players with positions and teams
   - 30 NBA teams with conference/division data
-  - 200 games with scores and metadata
-  - 480 game statistics records
+  - 100 synthetic games (20 with stats)
+  - ~240 synthetic game statistics records
   - 151 fantasy data records with projections and punt fits
 - **Relationships**: Foreign key relationships between players, teams, games, and stats
+- **Note**: All game data is synthesized for demonstration
 
 #### Milvus Vector Collections Model (`milvus_collections_model.mermaid`)
 - **Purpose**: Illustrates vector database collections for similarity search
@@ -27,11 +28,10 @@
 #### Neo4j Graph Model (`neo4j_graph_model.mermaid`)
 - **Purpose**: Shows graph database nodes and relationships
 - **Key Components**:
-  - Player nodes with fantasy stats
-  - Team nodes with pace ratings
-  - Trade and Strategy nodes
-  - Relationships: PLAYS_FOR, TRADED_TO, FITS_STRATEGY, SYNERGIZES_WITH
-- **Status**: Partially implemented with room for expansion
+  - Node Types: Player, Team, Injury, Trade, Performance
+  - Relationships: PLAYS_FOR, HAD_INJURY, HAD_PERFORMANCE, IMPACTED_BY, SIMILAR_TO
+  - Total: 804 nodes and 719 relationships
+  - Query patterns for common graph traversals
 
 ### 2. System Architecture Diagram (`system_architecture.mermaid`)
 - **Purpose**: Comprehensive view of the implemented system
@@ -46,13 +46,16 @@
 
 ### 3. Data Flow Diagram (`data_flow_diagram.mermaid`)
 - **Purpose**: Shows how data moves through the system
-- **Key Flows**:
-  - Data ingestion from NBA Stats API and fantasy platforms
-  - Quality checks and transformation pipeline
-  - Storage distribution across databases
-  - Query flow from user through security to agents
-  - Tool execution and response generation
-  - Cache layer for performance optimization
+- **Current Implementation**:
+  - Data sources: NBA Stats API (572 players), synthesized data, hardcoded values, algorithm-generated projections
+  - Data loading via Python scripts (no external API connections)
+  - Storage distribution across PostgreSQL, Milvus, and Neo4j
+  - Query flow: User → Security → Agent Router → Tools → Direct DB queries → Response
+  - No caching implemented (Redis configured but unused)
+- **Planned Features** (clearly marked):
+  - Daily updates from external sources
+  - Incremental data loading
+  - Redis caching layer
 
 ### 4. Business Problem Statement (`business_problem_statement.md`)
 - **Purpose**: Articulates the problem SportsBrain solves
@@ -72,12 +75,20 @@ The `.mermaid` files can be viewed in several ways:
 3. **Online**: Use https://mermaid.live/ and paste the diagram code
 4. **Export**: Convert to PNG/SVG using mermaid-cli
 
-## Diagram Highlights
+## Key Updates and Accuracy Notes
 
+### What Changed
+- **Data Sources**: Corrected to show synthesized/generated data instead of live APIs
+- **Neo4j Model**: Updated to reflect actual nodes and relationships in the database
+- **Cache Layer**: Marked as configured but not implemented
+- **Game Data**: Clarified as synthetic (100 games, 20 with stats)
+- **Data Flow**: Removed cache checks, shows direct database queries
+
+### Diagram Highlights
 - **Comprehensive Coverage**: All three databases are documented
-- **Implementation Focus**: Shows what was actually built, not just planned
-- **Technical Accuracy**: Reflects real data counts and relationships
+- **Implementation Accuracy**: Shows what was actually built, not aspirational features
+- **Technical Precision**: Reflects real data counts and actual relationships
 - **Professional Quality**: Industry-standard diagramming notation
-- **Clear Labeling**: Each component is properly annotated
+- **Clear Distinctions**: Implemented vs planned features are clearly marked
 
-These diagrams fulfill the Capstone Project Spec requirements for system design documentation and provide a clear visual understanding of the SportsBrain architecture.
+These diagrams fulfill the Capstone Project Spec requirements for system design documentation and provide an honest, clear visual understanding of the SportsBrain MVP architecture.

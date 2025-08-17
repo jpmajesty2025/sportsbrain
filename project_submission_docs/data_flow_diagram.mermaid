@@ -3,71 +3,73 @@ flowchart LR
     %% SportsBrain Fantasy Basketball Platform
     
     subgraph "Data Sources (Current Implementation)"
-        SYNTHETIC[Synthesized Data<br/>- Player stats<br/>- Game results<br/>- Generated via scripts]
-        HARDCODED[Hardcoded Values<br/>- ADP rankings (1-151)<br/>- Punt fit flags<br/>- Sleeper scores]
-        GENERATED[Algorithm-Generated<br/>- Projections (formula-based)<br/>- Shot distributions<br/>- Strategy documents]
+        NBA_API["NBA Stats API<br/>- 572 player profiles<br/>- Team rosters<br/>- Real player data"]
+        SYNTHETIC["Synthesized Data<br/>- Player stats<br/>- Game results<br/>- Generated via scripts"]
+        HARDCODED["Hardcoded Values<br/>- ADP rankings 1-151<br/>- Punt fit flags<br/>- Sleeper scores"]
+        GENERATED["Algorithm-Generated<br/>- Projections formula-based<br/>- Shot distributions<br/>- Strategy documents"]
     end
     
     subgraph "Data Ingestion"
-        FETCH[Data Loading Scripts<br/>- load_postgres_draft_data.py<br/>- generate_shot_distributions.py<br/>- load_to_milvus.py]
-        QUALITY[Quality Checks<br/>- Validation<br/>- Deduplication<br/>- Enrichment]
+        FETCH["Data Loading Scripts<br/>- load_postgres_draft_data.py<br/>- generate_shot_distributions.py<br/>- load_to_milvus.py"]
+        QUALITY["Quality Checks<br/>- Validation<br/>- Deduplication<br/>- Enrichment"]
     end
     
     subgraph "Data Processing"
-        TRANSFORM[Data Transformation<br/>- Calculate fantasy points<br/>- Generate projections<br/>- Compute punt fits]
-        EMBED_GEN[Embedding Generation<br/>SentenceTransformer<br/>768 dimensions]
+        TRANSFORM["Data Transformation<br/>- Calculate fantasy points<br/>- Generate projections<br/>- Compute punt fits"]
+        EMBED_GEN["Embedding Generation<br/>SentenceTransformer<br/>768 dimensions"]
     end
     
     subgraph "Data Storage Flow"
         subgraph "Structured Data"
-            PG_WRITE[(PostgreSQL Write<br/>- Players: 151<br/>- Games: 200<br/>- Stats: 480<br/>- Fantasy: 151)]
+            PG_WRITE[("PostgreSQL Write<br/>- Players: 151<br/>- Games: 200<br/>- Stats: 480<br/>- Fantasy: 151")]
         end
         
         subgraph "Vector Data"
-            MILVUS_WRITE[(Milvus Write<br/>- Players: 572<br/>- Strategies: 230<br/>- Trades: 205)]
+            MILVUS_WRITE[("Milvus Write<br/>- Players: 572 from NBA API<br/>- Strategies: 230<br/>- Trades: 205")]
         end
         
         subgraph "Graph Data"
-            NEO4J_WRITE[(Neo4j Write<br/>- Player nodes<br/>- Team relationships<br/>- Trade connections)]
+            NEO4J_WRITE[("Neo4j Write<br/>- Player nodes: 572 from NBA API<br/>- Team relationships<br/>- Trade connections")]
         end
         
         subgraph "Cache Layer (Configured but not implemented)"
-            REDIS_WRITE[(Redis<br/>- Infrastructure ready<br/>- Not currently used)]
+            REDIS_WRITE[("Redis<br/>- Infrastructure ready<br/>- Not currently used")]
         end
     end
     
     subgraph "Query Flow"
-        USER_Q[User Query<br/>via Dashboard]
+        USER_Q["User Query<br/>via Dashboard"]
         
-        SECURITY[Security Pipeline<br/>1. Input validation<br/>2. Prompt guards<br/>3. Rate limiting]
+        SECURITY["Security Pipeline<br/>1. Input validation<br/>2. Prompt guards<br/>3. Rate limiting"]
         
-        AGENT_ROUTER[Agent Router<br/>Selects appropriate agent:<br/>- Intelligence<br/>- DraftPrep<br/>- TradeImpact]
+        AGENT_ROUTER["Agent Router<br/>Selects appropriate agent:<br/>- Intelligence<br/>- DraftPrep<br/>- TradeImpact"]
         
-        TOOL_SELECT[Tool Selection<br/>Agent decides which<br/>tools to use]
+        TOOL_SELECT["Tool Selection<br/>Agent decides which<br/>tools to use"]
         
         subgraph "Tool Execution"
-            SQL_TOOL[SQL Query Tool<br/>PostgreSQL data]
-            VECTOR_TOOL[Vector Search Tool<br/>Milvus similarity]
-            GRAPH_TOOL[Graph Query Tool<br/>Neo4j relationships]
-            CALC_TOOL[Calculation Tools<br/>Keeper value, etc.]
+            SQL_TOOL["SQL Query Tool<br/>PostgreSQL data"]
+            VECTOR_TOOL["Vector Search Tool<br/>Milvus similarity"]
+            GRAPH_TOOL["Graph Query Tool<br/>Neo4j relationships"]
+            CALC_TOOL["Calculation Tools<br/>Keeper value, etc."]
         end
         
-        RESPONSE_GEN[Response Generation<br/>LangChain + GPT-3.5]
+        RESPONSE_GEN["Response Generation<br/>LangChain + GPT-3.5"]
         
-        OUTPUT_FILTER[Output Filter<br/>Remove sensitive data<br/>Hide tool names]
+        OUTPUT_FILTER["Output Filter<br/>Remove sensitive data<br/>Hide tool names"]
         
-        USER_RESP[Formatted Response<br/>to Dashboard]
+        USER_RESP["Formatted Response<br/>to Dashboard"]
     end
     
     subgraph "Data Update Flow (Planned, Not Implemented)"
-        DAILY_UPDATE[Future: Daily Updates<br/>- New stats<br/>- Injuries<br/>- Trades]
+        DAILY_UPDATE["Future: Daily Updates<br/>- New stats<br/>- Injuries<br/>- Trades"]
         
-        INCREMENTAL[Future: Incremental Load<br/>- Update existing<br/>- Add new players]
+        INCREMENTAL["Future: Incremental Load<br/>- Update existing<br/>- Add new players"]
         
-        REINDEX[Future: Reindex Vectors<br/>Update embeddings]
+        REINDEX["Future: Reindex Vectors<br/>Update embeddings"]
     end
     
     %% Flow connections
+    NBA_API --> FETCH
     SYNTHETIC --> FETCH
     HARDCODED --> FETCH
     GENERATED --> FETCH

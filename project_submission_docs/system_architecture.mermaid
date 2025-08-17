@@ -2,65 +2,69 @@ graph TB
     %% System Architecture - Actually Implemented
     %% SportsBrain Fantasy Basketball Platform
     
-    subgraph "Client Layer"
-        UI[React Frontend<br/>TypeScript + Material-UI]
-        UI_COMP[Components:<br/>- Dashboard<br/>- Agent Cards<br/>- Chat Interface<br/>- Login/Register]
-    end
-    
-    subgraph "API Gateway"
-        NGINX[Nginx Reverse Proxy<br/>Railway.app]
-        API[FastAPI Backend<br/>Python 3.11]
+    subgraph "Railway Platform Deployment"
+        subgraph "Frontend (Railway)"
+            UI["React Frontend<br/>TypeScript + Material-UI"]
+            UI_COMP["Components:<br/>Dashboard<br/>Agent Cards<br/>Chat Interface<br/>Login/Register"]
+        end
         
-        AUTH[Auth Endpoints<br/>JWT + bcrypt]
-        AGENT_EP[Agent Endpoints<br/>/api/v1/agents/]
-        SECURE_EP[Secure Endpoints<br/>/api/v1/secure/]
+        subgraph "Backend API (Railway)"
+            API["FastAPI Backend<br/>Python 3.11"]
+            
+            AUTH["Auth Endpoints<br/>JWT + bcrypt"]
+            AGENT_EP["Agent Endpoints<br/>/api/v1/agents/"]
+            SECURE_EP["Secure Endpoints<br/>/api/v1/secure/"]
+        end
     end
     
     subgraph "Agent Layer - LangChain"
-        INT_AGENT[Intelligence Agent<br/>6 Tools]
-        DRAFT_AGENT[DraftPrep Agent<br/>6 Tools]
-        TRADE_AGENT[TradeImpact Agent<br/>5 Tools]
+        INT_AGENT["Intelligence Agent<br/>6 Tools"]
+        DRAFT_AGENT["DraftPrep Agent<br/>6 Tools"]
+        TRADE_AGENT["TradeImpact Agent<br/>5 Tools"]
         
-        TOOLS[Agent Tools:<br/>- SQL Queries<br/>- Vector Search<br/>- Calculations<br/>- Analysis]
+        TOOLS["Agent Tools:<br/>SQL Queries<br/>Vector Search<br/>Calculations<br/>Analysis"]
     end
     
-    subgraph "Security Layer"
-        INPUT_VAL[Input Validator<br/>35+ attack patterns]
-        PROMPT_GUARD[Prompt Guards<br/>Topic restriction]
-        OUTPUT_FILTER[Output Filter<br/>Data redaction]
-        RATE_LIMIT[Rate Limiter<br/>20/min, 200/hr]
+    subgraph "Security Layer - 5 Layers"
+        INPUT_VAL["Input Validator<br/>35+ attack patterns"]
+        PROMPT_GUARD["Prompt Guards<br/>Topic restriction"]
+        OUTPUT_FILTER["Output Filter<br/>Data redaction"]
+        RATE_LIMIT["Rate Limiter<br/>20/min, 200/hr"]
+        SECURE_WRAPPER["Secure Agent Wrapper<br/>Orchestrates all layers"]
     end
     
     subgraph "Data Layer"
-        subgraph "Primary Storage"
-            PG[(PostgreSQL<br/>Railway<br/>151 players<br/>200 games<br/>Fantasy data)]
-            REDIS[(Redis<br/>Railway<br/>Sessions<br/>Caching)]
+        subgraph "Primary Storage (Railway)"
+            PG[("PostgreSQL<br/>151 players<br/>100 games<br/>Fantasy data")]
+            REDIS[("Redis<br/>Configured<br/>Not in use")]
         end
         
-        subgraph "Vector Storage"
-            MILVUS[(Milvus<br/>Zilliz Cloud<br/>1,007 embeddings<br/>3 collections)]
+        subgraph "Vector Storage (Zilliz Cloud)"
+            MILVUS[("Milvus<br/>1,007 embeddings<br/>3 collections")]
         end
         
-        subgraph "Graph Storage"
-            NEO4J[(Neo4j Aura<br/>Relationships<br/>Partial data)]
+        subgraph "Graph Storage (Neo4j Aura)"
+            NEO4J[("Neo4j<br/>804 nodes<br/>719 relationships")]
         end
     end
     
     subgraph "External Services"
-        OPENAI[OpenAI API<br/>GPT-3.5-turbo<br/>Embeddings]
-        NBA_API[NBA Stats API<br/>Live data]
+        OPENAI["OpenAI API<br/>GPT-3.5-turbo<br/>Embeddings"]
     end
     
-    subgraph "Deployment Infrastructure"
-        RAILWAY[Railway.app<br/>- Frontend hosting<br/>- Backend hosting<br/>- PostgreSQL<br/>- Redis]
-        ZILLIZ[Zilliz Cloud<br/>Managed Milvus]
-        NEO4J_CLOUD[Neo4j Aura<br/>Managed Graph DB]
-        GITHUB[GitHub<br/>- Source control<br/>- CI/CD Actions]
+    subgraph "Planned External Services"
+        NBA_API["NBA Stats API<br/>Future integration"]
+    end
+    
+    subgraph "Infrastructure Providers"
+        RAILWAY_INFRA["Railway.app<br/>Hosts: Frontend, Backend,<br/>PostgreSQL, Redis"]
+        ZILLIZ_INFRA["Zilliz Cloud<br/>Hosts: Milvus"]
+        NEO4J_INFRA["Neo4j Aura<br/>Hosts: Neo4j"]
+        GITHUB["GitHub<br/>Source control<br/>CI/CD Actions"]
     end
     
     %% Connections
-    UI --> NGINX
-    NGINX --> API
+    UI --> API
     API --> AUTH
     API --> AGENT_EP
     API --> SECURE_EP
@@ -69,11 +73,13 @@ graph TB
     AGENT_EP --> DRAFT_AGENT
     AGENT_EP --> TRADE_AGENT
     
-    SECURE_EP --> INPUT_VAL
+    SECURE_EP --> SECURE_WRAPPER
+    SECURE_WRAPPER --> INPUT_VAL
     INPUT_VAL --> PROMPT_GUARD
     PROMPT_GUARD --> OUTPUT_FILTER
     OUTPUT_FILTER --> RATE_LIMIT
-    RATE_LIMIT --> INT_AGENT
+    RATE_LIMIT --> SECURE_WRAPPER
+    SECURE_WRAPPER --> INT_AGENT
     
     INT_AGENT --> TOOLS
     DRAFT_AGENT --> TOOLS
@@ -89,16 +95,8 @@ graph TB
     DRAFT_AGENT --> OPENAI
     TRADE_AGENT --> OPENAI
     
-    TOOLS --> NBA_API
     
-    %% Deployment
-    UI -.-> RAILWAY
-    API -.-> RAILWAY
-    PG -.-> RAILWAY
-    REDIS -.-> RAILWAY
-    MILVUS -.-> ZILLIZ
-    NEO4J -.-> NEO4J_CLOUD
-    GITHUB -.-> RAILWAY
+    %% Infrastructure relationships shown via subgraph grouping
     
     style UI fill:#e3f2fd
     style API fill:#fff3e0
