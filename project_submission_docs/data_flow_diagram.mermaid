@@ -1,0 +1,126 @@
+flowchart LR
+    %% Data Flow Diagram - Actually Implemented
+    %% SportsBrain Fantasy Basketball Platform
+    
+    subgraph "Data Sources"
+        NBA[NBA Stats API<br/>Live player stats]
+        FANTASY[Fantasy Platforms<br/>ADP, Rankings]
+        MANUAL[Manual Entry<br/>Projections, Strategies]
+    end
+    
+    subgraph "Data Ingestion"
+        FETCH[Data Collection Scripts<br/>- fetch_real_nba_data.py<br/>- generate_fantasy_data.py]
+        QUALITY[Quality Checks<br/>- Validation<br/>- Deduplication<br/>- Enrichment]
+    end
+    
+    subgraph "Data Processing"
+        TRANSFORM[Data Transformation<br/>- Calculate fantasy points<br/>- Generate projections<br/>- Compute punt fits]
+        EMBED_GEN[Embedding Generation<br/>SentenceTransformer<br/>768 dimensions]
+    end
+    
+    subgraph "Data Storage Flow"
+        subgraph "Structured Data"
+            PG_WRITE[(PostgreSQL Write<br/>- Players: 151<br/>- Games: 200<br/>- Stats: 480<br/>- Fantasy: 151)]
+        end
+        
+        subgraph "Vector Data"
+            MILVUS_WRITE[(Milvus Write<br/>- Players: 572<br/>- Strategies: 230<br/>- Trades: 205)]
+        end
+        
+        subgraph "Graph Data"
+            NEO4J_WRITE[(Neo4j Write<br/>- Player nodes<br/>- Team relationships<br/>- Trade connections)]
+        end
+        
+        subgraph "Cache Layer"
+            REDIS_WRITE[(Redis Cache<br/>- Query results<br/>- Session data)]
+        end
+    end
+    
+    subgraph "Query Flow"
+        USER_Q[User Query<br/>via Dashboard]
+        
+        SECURITY[Security Pipeline<br/>1. Input validation<br/>2. Prompt guards<br/>3. Rate limiting]
+        
+        AGENT_ROUTER[Agent Router<br/>Selects appropriate agent:<br/>- Intelligence<br/>- DraftPrep<br/>- TradeImpact]
+        
+        TOOL_SELECT[Tool Selection<br/>Agent decides which<br/>tools to use]
+        
+        subgraph "Tool Execution"
+            SQL_TOOL[SQL Query Tool<br/>PostgreSQL data]
+            VECTOR_TOOL[Vector Search Tool<br/>Milvus similarity]
+            GRAPH_TOOL[Graph Query Tool<br/>Neo4j relationships]
+            CALC_TOOL[Calculation Tools<br/>Keeper value, etc.]
+        end
+        
+        CACHE_CHECK{Cache<br/>Hit?}
+        
+        RESPONSE_GEN[Response Generation<br/>LangChain + GPT-3.5]
+        
+        OUTPUT_FILTER[Output Filter<br/>Remove sensitive data<br/>Hide tool names]
+        
+        USER_RESP[Formatted Response<br/>to Dashboard]
+    end
+    
+    subgraph "Data Update Flow"
+        DAILY_UPDATE[Daily Updates<br/>- New stats<br/>- Injuries<br/>- Trades]
+        
+        INCREMENTAL[Incremental Load<br/>- Update existing<br/>- Add new players]
+        
+        REINDEX[Reindex Vectors<br/>Update embeddings]
+    end
+    
+    %% Flow connections
+    NBA --> FETCH
+    FANTASY --> FETCH
+    MANUAL --> FETCH
+    
+    FETCH --> QUALITY
+    QUALITY --> TRANSFORM
+    TRANSFORM --> PG_WRITE
+    TRANSFORM --> EMBED_GEN
+    EMBED_GEN --> MILVUS_WRITE
+    TRANSFORM --> NEO4J_WRITE
+    
+    USER_Q --> SECURITY
+    SECURITY --> AGENT_ROUTER
+    AGENT_ROUTER --> TOOL_SELECT
+    
+    TOOL_SELECT --> CACHE_CHECK
+    CACHE_CHECK -->|Hit| RESPONSE_GEN
+    CACHE_CHECK -->|Miss| SQL_TOOL
+    CACHE_CHECK -->|Miss| VECTOR_TOOL
+    CACHE_CHECK -->|Miss| GRAPH_TOOL
+    CACHE_CHECK -->|Miss| CALC_TOOL
+    
+    SQL_TOOL --> PG_WRITE
+    VECTOR_TOOL --> MILVUS_WRITE
+    GRAPH_TOOL --> NEO4J_WRITE
+    
+    SQL_TOOL --> REDIS_WRITE
+    VECTOR_TOOL --> REDIS_WRITE
+    GRAPH_TOOL --> REDIS_WRITE
+    CALC_TOOL --> REDIS_WRITE
+    
+    SQL_TOOL --> RESPONSE_GEN
+    VECTOR_TOOL --> RESPONSE_GEN
+    GRAPH_TOOL --> RESPONSE_GEN
+    CALC_TOOL --> RESPONSE_GEN
+    
+    REDIS_WRITE --> RESPONSE_GEN
+    
+    RESPONSE_GEN --> OUTPUT_FILTER
+    OUTPUT_FILTER --> USER_RESP
+    
+    DAILY_UPDATE --> INCREMENTAL
+    INCREMENTAL --> QUALITY
+    INCREMENTAL --> REINDEX
+    REINDEX --> MILVUS_WRITE
+    
+    style USER_Q fill:#bbdefb
+    style SECURITY fill:#ffcdd2
+    style AGENT_ROUTER fill:#c8e6c9
+    style PG_WRITE fill:#e1f5fe
+    style MILVUS_WRITE fill:#f3e5f5
+    style NEO4J_WRITE fill:#fff9c4
+    style REDIS_WRITE fill:#ffccbc
+    style USER_RESP fill:#c5e1a5

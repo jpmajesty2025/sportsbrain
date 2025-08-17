@@ -1,0 +1,69 @@
+graph TB
+    %% Milvus Vector Database Collections - Actually Implemented
+    %% SportsBrain Fantasy Basketball Platform
+    
+    subgraph "Milvus Vector Database"
+        subgraph "sportsbrain_players Collection"
+            PC[sportsbrain_players<br/>572 embeddings]
+            PC_FIELDS[Fields:<br/>- id: int64 PK<br/>- name: varchar<br/>- embedding: float_vector 768d<br/>- metadata: json]
+            PC_META[Metadata Contains:<br/>- position<br/>- team<br/>- stats PPG/RPG/APG<br/>- fantasy_ppg<br/>- injury_risk]
+            PC_INDEX[Index: IVF_FLAT<br/>Similarity: L2 Distance<br/>nlist: 128]
+            
+            PC --> PC_FIELDS
+            PC --> PC_META
+            PC --> PC_INDEX
+        end
+        
+        subgraph "sportsbrain_strategies Collection"
+            SC[sportsbrain_strategies<br/>230 documents]
+            SC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- embedding: float_vector 768d<br/>- content: text<br/>- metadata: json]
+            SC_META[Metadata Contains:<br/>- strategy_type<br/>- categories<br/>- difficulty_level<br/>- target_rounds]
+            SC_INDEX[Index: IVF_FLAT<br/>Similarity: COSINE<br/>nlist: 64]
+            
+            SC --> SC_FIELDS
+            SC --> SC_META
+            SC --> SC_INDEX
+        end
+        
+        subgraph "sportsbrain_trades Collection"
+            TC[sportsbrain_trades<br/>205 trade analyses]
+            TC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- embedding: float_vector 768d<br/>- content: text<br/>- metadata: json]
+            TC_META[Metadata Contains:<br/>- players_involved<br/>- teams<br/>- trade_date<br/>- impact_analysis<br/>- fantasy_implications]
+            TC_INDEX[Index: IVF_FLAT<br/>Similarity: COSINE<br/>nlist: 64]
+            
+            TC --> TC_FIELDS
+            TC --> TC_META
+            TC --> TC_INDEX
+        end
+    end
+    
+    subgraph "Embedding Generation"
+        EMBED[SentenceTransformer<br/>'all-MiniLM-L6-v2'<br/>768 dimensions]
+        
+        RAW_PLAYER[Player Names & Stats] --> EMBED
+        RAW_STRATEGY[Strategy Documents] --> EMBED
+        RAW_TRADE[Trade Analyses] --> EMBED
+        
+        EMBED --> PC
+        EMBED --> SC
+        EMBED --> TC
+    end
+    
+    subgraph "Usage Patterns"
+        AGENT[LangChain Agents] --> |Similarity Search| PC
+        AGENT --> |Strategy Retrieval| SC
+        AGENT --> |Trade Impact Analysis| TC
+        
+        SEARCH_PARAMS[Search Parameters:<br/>- top_k: 5-10<br/>- metric: L2/Cosine<br/>- filter: metadata conditions]
+        
+        AGENT --> SEARCH_PARAMS
+    end
+    
+    %% Statistics
+    NOTE[Total Embeddings: 1,007<br/>Exceeds requirement: 1,000+<br/>Dimension: 768<br/>Cloud Host: Zilliz]
+    
+    style PC fill:#e1f5fe
+    style SC fill:#fff3e0
+    style TC fill:#f3e5f5
+    style EMBED fill:#c8e6c9
+    style NOTE fill:#ffecb3

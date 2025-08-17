@@ -1,0 +1,132 @@
+erDiagram
+    %% PostgreSQL Data Model - Actually Implemented
+    %% SportsBrain Fantasy Basketball Platform
+    
+    USER {
+        int id PK
+        string username UK
+        string email UK
+        string hashed_password
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    
+    PLAYER {
+        int id PK
+        string name
+        string position "PG/SG/SF/PF/C"
+        string team
+        date birth_date
+        int height_inches
+        int weight_lbs
+        string playing_style "Scorer/Playmaker/Defender/etc"
+        datetime created_at
+        datetime updated_at
+    }
+    
+    TEAM {
+        int id PK
+        string name
+        string city
+        string abbreviation UK
+        string conference "East/West"
+        string division
+        float pace_rating
+        datetime created_at
+        datetime updated_at
+    }
+    
+    GAME {
+        int id PK
+        date game_date
+        int home_team_id FK
+        int away_team_id FK
+        int home_score
+        int away_score
+        string season_type "Regular/Playoffs"
+        int season_year
+        datetime created_at
+        datetime updated_at
+    }
+    
+    GAME_STATS {
+        int id PK
+        int game_id FK
+        int player_id FK
+        int minutes_played
+        int points
+        int rebounds
+        int assists
+        int steals
+        int blocks
+        int turnovers
+        int field_goals_made
+        int field_goals_attempted
+        int three_pointers_made
+        int three_pointers_attempted
+        int free_throws_made
+        int free_throws_attempted
+        float fantasy_points
+        datetime created_at
+    }
+    
+    FANTASY_DATA {
+        int id PK
+        int player_id FK
+        string season "2024-25"
+        int adp_rank "1-150"
+        int adp_round "1-13"
+        int yahoo_rank
+        int espn_rank
+        int keeper_round
+        float projected_ppg
+        float projected_rpg
+        float projected_apg
+        float projected_spg
+        float projected_bpg
+        float projected_fg_pct
+        float projected_ft_pct
+        float projected_3pm
+        float projected_fantasy_ppg
+        boolean punt_ft_fit
+        boolean punt_fg_fit
+        boolean punt_ast_fit
+        boolean punt_3pm_fit
+        float sleeper_score "0.0-1.0"
+        boolean breakout_candidate
+        string injury_risk "Low/Medium/High"
+        float consistency_rating "0.0-1.0"
+        json shot_distribution "3PT%, midrange%, paint%"
+        datetime created_at
+        datetime updated_at
+    }
+    
+    USER_PREFERENCES {
+        int id PK
+        int user_id FK
+        string league_type
+        int league_size
+        string scoring_system
+        json categories_weights
+        string punt_strategy
+        datetime created_at
+        datetime updated_at
+    }
+    
+    %% Relationships
+    USER ||--o{ USER_PREFERENCES : has
+    PLAYER ||--o{ GAME_STATS : records
+    PLAYER ||--o| FANTASY_DATA : has
+    TEAM ||--o{ GAME : home_team
+    TEAM ||--o{ GAME : away_team
+    GAME ||--o{ GAME_STATS : contains
+    
+    %% Data Summary
+    %% Users: Variable (authentication)
+    %% Players: 151 fantasy-relevant
+    %% Teams: 30 NBA teams
+    %% Games: 100 synthetic games (20 with stats)
+    %% GameStats: ~240 synthetic performance records
+    %% FantasyData: 151 projections with punt fits
+    %% UserPreferences: User-specific settings

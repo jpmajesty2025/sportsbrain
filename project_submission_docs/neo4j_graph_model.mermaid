@@ -1,0 +1,63 @@
+graph LR
+    %% Neo4j Graph Database Model - Partially Implemented
+    %% SportsBrain Fantasy Basketball Platform
+    
+    subgraph "Node Types (Actual)"
+        subgraph "Player Nodes"
+            P[Player Node<br/>Properties:<br/>- name: string<br/>- position: string<br/>- team: string<br/>- fantasy_ppg: float]
+        end
+        
+        subgraph "Team Nodes"
+            T[Team Node<br/>Properties:<br/>- name: string<br/>- abbreviation: string<br/>- conference: string]
+        end
+        
+        subgraph "Injury Nodes"
+            I[Injury Node<br/>Properties:<br/>- injury_id: string<br/>- type: string<br/>- date: date<br/>- games_missed: int]
+        end
+        
+        subgraph "Trade Nodes"
+            TR[Trade Node<br/>Properties:<br/>- trade_id: string<br/>- date: date<br/>- headline: string]
+        end
+        
+        subgraph "Performance Nodes"
+            PERF[Performance Node<br/>Properties:<br/>- game_date: date<br/>- points: int<br/>- rebounds: int<br/>- assists: int]
+        end
+    end
+    
+    subgraph "Relationships (Actual)"
+        P -->|PLAYS_FOR| T
+        P -->|HAD_INJURY| I
+        P -->|HAD_PERFORMANCE| PERF
+        P -->|IMPACTED_BY| TR
+        P -->|SIMILAR_TO| P
+    end
+    
+    subgraph "Relationship Properties"
+        PLAYS_FOR_PROPS[PLAYS_FOR:<br/>- season<br/>- role]
+        
+        HAD_INJURY_PROPS[HAD_INJURY:<br/>- severity<br/>- return_date]
+        
+        HAD_PERF_PROPS[HAD_PERFORMANCE:<br/>- fantasy_points<br/>- efficiency]
+        
+        SIMILAR_PROPS[SIMILAR_TO:<br/>- similarity_score<br/>- based_on]
+    end
+    
+    subgraph "Query Patterns"
+        Q1[Find teammates:<br/>MATCH p1-[:PLAYS_FOR]->t<-[:PLAYS_FOR]-p2]
+        Q2[Trade impacts:<br/>MATCH p-[:IMPACTED_BY]->trade]
+        Q3[Injury history:<br/>MATCH p-[:HAD_INJURY]->inj<br/>WHERE inj.games_missed > 10]
+        Q4[Similar players:<br/>MATCH p1-[:SIMILAR_TO]->p2<br/>WHERE p1.position = p2.position]
+    end
+    
+    %% Implementation Status
+    STATUS[Implementation Status:<br/>✅ Neo4j Aura Instance Created<br/>✅ Connection Tested<br/>⚠️ Partial Data Load<br/>⏳ Full Graph Population Pending]
+    
+    %% Planned Enhancements
+    FUTURE[Future Enhancements:<br/>- Game relationships<br/>- Historical performance paths<br/>- Injury correlation networks<br/>- Draft strategy flows]
+    
+    style P fill:#bbdefb
+    style T fill:#c5cae9
+    style TR fill:#ffccbc
+    style S fill:#dcedc8
+    style STATUS fill:#fff9c4
+    style FUTURE fill:#f0f0f0

@@ -1,0 +1,112 @@
+graph TB
+    %% System Architecture - Actually Implemented
+    %% SportsBrain Fantasy Basketball Platform
+    
+    subgraph "Client Layer"
+        UI[React Frontend<br/>TypeScript + Material-UI]
+        UI_COMP[Components:<br/>- Dashboard<br/>- Agent Cards<br/>- Chat Interface<br/>- Login/Register]
+    end
+    
+    subgraph "API Gateway"
+        NGINX[Nginx Reverse Proxy<br/>Railway.app]
+        API[FastAPI Backend<br/>Python 3.11]
+        
+        AUTH[Auth Endpoints<br/>JWT + bcrypt]
+        AGENT_EP[Agent Endpoints<br/>/api/v1/agents/]
+        SECURE_EP[Secure Endpoints<br/>/api/v1/secure/]
+    end
+    
+    subgraph "Agent Layer - LangChain"
+        INT_AGENT[Intelligence Agent<br/>6 Tools]
+        DRAFT_AGENT[DraftPrep Agent<br/>6 Tools]
+        TRADE_AGENT[TradeImpact Agent<br/>5 Tools]
+        
+        TOOLS[Agent Tools:<br/>- SQL Queries<br/>- Vector Search<br/>- Calculations<br/>- Analysis]
+    end
+    
+    subgraph "Security Layer"
+        INPUT_VAL[Input Validator<br/>35+ attack patterns]
+        PROMPT_GUARD[Prompt Guards<br/>Topic restriction]
+        OUTPUT_FILTER[Output Filter<br/>Data redaction]
+        RATE_LIMIT[Rate Limiter<br/>20/min, 200/hr]
+    end
+    
+    subgraph "Data Layer"
+        subgraph "Primary Storage"
+            PG[(PostgreSQL<br/>Railway<br/>151 players<br/>200 games<br/>Fantasy data)]
+            REDIS[(Redis<br/>Railway<br/>Sessions<br/>Caching)]
+        end
+        
+        subgraph "Vector Storage"
+            MILVUS[(Milvus<br/>Zilliz Cloud<br/>1,007 embeddings<br/>3 collections)]
+        end
+        
+        subgraph "Graph Storage"
+            NEO4J[(Neo4j Aura<br/>Relationships<br/>Partial data)]
+        end
+    end
+    
+    subgraph "External Services"
+        OPENAI[OpenAI API<br/>GPT-3.5-turbo<br/>Embeddings]
+        NBA_API[NBA Stats API<br/>Live data]
+    end
+    
+    subgraph "Deployment Infrastructure"
+        RAILWAY[Railway.app<br/>- Frontend hosting<br/>- Backend hosting<br/>- PostgreSQL<br/>- Redis]
+        ZILLIZ[Zilliz Cloud<br/>Managed Milvus]
+        NEO4J_CLOUD[Neo4j Aura<br/>Managed Graph DB]
+        GITHUB[GitHub<br/>- Source control<br/>- CI/CD Actions]
+    end
+    
+    %% Connections
+    UI --> NGINX
+    NGINX --> API
+    API --> AUTH
+    API --> AGENT_EP
+    API --> SECURE_EP
+    
+    AGENT_EP --> INT_AGENT
+    AGENT_EP --> DRAFT_AGENT
+    AGENT_EP --> TRADE_AGENT
+    
+    SECURE_EP --> INPUT_VAL
+    INPUT_VAL --> PROMPT_GUARD
+    PROMPT_GUARD --> OUTPUT_FILTER
+    OUTPUT_FILTER --> RATE_LIMIT
+    RATE_LIMIT --> INT_AGENT
+    
+    INT_AGENT --> TOOLS
+    DRAFT_AGENT --> TOOLS
+    TRADE_AGENT --> TOOLS
+    
+    TOOLS --> PG
+    TOOLS --> MILVUS
+    TOOLS --> NEO4J
+    
+    API --> REDIS
+    
+    INT_AGENT --> OPENAI
+    DRAFT_AGENT --> OPENAI
+    TRADE_AGENT --> OPENAI
+    
+    TOOLS --> NBA_API
+    
+    %% Deployment
+    UI -.-> RAILWAY
+    API -.-> RAILWAY
+    PG -.-> RAILWAY
+    REDIS -.-> RAILWAY
+    MILVUS -.-> ZILLIZ
+    NEO4J -.-> NEO4J_CLOUD
+    GITHUB -.-> RAILWAY
+    
+    style UI fill:#e3f2fd
+    style API fill:#fff3e0
+    style INT_AGENT fill:#e8f5e9
+    style DRAFT_AGENT fill:#fce4ec
+    style TRADE_AGENT fill:#f3e5f5
+    style PG fill:#bbdefb
+    style MILVUS fill:#c5cae9
+    style NEO4J fill:#d7ccc8
+    style REDIS fill:#ffccbc
+    style INPUT_VAL fill:#ffebee
