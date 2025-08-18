@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
-from .intelligence_agent_forcelog import ForceLogIntelligenceAgent as IntelligenceAgent  # Force logging version
+from .intelligence_agent_final_fix import FinalFixIntelligenceAgent as IntelligenceAgent  # Final fix with stderr logging
 from .chat_agent import ChatAgent
 from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
 from .trade_impact_agent_fixed import FixedTradeImpactAgent as TradeImpactAgent  # Fixed Milvus Hit access issue
