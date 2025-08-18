@@ -446,9 +446,16 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
    import pytest
    
    # CORRECT: Use decorator on test functions/classes
+   # IMPORTANT: Compare to string "true", not boolean
    @pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip in CI to avoid downloading models")
    def test_something():
        pass
+   
+   # For module-level skip (all tests in file):
+   pytestmark = pytest.mark.skipif(
+       os.getenv("CI") == "true",  # Must compare to string!
+       reason="Skip all tests in this module in CI"
+   )
    
    # WRONG: DO NOT USE module-level pytest.skip - causes "I/O operation on closed file" errors
    # if os.getenv("CI") == "true":
