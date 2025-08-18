@@ -3,10 +3,6 @@ import os
 import sys
 import pytest
 
-# Skip this test in CI environment to avoid downloading large models
-if os.getenv("CI") == "true":
-    pytest.skip("Skipping reranking verification test in CI environment", allow_module_level=True)
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.agents.trade_impact_agent_enhanced import EnhancedTradeImpactAgent
@@ -15,6 +11,7 @@ import logging
 # Suppress warnings
 logging.basicConfig(level=logging.ERROR)
 
+@pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip in CI to avoid downloading models")
 def test_reranking():
     print("Testing if reranking is working...")
     print("-" * 40)

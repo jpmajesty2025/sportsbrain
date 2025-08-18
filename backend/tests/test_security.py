@@ -6,13 +6,15 @@ import asyncio
 from typing import List, Dict, Any
 from datetime import datetime
 
-# Skip async tests in CI to prevent hanging
-if os.getenv('CI') or os.getenv('GITHUB_ACTIONS'):
-    pytest.skip("Skipping async security tests in CI", allow_module_level=True)
-
 from app.security.input_validator import InputValidator
 from app.security.output_filter import OutputFilter
 from app.security.rate_limiter import RateLimiter
+
+# Mark entire module to skip in CI
+pytestmark = pytest.mark.skipif(
+    os.getenv('CI') or os.getenv('GITHUB_ACTIONS'),
+    reason="Skip async security tests in CI"
+)
 from app.security.prompt_guards import wrap_user_query, create_safe_agent_prompt
 from app.security.secure_agent import SecureAgentWrapper, AgentResponse
 

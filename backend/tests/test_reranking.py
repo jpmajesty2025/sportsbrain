@@ -1,13 +1,10 @@
 """Test suite for reranking functionality"""
 import os
 import pytest
-
-# Skip this test in CI environment to avoid downloading large models
-if os.getenv("CI") == "true":
-    pytest.skip("Skipping reranking tests in CI environment", allow_module_level=True)
-
 from app.services.reranker_service import ReRankerService, RerankResult
 
+
+@pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip in CI to avoid downloading models")
 class TestReranking:
     
     def test_reranker_initialization(self):

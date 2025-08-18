@@ -440,15 +440,22 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
    - Never put test files directly in `backend/` 
    - pytest will try to collect and run anything that looks like a test
 
-2. **ALWAYS add CI skip logic for tests with model downloads**:
+2. **CRITICAL: Use @pytest.mark.skipif decorator, NOT pytest.skip()**:
    ```python
    import os
    import pytest
    
-   # Skip this test in CI environment to avoid downloading large models
-   if os.getenv("CI") == "true":
-       pytest.skip("Skipping [test name] in CI environment", allow_module_level=True)
+   # CORRECT: Use decorator on test functions/classes
+   @pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip in CI to avoid downloading models")
+   def test_something():
+       pass
+   
+   # WRONG: DO NOT USE module-level pytest.skip - causes "I/O operation on closed file" errors
+   # if os.getenv("CI") == "true":
+   #     pytest.skip("message", allow_module_level=True)  # THIS BREAKS CI/CD!
    ```
+   
+   **Why**: Module-level `pytest.skip()` can close stdout/stderr during collection phase, causing pytest to crash with "ValueError: I/O operation on closed file"
 
 3. **Files that commonly need CI skipping**:
    - Any test using `ReRankerService` (downloads BGE model)

@@ -3,10 +3,6 @@ import os
 import sys
 import pytest
 
-# Skip this test in CI environment to avoid downloading large models
-if os.getenv("CI") == "true":
-    pytest.skip("Skipping reranking integration test in CI environment", allow_module_level=True)
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.agents.trade_impact_agent_enhanced import EnhancedTradeImpactAgent
@@ -16,6 +12,8 @@ import logging
 # Set up logging to see what's happening
 logging.basicConfig(level=logging.INFO)
 
+
+@pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip in CI to avoid downloading models")
 def test_reranking_comparison():
     """Compare results with and without reranking"""
     
