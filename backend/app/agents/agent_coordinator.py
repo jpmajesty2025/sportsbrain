@@ -3,7 +3,7 @@ from .base_agent import BaseAgent, AgentResponse
 from .intelligence_agent_enhanced_with_reranking import IntelligenceAgentWithReranking as IntelligenceAgent  # Use enhanced version with reranking
 from .chat_agent import ChatAgent
 from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
-from .trade_impact_agent_enhanced import EnhancedTradeImpactAgent as TradeImpactAgent  # Use enhanced version with reranking
+from .trade_impact_agent_enhanced_v2 import EnhancedTradeImpactAgentV2 as TradeImpactAgent  # Use V2 with detail preservation
 
 class AgentCoordinator:
     def __init__(self) -> None:
