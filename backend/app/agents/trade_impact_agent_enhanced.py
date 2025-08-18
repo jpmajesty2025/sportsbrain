@@ -143,14 +143,27 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             # Show rank change if significant
             rank_indicator = ""
             if result.rank_change > 2:
-                rank_indicator = f" ⬆️ (moved up {result.rank_change} positions)"
+                rank_indicator = f" (moved up {result.rank_change} positions)"
             elif result.rank_change < -2:
-                rank_indicator = f" ⬇️ (moved down {abs(result.rank_change)} positions)"
+                rank_indicator = f" (moved down {abs(result.rank_change)} positions)"
             
-            response += f"**{i}. {result.metadata.get('trade_title', 'Trade Analysis')}{rank_indicator}**\n"
+            # Extract title from content or metadata
+            content_preview = result.content[:150] if result.content else "Trade Analysis"
+            # Remove newlines for cleaner display
+            content_preview = content_preview.replace('\n', ' ').strip()
+            
+            response += f"**{i}. Analysis{rank_indicator}**\n"
             response += f"Relevance Score: {result.rerank_score:.2f}\n"
-            response += f"Fantasy Impact: {result.metadata.get('fantasy_impact', 'N/A')}\n"
-            response += f"Affected Players: {result.metadata.get('affected_players', 'N/A')}\n\n"
+            response += f"Content: {content_preview}...\n"
+            
+            # If metadata is a dict and has relevant fields, show them
+            if isinstance(result.metadata, dict):
+                if 'players_mentioned' in result.metadata:
+                    response += f"Players: {', '.join(result.metadata['players_mentioned'][:3])}\n"
+                if 'teams_involved' in result.metadata:
+                    response += f"Teams: {', '.join(result.metadata['teams_involved'][:2])}\n"
+            
+            response += "\n"
         
         return response
     
@@ -159,10 +172,23 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
         response = "**Trade Impact Analysis**:\n\n"
         
         for i, doc in enumerate(documents, 1):
-            response += f"**{i}. {doc['metadata'].get('trade_title', 'Trade Analysis')}**\n"
-            response += f"Score: {doc['score']:.2f}\n"
-            response += f"Fantasy Impact: {doc['metadata'].get('fantasy_impact', 'N/A')}\n"
-            response += f"Affected Players: {doc['metadata'].get('affected_players', 'N/A')}\n\n"
+            # Extract content preview
+            content_preview = doc.get('content', '')[:150]
+            content_preview = content_preview.replace('\n', ' ').strip()
+            
+            response += f"**{i}. Analysis**\n"
+            response += f"Score: {doc.get('score', 0):.2f}\n"
+            response += f"Content: {content_preview}...\n"
+            
+            # If metadata is available and has relevant fields
+            metadata = doc.get('metadata', {})
+            if isinstance(metadata, dict):
+                if 'players_mentioned' in metadata:
+                    response += f"Players: {', '.join(metadata['players_mentioned'][:3])}\n"
+                if 'teams_involved' in metadata:
+                    response += f"Teams: {', '.join(metadata['teams_involved'][:2])}\n"
+            
+            response += "\n"
         
         return response
     
