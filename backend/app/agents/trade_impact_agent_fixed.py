@@ -1,4 +1,5 @@
-"""Enhanced TradeImpact Agent with reranking and proper logging"""
+"""Fixed TradeImpact Agent with correct Milvus Hit access"""
+
 import logging
 import time
 from typing import List, Dict, Optional
@@ -7,8 +8,8 @@ from app.services.reranker_service import ReRankerService
 
 logger = logging.getLogger(__name__)
 
-class EnhancedTradeImpactAgent(TradeImpactAgent):
-    """Enhanced version with reranking and detailed logging"""
+class FixedTradeImpactAgent(TradeImpactAgent):
+    """Fixed version with correct Milvus Hit object access"""
     
     def __init__(self):
         super().__init__()
@@ -22,17 +23,20 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
         """Initialize reranker (lazy loading)"""
         try:
             self.reranker = ReRankerService()
-            logger.info("Reranker initialized successfully")
+            logger.info("Fixed Agent: Reranker initialized successfully")
         except Exception as e:
-            logger.warning(f"Could not initialize reranker: {e}")
+            logger.warning(f"Fixed Agent: Could not initialize reranker: {e}")
             self.reranker = None
     
     def _search_trade_documents_raw(self, query: str, top_k: int = 20) -> List[Dict]:
         """
         Get raw search results for reranking
-        Returns list of dicts instead of formatted string
+        Fixed: Correct access to Hit object fields
         """
         try:
+            from pymilvus import connections, Collection
+            from app.core.config import settings
+            
             # Check Milvus configuration
             if not settings.MILVUS_HOST or not settings.MILVUS_TOKEN:
                 logger.warning(f"MILVUS FALLBACK: No configuration. Query: {query}")
@@ -56,20 +60,24 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             
             results = collection.search(
                 data=[query_embedding],
-                anns_field="vector",  # FIXED: Changed from "embedding" to "vector" per schema
+                anns_field="vector",  # Correct field name per schema
                 param=search_params,
                 limit=top_k,
-                output_fields=["text", "metadata"]  # FIXED: Use actual schema fields
+                output_fields=["text", "metadata"]  # Request these fields
             )
             
             documents = []
             if results and results[0]:
                 for hit in results[0]:
-                    # Fixed: hit.entity.get() doesn't accept default value
+                    # FIXED: hit.entity.get() doesn't accept default value as 2nd argument
+                    # Must use get() without default or check membership first
+                    text_content = hit.entity.get('text') or ''
+                    metadata_content = hit.entity.get('metadata') or {}
+                    
                     documents.append({
-                        'content': hit.entity.get('text') or '',
+                        'content': text_content,
                         'score': hit.score,
-                        'metadata': hit.entity.get('metadata') or {}
+                        'metadata': metadata_content
                     })
             
             connections.disconnect("default")
@@ -77,14 +85,16 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             return documents
             
         except Exception as e:
-            logger.error(f"MILVUS FALLBACK: Search failed with error: {e}")
+            logger.error(f"MILVUS SEARCH ERROR: {e}")
             logger.error(f"Query that failed: {query}")
-            logger.error(f"This is the schema mismatch issue - field 'embedding' not found")
-            connections.disconnect("default")
+            try:
+                connections.disconnect("default")
+            except:
+                pass
             return []
     
     def analyze_trade_impact(self, input_str: str) -> str:
-        """Enhanced version with reranking and detailed logging"""
+        """Enhanced version with reranking and fixed Milvus access"""
         start_time = time.time()
         
         logger.info(f"=== Starting trade impact analysis for: {input_str}")
@@ -99,11 +109,7 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             # Step 2: Check if we got Milvus results
             if not initial_results:
                 logger.warning(f"MILVUS FALLBACK TRIGGERED for query: {input_str}")
-                logger.warning("Reason: No results from Milvus (connection failed or schema mismatch)")
                 logger.info("Using PostgreSQL fallback for analysis")
-                
-                # Track this fallback (in production, this would go to monitoring service)
-                self._log_fallback_event(input_str, "milvus_failure")
                 
                 result = self._fallback_trade_analysis(input_str)
                 logger.info(f"Fallback analysis completed in {time.time() - start_time:.2f}s")
@@ -190,19 +196,3 @@ class EnhancedTradeImpactAgent(TradeImpactAgent):
             response += "\n"
         
         return response
-    
-    def _log_fallback_event(self, query: str, reason: str):
-        """Log fallback event for monitoring"""
-        # In production, this would send to monitoring service
-        # For now, just log it prominently
-        logger.warning("=" * 60)
-        logger.warning("FALLBACK EVENT TRACKING")
-        logger.warning(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}")
-        logger.warning(f"Query: {query}")
-        logger.warning(f"Reason: {reason}")
-        logger.warning(f"Agent: TradeImpact")
-        logger.warning("=" * 60)
-
-# Import required modules at the end to avoid circular imports
-from pymilvus import connections, Collection
-from app.core.config import settings

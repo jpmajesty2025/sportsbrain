@@ -69,10 +69,13 @@ class IntelligenceAgentWithReranking(IntelligenceAgentEnhanced):
             documents = []
             if results and results[0]:
                 for hit in results[0]:
+                    # Fixed: hit.entity.get() doesn't accept default value
+                    text_content = hit.entity.get('text') or ''
+                    metadata_content = hit.entity.get('metadata') or {}
                     documents.append({
-                        'content': hit.entity.get('text', ''),
+                        'content': text_content,
                         'score': hit.score,
-                        'metadata': hit.entity.get('metadata', {})
+                        'metadata': metadata_content
                     })
             
             connections.disconnect("default")
@@ -127,10 +130,13 @@ class IntelligenceAgentWithReranking(IntelligenceAgentEnhanced):
             documents = []
             if results and results[0]:
                 for hit in results[0]:
+                    # Fixed: hit.entity.get() doesn't accept default value
+                    text_content = hit.entity.get('text') or ''
+                    metadata_content = hit.entity.get('metadata') or {}
                     documents.append({
-                        'content': hit.entity.get('text', ''),
+                        'content': text_content,
                         'score': hit.score,
-                        'metadata': hit.entity.get('metadata', {})
+                        'metadata': metadata_content
                     })
             
             connections.disconnect("default")
