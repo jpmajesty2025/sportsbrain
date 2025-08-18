@@ -1,9 +1,14 @@
 """Direct test of Milvus connectivity and reranking"""
 
 import os
+import pytest
 from dotenv import load_dotenv
 load_dotenv()
 
+@pytest.mark.skipif(
+    not os.getenv("MILVUS_HOST") or not os.getenv("MILVUS_TOKEN"),
+    reason="Milvus credentials not available"
+)
 def test_milvus_connection():
     """Test if we can connect to Milvus and search"""
     from pymilvus import connections, Collection, utility
