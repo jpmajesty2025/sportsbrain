@@ -2,6 +2,11 @@
 import os
 import sys
 import logging
+import pytest
+
+# Skip this test in CI environment to avoid downloading large models
+if os.getenv("CI") == "true":
+    pytest.skip("Skipping Milvus fallback test in CI environment", allow_module_level=True)
 
 # Set up logging to see all output
 logging.basicConfig(
