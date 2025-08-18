@@ -39,7 +39,7 @@ def quick_check(base_url="https://sportsbrain-backend-production.up.railway.app"
         start = time.time()
         try:
             response = requests.post(
-                f"{base_url}/api/v1/agents/query",
+                f"{base_url}/api/v1/secure/query",
                 json={
                     "message": test["query"],
                     "agent_type": test["agent"]
@@ -50,7 +50,7 @@ def quick_check(base_url="https://sportsbrain-backend-production.up.railway.app"
             
             if response.status_code == 200:
                 data = response.json()
-                response_text = data.get("response", "")
+                response_text = data.get("content", data.get("response", ""))
                 
                 # Check for indicators
                 found_indicators = []
@@ -130,8 +130,12 @@ def quick_check(base_url="https://sportsbrain-backend-production.up.railway.app"
     else:
         print(f"[FAILED] RERANKING NOT DETECTED (0/{total_count} agents)")
     
-    avg_time = sum(r.get("time", 0) for r in results if "time" in r) / len([r for r in results if "time" in r])
-    print(f"Average response time: {avg_time:.1f}s")
+    time_results = [r for r in results if "time" in r]
+    if time_results:
+        avg_time = sum(r.get("time", 0) for r in time_results) / len(time_results)
+        print(f"Average response time: {avg_time:.1f}s")
+    else:
+        print("No successful queries to measure response time")
     
     print("="*60 + "\n")
     

@@ -149,7 +149,7 @@ class RerankingMonitor:
             }
             
             response = requests.post(
-                f"{self.base_url}/api/v1/agents/query",
+                f"{self.base_url}/api/v1/secure/query",
                 json=payload,
                 timeout=30
             )
@@ -158,7 +158,7 @@ class RerankingMonitor:
             
             if response.status_code == 200:
                 data = response.json()
-                response_text = data.get("response", "")
+                response_text = data.get("content", data.get("response", ""))
                 
                 # Analyze the response
                 analysis = self.analyze_response(response_text, agent_type, response_time)
