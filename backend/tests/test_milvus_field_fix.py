@@ -1,11 +1,8 @@
 """Test script to verify Milvus field name fix works"""
 import os
 import sys
+import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Fix Windows Unicode output issues
-import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 from pymilvus import connections, Collection
 from dotenv import load_dotenv
@@ -14,6 +11,8 @@ import json
 # Load environment variables
 load_dotenv()
 
+
+@pytest.mark.skipif(os.getenv("CI") == "true", reason="Skip Milvus tests in CI")
 def test_milvus_schema():
     """Test that we can connect and query with correct field names"""
     

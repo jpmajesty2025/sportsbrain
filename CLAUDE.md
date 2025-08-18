@@ -457,7 +457,22 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
    
    **Why**: Module-level `pytest.skip()` can close stdout/stderr during collection phase, causing pytest to crash with "ValueError: I/O operation on closed file"
 
-3. **Files that commonly need CI skipping**:
+3. **NEVER modify sys.stdout/sys.stderr at module level in test files**:
+   ```python
+   # WRONG: This breaks pytest collection
+   import sys
+   import io
+   sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')  # BREAKS CI/CD!
+   
+   # CORRECT: Only modify stdout inside test functions if needed
+   def test_something():
+       # Can modify here if absolutely necessary
+       pass
+   ```
+   
+   **Why**: Modifying sys.stdout/stderr at module level interferes with pytest's output handling during collection phase
+
+4. **Files that commonly need CI skipping**:
    - Any test using `ReRankerService` (downloads BGE model)
    - Any test using `SentenceTransformer` with new models
    - Integration tests that initialize multiple agents
