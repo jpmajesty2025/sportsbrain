@@ -12,7 +12,7 @@ from app.security.rate_limiter import RateLimiter
 
 # Mark entire module to skip in CI
 pytestmark = pytest.mark.skipif(
-    os.getenv('CI') or os.getenv('GITHUB_ACTIONS'),
+    os.getenv('CI') == 'true' or os.getenv('GITHUB_ACTIONS') == 'true',
     reason="Skip async security tests in CI"
 )
 from app.security.prompt_guards import wrap_user_query, create_safe_agent_prompt
