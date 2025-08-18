@@ -1107,4 +1107,59 @@ Test Results Summary
   4. Add performance metrics to track improvement
 
   The reranking implementation is now live for all TradeImpact queries through the API!
-  
+  --
+  Sample gh PR edit:
+  gh pr edit 2 --body "## Summary                                                                                                                                            │
+│   Wires up the Enhanced TradeImpact Agent to enable reranking for improved search relevance.                                                                                 │
+│                                                                                                                                                                              │
+│   ## Changes                                                                                                                                                                 │
+│   - Updated `AgentCoordinator` to use `EnhancedTradeImpactAgent` instead of base `TradeImpactAgent`                                                                          │
+│   - All trade impact queries now benefit from BGE cross-encoder reranking                                                                                                    │
+│   - Retrieves 20 candidates from Milvus, reranks them, returns top 5                                                                                                         │
+│   - ✅ **Fixed response formatting to handle actual Milvus data structure**                                                                                                   
+│
+│                                                                                                                                                                              │
+│   ## Test Results                                                                                                                                                            │
+│   ✅ **Reranking is working successfully:**                                                                                                                                   
+│
+│   ```                                                                                                                                                                        │
+│   Milvus search successful: Found 20 documents                                                                                                                               │
+│   Applying reranking to 20 documents                                                                                                                                         │
+│   2 documents had significant rank changes (>2 positions)                                                                                                                    │
+│   Rank 3: Changed by +6 positions                                                                                                                                            │
+│   Average scores - Original: 0.645, Rerank: 0.392                                                                                                                            │
+│   ```                                                                                                                                                                        │
+│                                                                                                                                                                              │
+│   ✅ **Response formatting fixed:**                                                                                                                                           
+│
+│   ```                                                                                                                                                                        │
+│   **Trade Impact Analysis (Enhanced with Reranking)**:                                                                                                                       │
+│                                                                                                                                                                              │
+│   **1. Analysis**                                                                                                                                                            │
+│   Relevance Score: 0.99                                                                                                                                                      │
+│   Content: [trade impact details]...                                                                                                                                         │
+│   Teams: IND, BOS                                                                                                                                                            │
+│                                                                                                                                                                              │
+│   **3. Analysis (moved up 6 positions)**                                                                                                                                     │
+│   Relevance Score: 0.85                                                                                                                                                      │
+│   Content: [analysis details]...                                                                                                                                             │
+│   ```                                                                                                                                                                        │
+│                                                                                                                                                                              │
+│   ## Performance                                                                                                                                                             │
+│   - Reranking adds ~10 seconds to query time                                                                                                                                 │
+│   - Acceptable trade-off for significantly improved relevance                                                                                                                │
+│   - Documents are reordered based on semantic similarity to query                                                                                                            │
+│                                                                                                                                                                              │
+│   ## Ready for Production                                                                                                                                                    │
+│   All known issues have been resolved. The enhanced agent is ready for production testing.                                                                                   │
+│                                                                                                                                                                              │
+│   ## Next Steps                                                                                                                                                              │
+│   1. ✅ ~~Fix response formatting~~ DONE                                                                                                                                      
+│
+│   2. Merge and deploy to production                                                                                                                                          │
+│   3. Extend reranking to Intelligence Agent                                                                                                                                  │
+│   4. Extend reranking to DraftPrep Agent                                                                                                                                     │
+│   5. Add metrics to track relevance improvements                                                                                                                             │
+│                                                                                                                                                                              │
+│   ## Testing                                                                                                                                                                 │
+│   Run `python backend/test_reranking_direct.py` to verify reranking is active."
