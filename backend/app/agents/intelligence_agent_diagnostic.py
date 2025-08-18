@@ -29,13 +29,13 @@ class DiagnosticIntelligenceAgent(IntelligenceAgentEnhanced):
             logger.warning(f"DIAGNOSTIC: Could not initialize reranker: {e}")
             self.reranker = None
     
-    def _find_sleeper_candidates_enhanced(self, criteria: str = "") -> str:
+    def _find_sleeper_candidates(self, criteria: str = "") -> str:
         """Override to add diagnostic logging for Milvus searches"""
         logger.info(f"DIAGNOSTIC: Starting sleeper search with criteria: {criteria}")
         
         # First get SQL results
         sql_start = time.time()
-        sql_response = super()._find_sleeper_candidates_enhanced(criteria)
+        sql_response = super()._find_sleeper_candidates(criteria)
         logger.info(f"DIAGNOSTIC: SQL query completed in {time.time() - sql_start:.2f}s")
         
         # Check if this is a "players like X" query that might benefit from vector search
