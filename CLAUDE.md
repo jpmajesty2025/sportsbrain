@@ -427,6 +427,53 @@ Following Chip Huyen's AI Engineering framework, we've implemented comprehensive
 - ✅ **Milvus Schema FIXED (Aug 17, 2025)**: Field name was "embedding", should be "vector" per milvus_schema.py
 - ⚠️ **Dependencies**: LangChain deprecation warnings throughout
 
+### ⚠️ CRITICAL: CI/CD Test Guidelines to Prevent Failures
+
+#### Common CI/CD Failure Pattern
+**Problem**: Tests that download large ML models (e.g., BGE reranker, sentence transformers) cause CI/CD to fail
+- Downloads happen during model initialization (1.7GB+ for reranker models)
+- CI environment has timeout limits and resource constraints
+- This has caused multiple deployment failures
+
+#### Prevention Rules
+1. **ALWAYS place test files in `backend/tests/` directory**
+   - Never put test files directly in `backend/` 
+   - pytest will try to collect and run anything that looks like a test
+
+2. **ALWAYS add CI skip logic for tests with model downloads**:
+   ```python
+   import os
+   import pytest
+   
+   # Skip this test in CI environment to avoid downloading large models
+   if os.getenv("CI") == "true":
+       pytest.skip("Skipping [test name] in CI environment", allow_module_level=True)
+   ```
+
+3. **Files that commonly need CI skipping**:
+   - Any test using `ReRankerService` (downloads BGE model)
+   - Any test using `SentenceTransformer` with new models
+   - Integration tests that initialize multiple agents
+   - Milvus connection tests (if they trigger model loads)
+
+4. **Before committing new tests, check for**:
+   - Model initialization code
+   - Agent initialization that might load models
+   - Any imports that trigger downloads on import
+
+#### Example of Proper Test Structure
+```python
+"""Test that might download models"""
+import os
+import pytest
+
+# CRITICAL: Add this block for any test that might download models
+if os.getenv("CI") == "true":
+    pytest.skip("Skipping model test in CI environment", allow_module_level=True)
+
+# Rest of test code here...
+```
+
 ### Error Handling Strategy
 When agents fail, they now return a professional message:
 > "I apologize for the inconvenience. I am unable to complete your request at this time. At SportsBrain, we're always working hard to improve user experience. This interaction has been logged for later analysis."
