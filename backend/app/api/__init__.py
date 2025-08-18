@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .endpoints import auth, users, players, games, agents, milvus_test, neo4j_test, secure_agents, preferences, debug
+from .endpoints import auth, users, players, games, agents, milvus_test, neo4j_test, secure_agents, preferences, debug, version
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
@@ -13,3 +13,4 @@ api_router.include_router(secure_agents.router, tags=["secure_agents"])
 api_router.include_router(milvus_test.router, prefix="/test/milvus", tags=["testing"])
 api_router.include_router(neo4j_test.router, prefix="/test/neo4j", tags=["testing"])
 api_router.include_router(debug.router, tags=["debug"])
+api_router.include_router(version.router, tags=["version"])
