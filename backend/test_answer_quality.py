@@ -3,7 +3,12 @@
 import os
 import sys
 import asyncio
+import pytest
 from pathlib import Path
+
+# Skip this test file in CI to avoid downloading models
+if os.getenv("CI") == "true":
+    pytest.skip("Skipping model test in CI environment", allow_module_level=True)
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -11,7 +16,7 @@ if not os.getenv("OPENAI_API_KEY"):
     from dotenv import load_dotenv
     load_dotenv()
 
-async def test_query_with_detail(query: str):
+async def check_query_with_detail(query: str):
     """Test a single query and analyze the response"""
     from app.agents.trade_impact_agent_fixed import FixedTradeImpactAgent
     
@@ -87,7 +92,7 @@ async def main():
     ]
     
     for query in test_queries:
-        await test_query_with_detail(query)
+        await check_query_with_detail(query)
     
     print("\n" + "=" * 60)
     print("TEST COMPLETE")

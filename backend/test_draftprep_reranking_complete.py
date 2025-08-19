@@ -34,7 +34,7 @@ CANNED_QUERIES = [
     ("Compare ADP: Tatum vs Brown", "adp_rankings", True),  # Only if "compare" in query
 ]
 
-async def test_query_reranking(agent, query: str, expected_type: str, should_rerank: bool):
+async def check_query_reranking(agent, query: str, expected_type: str, should_rerank: bool):
     """Test a single query for reranking behavior"""
     print(f"\n{'='*60}")
     print(f"Query: {query}")
@@ -153,7 +153,7 @@ async def main():
     results = []
     for query, expected_type, should_rerank in CANNED_QUERIES:
         try:
-            passed = await test_query_reranking(agent, query, expected_type, should_rerank)
+            passed = await check_query_reranking(agent, query, expected_type, should_rerank)
             results.append((query, passed))
         except Exception as e:
             print(f"  ❌ ERROR: {e}")
