@@ -699,11 +699,15 @@ The `.env` file in the root folder contains credentials for all databases:
 - **Connection**: Use `DATABASE_URL` environment variable
 - **Contains**: 151 fantasy-relevant players with projections, shot distributions, sleeper scores
 
-### Milvus (Vector DB)
-- **Host**: `MILVUS_HOST` 
-- **Token**: `MILVUS_TOKEN`
+### Milvus (Vector DB) - FULLY ACCESSIBLE LOCALLY
+- **Host**: `MILVUS_HOST` (Zilliz Cloud serverless instance)
+- **Token**: `MILVUS_TOKEN` (authentication token)
 - **Cloud**: Hosted on Zilliz Cloud
-- **Contains**: 572 player embeddings
+- **Collections**: 
+  - `sportsbrain_players`: 572 player embeddings
+  - `sportsbrain_strategies`: 230 strategy documents
+  - `sportsbrain_trades`: 205 trade analyses
+- **Local Access**: Works perfectly with credentials in `.env`
 
 ### Neo4j (Graph DB)
 - **URI**: `NEO4J_URI`
@@ -711,7 +715,10 @@ The `.env` file in the root folder contains credentials for all databases:
 - **Password**: `NEO4J_PASSWORD`
 - **Contains**: Player-team relationships
 
-For local testing, ensure `.env` is loaded with `python-dotenv` and use these credentials directly.
+For local testing:
+1. Ensure `.env` file is in project root
+2. Load with `python-dotenv` or it's auto-loaded by FastAPI
+3. All services including Milvus are fully accessible locally
 
 ---
 

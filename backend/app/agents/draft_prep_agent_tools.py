@@ -126,8 +126,8 @@ class DraftPrepAgent(BaseAgent):
         ]
         
         super().__init__(
-            name="DraftPrep Agent (Beta)",
-            description="[BETA] Draft expert - keeper decisions, ADP analysis, punt strategies. Note: Currently using optimized direct routing for most queries.",
+            name="DraftPrep Agent",
+            description="Draft expert - keeper decisions, ADP analysis, punt strategies with AI-powered reranking.",
             tools=tools
         )
     
@@ -226,7 +226,7 @@ Instructions:
                 content=result,
                 metadata={
                     "context": context,
-                    "agent_type": "draft_prep_beta",
+                    "agent_type": "draft_prep",
                     "method": "agent_reasoning"
                 },
                 tools_used=[tool.name for tool in self.tools],

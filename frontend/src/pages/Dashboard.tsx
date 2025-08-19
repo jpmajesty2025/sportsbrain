@@ -60,7 +60,6 @@ const agents: AgentCard[] = [
     description: 'Keeper decisions, ADP analysis, and punt strategies',
     icon: <TrophyIcon sx={{ fontSize: 40 }} />,
     color: '#10B981',
-    isBeta: true,
     examples: [
       'Should I keep Ja Morant in round 3?',
       'Build a punt FT% team around Giannis',
