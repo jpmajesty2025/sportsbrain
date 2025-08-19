@@ -166,6 +166,14 @@ Examples of GOOD responses:
 - "For keeper value, Ja Morant in round 3 is excellent value because..."
 - "Here's my recommended punt FT% strategy..."
 
+CORRECT TOOL USAGE FORMAT:
+Action: calculate_keeper_value
+Action Input: LaMelo Ball, round 4
+
+WRONG TOOL USAGE (NEVER DO THIS):
+Action: Use the calculate_keeper_value tool to analyze
+Action Input: LaMelo Ball, round 4
+
 You have access to the following tools:"""
             
             suffix = """Begin! Remember: 
@@ -174,6 +182,8 @@ You have access to the following tools:"""
 - Start with "I recommend" or "Here's my recommendation"
 - For keeper questions, include full value analysis
 - Present this as YOUR expert recommendation
+- When using tools, the Action must be ONLY the tool name (e.g., "calculate_keeper_value")
+- DO NOT write "Use the X tool" as the Action
 
 Question: {input}
 Thought: {agent_scratchpad}"""
