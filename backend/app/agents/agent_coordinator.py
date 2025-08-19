@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
-from .intelligence_agent_complete import CompleteIntelligenceAgent as IntelligenceAgent  # Complete with Milvus + reranking
+from .intelligence_agent_smarter import SmarterIntelligenceAgent as IntelligenceAgent  # Smarter - doesn't overthink
 from .chat_agent import ChatAgent
 from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
 from .trade_impact_agent_fixed import FixedTradeImpactAgent as TradeImpactAgent  # Fixed Milvus Hit access issue
