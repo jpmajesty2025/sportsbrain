@@ -1207,4 +1207,89 @@ Key Findings
   3. Create a fallback mechanism if reranking fails to initialize?
 
   The key thing to check first is the Railway logs when the app starts up - look for any errors related to reranker initialization or model loading.
+  --
+  8/16/2025
+  Perfect! The reranking functionality has been successfully extended to cover more query types in the Intelligence Agent. The implementation now includes:
+
+  1. Player Comparisons - Searches the strategies collection for comparison insights
+  2. Breakout Candidates - Searches players collection for sophomore/breakout patterns
+  3. Consistency Analysis - Searches strategies collection for reliability patterns
+
+  Each enhanced method follows the same pattern:
+  - Gets base SQL results first
+  - Connects to appropriate Milvus collection
+  - Performs similarity search
+  - Applies BGE cross-encoder reranking
+  - Filters results by relevance score
+  - Appends AI-enhanced insights to base results
+
+  The system maintains graceful fallbacks - if Milvus or reranking isn't available, it returns the SQL-only results. This ensures the application remains functional even
+  if the vector database is unavailable.
+  --
+  ---
+  8/19/2025
+  Current Workflow for "Which players benefited from the Lillard to Bucks trade?"
+
+  What Actually Happens:
+
+  1. Query arrives → Agent recognizes "benefited" keyword
+  2. Agent selects tool → Chooses find_trade_beneficiaries
+  3. Tool executes → Returns hardcoded list (lines 902-909 in
+  trade_impact_agent_tools.py)
+  4. Data source: Only PostgreSQL for player stats lookup, but the beneficiaries list      
+  itself is hardcoded
+
+  The Problem:
+
+  The _find_trade_beneficiaries method has a static, hardcoded list that always
+  returns:
+  - Tatum (Porzingis spacing)
+  - Porzingis (Better system fit)
+  - Sengun (Increased usage)
+  - Barnes (Primary option)
+  - Thompson (Starting role)
+
+  These players have nothing to do with the Lillard trade!
+
+  Why Is Data Hardcoded?
+
+  This appears to be a shortcut taken during development. The ideal architecture would     
+   be:
+
+  Ideal Workflow (What Should Happen):
+
+  1. Query arrives → "Which players benefited from Lillard trade?"
+  2. Agent calls analyze_trade_impact → Searches Milvus for Lillard trade documents        
+  3. Milvus returns → Trade analysis documents about Lillard to Bucks
+  4. Reranking applied → Most relevant trade impacts selected
+  5. Extract beneficiaries → Parse out who benefited from those documents
+  6. Return specific results → Giannis, Lillard, Lopez, etc.
+
+  Current Data Sources:
+
+  - Milvus: Has 205 trade analysis documents (could have Lillard trade analysis)
+  - PostgreSQL: Has player stats but no trade relationships
+  - Neo4j: Has player-team relationships but not being used here
+  - Hardcoded: The beneficiaries list (the problem!)
+
+  Why This Architecture Is Flawed:
+
+  1. No Dynamic Trade Analysis: Can't adapt to different trades
+  2. Milvus Not Being Used: The 205 trade documents in Milvus aren't being searched        
+  3. Reranking Bypassed: Goes straight to hardcoded data, no vector search
+  4. Wrong Tool Selection: Agent picks find_trade_beneficiaries instead of
+  analyze_trade_impact first
+
+  The Proper Solution:
+
+  Instead of hardcoding, the agent should:
+  1. First call analyze_trade_impact to get Milvus trade documents
+  2. Use reranking to find the most relevant Lillard trade impacts
+  3. Extract beneficiaries from those documents
+  4. Or have the beneficiaries data properly stored in a database
+
+  The hardcoded data was likely added as a quick fix to make demos work, but it's not      
+  using the actual RAG architecture that was built. This is why you're seeing
+  irrelevant results - it's not actually searching the vector database for
+  trade-specific information
   
