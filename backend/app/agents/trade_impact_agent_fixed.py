@@ -196,3 +196,132 @@ class FixedTradeImpactAgent(TradeImpactAgent):
             response += "\n"
         
         return response
+    
+    def _search_trade_documents(self, query: str) -> str:
+        """Override parent's _search_trade_documents to use fixed Milvus access
+        This method is called by the LangChain tools"""
+        try:
+            # Get raw documents with fixed Hit access
+            documents = self._search_trade_documents_raw(query, top_k=5)
+            
+            if not documents:
+                return "No relevant trade documents found in Milvus."
+            
+            # Format for display
+            response = "[DOC] **Relevant Trade Analysis Found**:\n\n"
+            for i, doc in enumerate(documents[:3], 1):
+                content = doc.get('content', 'No description available')
+                metadata = doc.get('metadata', {})
+                
+                response += f"**{i}. Trade Document (Score: {doc.get('score', 0):.2f})**\n"
+                response += f"Analysis: {content[:200]}...\n"
+                
+                if isinstance(metadata, dict):
+                    if metadata.get('players_mentioned'):
+                        response += f"Players Mentioned: {metadata.get('players_mentioned', 'N/A')}\n"
+                    if metadata.get('teams_involved'):
+                        response += f"Teams Involved: {metadata.get('teams_involved', 'N/A')}\n"
+                    if metadata.get('impact_analysis'):
+                        response += f"Impact: {metadata.get('impact_analysis', 'N/A')}\n\n"
+            
+            return response
+            
+        except Exception as e:
+            logger.error(f"Error in _search_trade_documents: {e}")
+            return self._fallback_trade_analysis(query)
+    
+    def _analyze_trade_impact(self, query: str) -> str:
+        """Override parent's _analyze_trade_impact to include reranking
+        This is the method actually called by LangChain tools"""
+        try:
+            logger.info(f"=== Tool calling _analyze_trade_impact for: {query}")
+            
+            # Check for hypothetical trades (same logic as parent)
+            has_known_trade = any(trade in query.lower() for trade in ["porzingis", "lillard", "towns", "og", "anunoby"])
+            is_hypothetical = any(word in query.lower() for word in ["hypothetical", "would", "if", "potential", "possible", "what if"])
+            
+            mentions_miami = "miami" in query.lower() or "heat" in query.lower()
+            mentions_mitchell = "mitchell" in query.lower() or "donovan" in query.lower()
+            is_unknown_trade = (mentions_mitchell and mentions_miami)
+            
+            if (is_hypothetical or is_unknown_trade) and not has_known_trade:
+                return self._analyze_hypothetical_trade(query)
+            
+            # Get more documents for reranking
+            documents = self._search_trade_documents_raw(query, top_k=20 if self.reranker else 5)
+            
+            if not documents:
+                logger.warning(f"No Milvus results for: {query}")
+                return self._fallback_trade_analysis(query)
+            
+            # Apply reranking if available
+            if self.reranker and len(documents) > 1:
+                logger.info(f"Applying reranking to {len(documents)} trade documents")
+                reranked = self.reranker.rerank(
+                    query=query,
+                    documents=documents,
+                    top_k=3,
+                    log_details=True
+                )
+                
+                # Format reranked results
+                milvus_result = "**Trade Analysis (Enhanced with Reranking)**:\n\n"
+                for i, result in enumerate(reranked, 1):
+                    content = result.content[:200] if result.content else "Trade Analysis"
+                    content = content.replace('\n', ' ').strip()
+                    
+                    milvus_result += f"**{i}. Trade Impact Analysis**\n"
+                    milvus_result += f"Relevance Score: {result.rerank_score:.2f}\n"
+                    milvus_result += f"{content}...\n\n"
+                
+                logger.info(f"Reranking complete for trade impact analysis")
+            else:
+                # Format without reranking
+                milvus_result = "[DOC] **Relevant Trade Analysis Found**:\n\n"
+                for i, doc in enumerate(documents[:3], 1):
+                    content = doc.get('content', 'No description available')
+                    milvus_result += f"**{i}. Trade Document (Score: {doc.get('score', 0):.2f})**\n"
+                    milvus_result += f"Analysis: {content[:200]}...\n\n"
+            
+            # Add PostgreSQL analysis for current stats (same as parent)
+            from app.db.database import get_db
+            from sqlalchemy import text
+            
+            db = next(get_db())
+            player_names = []
+            common_players = [
+                "Tatum", "Porzingis", "Giannis", "Lillard", "Brown", "Holiday",
+                "Trae", "Young", "Reaves", "LeBron", "Davis", "Mitchell", "Bam"
+            ]
+            
+            for name in common_players:
+                if name.lower() in query.lower():
+                    player_names.append(name)
+            
+            if player_names:
+                postgres_analysis = "\n**Current Player Stats**:\n"
+                for name in player_names[:2]:
+                    result = db.execute(text("""
+                        SELECT 
+                            p.name, p.position, p.team,
+                            f.projected_ppg, f.projected_rpg, f.projected_apg,
+                            f.projected_fantasy_ppg, f.adp_rank
+                        FROM players p
+                        JOIN fantasy_data f ON p.id = f.player_id
+                        WHERE LOWER(p.name) LIKE LOWER(:name)
+                        LIMIT 1
+                    """), {"name": f"%{name}%"})
+                    
+                    player = result.first()
+                    if player:
+                        postgres_analysis += f"\n{player.name} ({player.position}, {player.team}):\n"
+                        postgres_analysis += f"- Projected: {player.projected_ppg:.1f} PPG, {player.projected_rpg:.1f} RPG, {player.projected_apg:.1f} APG\n"
+                        postgres_analysis += f"- Fantasy: {player.projected_fantasy_ppg:.1f} FP/game (ADP #{player.adp_rank})\n"
+                
+                return milvus_result + postgres_analysis
+            else:
+                return milvus_result
+                
+        except Exception as e:
+            logger.error(f"Error in _analyze_trade_impact: {e}")
+            return self._fallback_trade_analysis(query)
