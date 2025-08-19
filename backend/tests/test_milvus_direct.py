@@ -3,6 +3,11 @@
 import os
 import pytest
 from dotenv import load_dotenv
+
+# Skip this test file in CI to avoid downloading models
+if os.getenv("CI") == "true":
+    pytest.skip("Skipping model test in CI environment", allow_module_level=True)
+
 load_dotenv()
 
 @pytest.mark.skipif(

@@ -3,7 +3,12 @@
 import os
 import sys
 import asyncio
+import pytest
 from pathlib import Path
+
+# Skip this test file in CI to avoid downloading models
+if os.getenv("CI") == "true":
+    pytest.skip("Skipping model test in CI environment", allow_module_level=True)
 
 sys.path.insert(0, str(Path(__file__).parent))
 
