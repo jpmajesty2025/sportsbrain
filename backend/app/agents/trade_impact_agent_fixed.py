@@ -356,7 +356,7 @@ class FixedTradeImpactAgent(TradeImpactAgent):
             return self._fallback_trade_analysis(query)
     
     async def process_message(self, message: str, context: Optional[Dict[str, Any]] = None) -> AgentResponse:
-        """Override process_message with better prompt engineering to prevent timeouts"""
+        """Override process_message with better prompt engineering to prevent timeouts and confusion"""
         if not self.agent_executor:
             return AgentResponse(
                 content="TradeImpact agent not properly initialized. Please check OpenAI API key.",
@@ -364,17 +364,94 @@ class FixedTradeImpactAgent(TradeImpactAgent):
             )
         
         try:
-            # Improved prompt that encourages the agent to conclude
-            enhanced_message = f"""Analyze this NBA trade query and provide a concise response.
+            # Analyze the query to provide specific guidance
+            query_lower = message.lower()
+            
+            # Determine query type and provide focused instructions
+            if ("how does" in query_lower or "how did" in query_lower) and "affect" in query_lower:
+                # Impact query - focus on specific player mentioned after "affect"
+                # Extract the affected player's name
+                affected_player = None
+                if "affect" in query_lower:
+                    after_affect = query_lower.split("affect")[1].strip()
+                    # Common player names to look for
+                    for player in ["tatum", "giannis", "brown", "holiday", "lillard", "dame", "middleton"]:
+                        if player in after_affect:
+                            affected_player = player.capitalize()
+                            break
+                
+                enhanced_message = f"""Analyze how this trade impacts the SPECIFIC player being asked about.
+
+Query: {message}
+
+CRITICAL INSTRUCTIONS:
+1. First use analyze_trade_impact to understand the trade
+2. Then use calculate_usage_change to get specific numbers
+3. Focus your answer ONLY on {affected_player if affected_player else 'the player mentioned after "affect"'}
+4. DO NOT list other beneficiaries or other players unless directly relevant
+5. DO NOT contradict yourself - if usage goes up, fantasy value should too
+
+Your Final Answer MUST include for {affected_player if affected_player else 'the specific player'}:
+- Usage rate change (specific %)
+- Fantasy points impact (specific number)
+- Clear explanation why (spacing, role change, etc.)
+- Overall assessment (positive/negative impact)
+
+Be consistent - don't say both positive and negative impact."""
+            
+            elif "which players benefited" in query_lower or "who benefited" in query_lower:
+                # Beneficiary query - list multiple players
+                trade_name = "the trade"
+                if "lillard" in query_lower or "dame" in query_lower:
+                    trade_name = "the Lillard trade"
+                elif "porzingis" in query_lower:
+                    trade_name = "the Porzingis trade"
+                
+                enhanced_message = f"""Find which players benefited from {trade_name}.
+
+Query: {message}
+
+INSTRUCTIONS:
+1. Use find_trade_beneficiaries to get the list
+2. Focus ONLY on players actually involved in or affected by {trade_name}
+3. List the top 3-5 beneficiaries with specific gains
+4. Include fantasy point improvements and reasons
+
+Be specific about gains and reasons for each player."""
+            
+            elif "usage rate" in query_lower:
+                # Usage rate specific query
+                player_mentioned = None
+                for player in ["giannis", "tatum", "lillard", "dame", "brown", "porzingis"]:
+                    if player in query_lower:
+                        player_mentioned = player.capitalize()
+                        break
+                
+                enhanced_message = f"""Analyze usage rate changes from this trade.
+
+Query: {message}
+
+INSTRUCTIONS:
+1. Use calculate_usage_change for the specific trade mentioned
+2. Focus on {player_mentioned if player_mentioned else 'the player mentioned'}
+3. Provide EXACT percentage change (e.g., +2.5% or -1.0%)
+4. Explain the fantasy impact in points per game
+5. Give a clear assessment of whether this is good or bad
+
+Be precise with numbers and consistent in your assessment."""
+            
+            else:
+                # Default enhanced prompt
+                enhanced_message = f"""Analyze this NBA trade query and provide a focused response.
 
 Query: {message}
 
 IMPORTANT: After gathering information from tools, immediately provide your final answer. Focus on:
-1. The main trade impact on the players mentioned
-2. Usage rate and fantasy value changes
-3. Key winners and losers
+1. The main trade impact on the SPECIFIC players mentioned
+2. Usage rate and fantasy value changes (with numbers)
+3. Clear assessment (positive or negative)
 
-Be direct and conclusive. Synthesize the tool results into a clear answer."""
+Be direct, conclusive, and consistent. Don't contradict yourself."""
             
             # Add timeout with more time
             import asyncio
