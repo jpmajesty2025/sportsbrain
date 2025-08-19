@@ -47,7 +47,12 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                 logger.warning(f"Enhanced DraftPrep: Milvus not configured for query: {query}")
                 return []
             
-            # Connect to Milvus
+            # Connect to Milvus (disconnect first if already connected)
+            try:
+                connections.disconnect("draft_prep")
+            except:
+                pass
+            
             connections.connect(
                 alias="draft_prep",
                 uri=settings.MILVUS_HOST,
@@ -55,7 +60,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
             )
             
             # Search strategies collection
-            collection = Collection("sportsbrain_strategies")
+            collection = Collection("sportsbrain_strategies", using="draft_prep")
             collection.load()
             
             # Generate query embedding
@@ -105,7 +110,12 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                 logger.warning(f"Enhanced DraftPrep: Milvus not configured for query: {query}")
                 return []
             
-            # Connect to Milvus
+            # Connect to Milvus (disconnect first if already connected)
+            try:
+                connections.disconnect("draft_prep_players")
+            except:
+                pass
+            
             connections.connect(
                 alias="draft_prep_players",
                 uri=settings.MILVUS_HOST,
@@ -113,7 +123,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
             )
             
             # Search players collection
-            collection = Collection("sportsbrain_players")
+            collection = Collection("sportsbrain_players", using="draft_prep_players")
             collection.load()
             
             # Generate query embedding
