@@ -2,7 +2,13 @@ from typing import Dict, Any, List, Optional
 from .base_agent import BaseAgent, AgentResponse
 from .intelligence_agent_clean import CleanIntelligenceAgent as IntelligenceAgent  # Clean formatting + extended reranking
 from .chat_agent import ChatAgent
-from .draft_prep_agent_tools import DraftPrepAgent  # Use enhanced version with tools
+
+# Try to import enhanced DraftPrep agent, fall back to base if needed
+try:
+    from .draft_prep_agent_enhanced import EnhancedDraftPrepAgent as DraftPrepAgent  # Enhanced with reranking
+except ImportError:
+    from .draft_prep_agent_tools import DraftPrepAgent  # Fallback to base version
+
 from .trade_impact_agent_fixed import FixedTradeImpactAgent as TradeImpactAgent  # Fixed Milvus Hit access issue
 
 class AgentCoordinator:
