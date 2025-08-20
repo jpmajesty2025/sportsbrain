@@ -1,5 +1,12 @@
 # SportsBrain: AI-Powered Fantasy Basketball Intelligence Platform
 
+## ⚠️ CRITICAL RULE: NO TOOL MENTIONS IN RESPONSES
+**ABSOLUTE REQUIREMENT**: No agent response should EVER mention the name of any tool, action, or implementation detail. Responses must present recommendations as the agent's expert knowledge, not as "tool output" or "based on the X tool". This includes phrases like:
+- ❌ "the build_punt_strategy tool suggests..."
+- ❌ "based on the analysis from..."
+- ❌ "using the tool..."
+- ❌ "the tool recommends..."
+
 ## 🏆 Capstone Project Status (Last Updated: Aug 19, 2025 - TRADEIMPACT RERANKING FIXED!)
 
 ### 📊 Overall Completion: 100% COMPLETE WITH ADVANCED FEATURES! 🎉
