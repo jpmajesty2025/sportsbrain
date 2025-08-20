@@ -26,7 +26,7 @@ A production-ready fantasy basketball platform featuring three specialized AI ag
 
 ## 🚀 Live Demo Scenarios
 
-Try these queries in our [live demo](https://sportsbrain-frontend-production.up.railway.app/):
+Try these queries in our [live demo on Railway](https://sportsbrain-frontend-production.up.railway.app/):
 
 ### 1. Keeper Value Analysis
 **Query**: "Should I keep Ja Morant in round 3?"
