@@ -18,11 +18,13 @@ graph TB
     end
     
     subgraph "Agent Layer - LangChain"
-        INT_AGENT["Intelligence Agent<br/>6 Tools"]
-        DRAFT_AGENT["DraftPrep Agent<br/>6 Tools"]
-        TRADE_AGENT["TradeImpact Agent<br/>5 Tools"]
+        INT_AGENT["Intelligence Agent<br/>6 Tools + Reranking"]
+        DRAFT_AGENT["DraftPrep Agent<br/>6 Tools + Reranking"]
+        TRADE_AGENT["TradeImpact Agent<br/>5 Tools + Reranking"]
         
         TOOLS["Agent Tools:<br/>SQL Queries<br/>Vector Search<br/>Calculations<br/>Analysis"]
+        
+        RERANKER["ReRanker Service<br/>BGE Cross-Encoder<br/>BAAI/bge-reranker-large<br/>Two-stage retrieval"]
     end
     
     subgraph "Security Layer - 5 Layers"
@@ -85,9 +87,15 @@ graph TB
     DRAFT_AGENT --> TOOLS
     TRADE_AGENT --> TOOLS
     
+    INT_AGENT --> RERANKER
+    DRAFT_AGENT --> RERANKER
+    TRADE_AGENT --> RERANKER
+    
     TOOLS --> PG
     TOOLS --> MILVUS
     TOOLS --> NEO4J
+    
+    RERANKER --> MILVUS
     
     API --> REDIS
     
@@ -108,3 +116,4 @@ graph TB
     style NEO4J fill:#d7ccc8
     style REDIS fill:#ffccbc
     style INPUT_VAL fill:#ffebee
+    style RERANKER fill:#fff176

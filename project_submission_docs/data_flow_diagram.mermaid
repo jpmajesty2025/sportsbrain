@@ -53,7 +53,9 @@ flowchart LR
             CALC_TOOL["Calculation Tools<br/>Keeper value, etc."]
         end
         
-        RESPONSE_GEN["Response Generation<br/>LangChain + GPT-3.5"]
+        RERANK["Reranking Stage<br/>BGE Cross-Encoder<br/>Top 20 → Top 5<br/>~1.5s processing"]
+        
+        RESPONSE_GEN["Response Generation<br/>LangChain + GPT-3.5<br/>Enhanced with reranked results"]
         
         OUTPUT_FILTER["Output Filter<br/>Remove sensitive data<br/>Hide tool names"]
         
@@ -95,9 +97,11 @@ flowchart LR
     GRAPH_TOOL --> NEO4J_WRITE
     
     SQL_TOOL --> RESPONSE_GEN
-    VECTOR_TOOL --> RESPONSE_GEN
+    VECTOR_TOOL --> RERANK
     GRAPH_TOOL --> RESPONSE_GEN
     CALC_TOOL --> RESPONSE_GEN
+    
+    RERANK --> RESPONSE_GEN
     
     RESPONSE_GEN --> OUTPUT_FILTER
     OUTPUT_FILTER --> USER_RESP
@@ -115,3 +119,4 @@ flowchart LR
     style NEO4J_WRITE fill:#fff9c4
     style REDIS_WRITE fill:#ffccbc
     style USER_RESP fill:#c5e1a5
+    style RERANK fill:#fff176

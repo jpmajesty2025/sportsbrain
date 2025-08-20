@@ -171,7 +171,7 @@ class FixedTradeImpactAgent(TradeImpactAgent):
     
     def _format_reranked_response(self, reranked_results) -> str:
         """Format reranked results for display"""
-        response = "**Trade Impact Analysis (Enhanced with Reranking)**:\n\n"
+        response = "**Trade Impact Analysis**:\n\n"
         
         for i, result in enumerate(reranked_results, 1):
             # Show rank change if significant
@@ -294,7 +294,7 @@ class FixedTradeImpactAgent(TradeImpactAgent):
                 )
                 
                 # Format reranked results
-                milvus_result = "**Trade Analysis (Enhanced with Reranking)**:\n\n"
+                milvus_result = "**Trade Analysis**:\n\n"
                 for i, result in enumerate(reranked, 1):
                     content = result.content[:200] if result.content else "Trade Analysis"
                     content = content.replace('\n', ' ').strip()

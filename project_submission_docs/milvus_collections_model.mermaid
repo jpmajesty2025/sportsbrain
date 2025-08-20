@@ -5,9 +5,9 @@ graph TB
     subgraph "Milvus Vector Database"
         subgraph "sportsbrain_players Collection"
             PC[sportsbrain_players<br/>572 embeddings]
-            PC_FIELDS[Fields:<br/>- id: int64 PK<br/>- name: varchar<br/>- embedding: float_vector 768d<br/>- metadata: json]
+            PC_FIELDS[Fields:<br/>- id: int64 PK<br/>- name: varchar<br/>- vector: float_vector 768d<br/>- metadata: json]
             PC_META[Metadata Contains:<br/>- position<br/>- team<br/>- stats PPG/RPG/APG<br/>- fantasy_ppg<br/>- injury_risk]
-            PC_INDEX[Index: IVF_FLAT<br/>Similarity: L2 Distance<br/>nlist: 128]
+            PC_INDEX[Index: IVF_FLAT<br/>Similarity: IP - Inner Product<br/>nlist: 128]
             
             PC --> PC_FIELDS
             PC --> PC_META
@@ -16,9 +16,9 @@ graph TB
         
         subgraph "sportsbrain_strategies Collection"
             SC[sportsbrain_strategies<br/>230 documents]
-            SC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- embedding: float_vector 768d<br/>- content: text<br/>- metadata: json]
+            SC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- vector: float_vector 768d<br/>- text: text<br/>- metadata: json]
             SC_META[Metadata Contains:<br/>- strategy_type<br/>- categories<br/>- difficulty_level<br/>- target_rounds]
-            SC_INDEX[Index: IVF_FLAT<br/>Similarity: COSINE<br/>nlist: 64]
+            SC_INDEX[Index: IVF_FLAT<br/>Similarity: IP - Inner Product<br/>nlist: 64]
             
             SC --> SC_FIELDS
             SC --> SC_META
@@ -27,9 +27,9 @@ graph TB
         
         subgraph "sportsbrain_trades Collection"
             TC[sportsbrain_trades<br/>205 trade analyses]
-            TC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- embedding: float_vector 768d<br/>- content: text<br/>- metadata: json]
+            TC_FIELDS[Fields:<br/>- id: int64 PK<br/>- title: varchar<br/>- vector: float_vector 768d<br/>- text: text<br/>- metadata: json]
             TC_META[Metadata Contains:<br/>- players_involved<br/>- teams<br/>- trade_date<br/>- impact_analysis<br/>- fantasy_implications]
-            TC_INDEX[Index: IVF_FLAT<br/>Similarity: COSINE<br/>nlist: 64]
+            TC_INDEX[Index: IVF_FLAT<br/>Similarity: IP - Inner Product<br/>nlist: 64]
             
             TC --> TC_FIELDS
             TC --> TC_META
@@ -38,7 +38,7 @@ graph TB
     end
     
     subgraph "Embedding Generation"
-        EMBED[SentenceTransformer<br/>'all-MiniLM-L6-v2'<br/>768 dimensions]
+        EMBED[SentenceTransformer<br/>'all-mpnet-base-v2'<br/>768 dimensions]
         
         RAW_PLAYER[Player Names & Stats] --> EMBED
         RAW_STRATEGY[Strategy Documents] --> EMBED
@@ -50,11 +50,19 @@ graph TB
     end
     
     subgraph "Usage Patterns"
-        AGENT[LangChain Agents] --> |Similarity Search| PC
-        AGENT --> |Strategy Retrieval| SC
-        AGENT --> |Trade Impact Analysis| TC
+        AGENT[LangChain Agents] --> |Initial Search - top 20| PC
+        AGENT --> |Strategy Retrieval - top 20| SC
+        AGENT --> |Trade Impact Analysis - top 20| TC
         
-        SEARCH_PARAMS[Search Parameters:<br/>- top_k: 5-10<br/>- metric: L2/Cosine<br/>- filter: metadata conditions]
+        RERANKER[BGE Reranker<br/>BAAI/bge-reranker-large<br/>Cross-encodes query with results<br/>Returns top 5 most relevant]
+        
+        PC --> |20 candidates| RERANKER
+        SC --> |20 candidates| RERANKER
+        TC --> |20 candidates| RERANKER
+        
+        RERANKER --> |5 reranked results| AGENT
+        
+        SEARCH_PARAMS[Search Parameters:<br/>- Initial: top k is 20<br/>- After reranking: top k is 5<br/>- metric: IP - Inner Product<br/>- filter: metadata conditions]
         
         AGENT --> SEARCH_PARAMS
     end
@@ -67,3 +75,4 @@ graph TB
     style TC fill:#f3e5f5
     style EMBED fill:#c8e6c9
     style NOTE fill:#ffecb3
+    style RERANKER fill:#fff176

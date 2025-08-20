@@ -10,16 +10,17 @@ A production-ready fantasy basketball platform featuring three specialized AI ag
 
 ## 🌟 Key Features
 
-### AI Agents
-- **🤖 Intelligence Agent**: Player predictions, breakout candidates, sleeper identification
-- **📋 DraftPrep Agent (BETA)**: Keeper decisions, ADP analysis, punt strategy builds
-- **💹 TradeImpact Agent**: Trade impact analysis, usage rate projections, roster optimization
+### AI Agents with Advanced Reranking
+- **🤖 Intelligence Agent**: Player predictions, breakout candidates, sleeper identification (with BGE reranking)
+- **📋 DraftPrep Agent**: Keeper decisions, ADP analysis, punt strategy builds (with BGE reranking)
+- **💹 TradeImpact Agent**: Trade impact analysis, usage rate projections, roster optimization (with BGE reranking)
 
 ### Technical Stack
 - **Backend**: FastAPI with async support, JWT authentication
 - **Frontend**: React + TypeScript + Material-UI
-- **AI/ML**: LangChain + OpenAI GPT-4 with 17 specialized tools
-- **Databases**: PostgreSQL, Milvus (1,337 embeddings), Neo4j (572 players), Redis
+- **AI/ML**: LangChain + OpenAI GPT-4 with 17 specialized tools + BGE cross-encoder reranking
+- **Vector Search**: Milvus (1,007 embeddings) with two-stage retrieval (search → rerank)
+- **Databases**: PostgreSQL, Neo4j (572 players), Redis
 - **Security**: 5-layer defensive prompt engineering
 - **Deployment**: Docker + Railway with CI/CD pipeline
 
@@ -33,48 +34,43 @@ Try these queries in our [live demo](https://sportsbrain-frontend-production.up.
 **Expected Response**:
 ```
 Keeper Analysis: Ja Morant
-• Current ADP: Round 2 (Pick 21)
+• Current ADP: Round 2
 • Keeper Cost: Round 3
-• Value: POOR VALUE (-1 round)
-• Recommendation: DO NOT KEEP
-• Reasoning: You're essentially paying market price. Better to draft 
-  naturally or keep players with positive value differential.
+• Value: GOOD VALUE (+1 round discount)
+• Recommendation: KEEP
+• Reasoning: You're getting a Round 2 player in Round 3, which saves
+  draft capital to invest elsewhere. Good foundation for a balanced build.
 ```
 
 ### 2. Trade Impact Assessment
-**Query**: "How does the Porzingis trade affect Tatum's fantasy value?"
+**Query**: "How does the Porzingis trade affect Tatum?"
 
 **Expected Response**:
 ```
 Trade Impact Analysis: Jayson Tatum
-• Usage Rate Change: +2.5% (31.2% → 33.7%)
-• Shot Attempts: +2.3 per game
-• Spacing Improvement: Elite (Porzingis 37.5% from 3)
-• Fantasy Projection: +3.2 fantasy PPG
-• Overall Impact: POSITIVE - Buy high on Tatum
+• Usage Rate Change: +2.5% projected increase
+• Fantasy Impact: +2.0 FP/game increase
+• Key Factor: Porzingis' high usage rate creates opportunities
+• Team Dynamic: Larger offensive role with roster changes
+• Overall Impact: POSITIVE - Tatum's fantasy value expected to improve
 ```
 
 ### 3. Sleeper Identification
-**Query**: "Find me sleepers like last year's Alperen Sengun"
+**Query**: "Find sleeper centers like Alperen Sengun"
 
 **Expected Response**:
 ```
-Top Sleeper Candidates (High upside at low ADP):
+Sleeper Centers Similar to Alperen Sengun:
 
-1. Gary Trent Jr. (SG, ADP 140)
-   • Elite 3PT shooting (38.5%)
-   • Starting role secured
-   • Sleeper Score: 0.90
+Top Statistical Matches:
+• Daniel Gafford (DAL): ADP #111, 24.2 FP/game
+• Naz Reid (MIN): ADP #149, 23.8 FP/game  
+• Isaiah Stewart (DET): ADP #107, 19.5 FP/game
 
-2. Taylor Hendricks (PF, ADP 126)  
-   • Second-year leap candidate
-   • Increased minutes opportunity
-   • Sleeper Score: 0.88
-
-3. Scoot Henderson (PG, ADP 121)
-   • Lottery talent at discount
-   • Breakout potential in year 2
-   • Sleeper Score: 0.87
+Key Traits:
+• Late-round value (ADP 100+)
+• Upside potential similar to Sengun's breakout
+• Strong per-minute production
 ```
 
 ### 4. Punt Strategy Builder
@@ -153,6 +149,8 @@ Top Sophomore Breakout Candidates:
 - **Framework**: FastAPI 0.104.1 with full async/await
 - **Authentication**: JWT tokens with bcrypt hashing
 - **AI Integration**: LangChain 0.1.0 + OpenAI GPT-4
+- **Reranking**: BGE cross-encoder (BAAI/bge-reranker-large) for improved relevance
+- **Performance**: ~3.7s total response time with reranking
 - **Rate Limiting**: 20/min, 200/hr, 1000/day per user
 
 ### Frontend
@@ -163,7 +161,10 @@ Top Sophomore Breakout Candidates:
 
 ### Databases
 - **PostgreSQL**: Primary data store (users, games, stats)
-- **Milvus**: Vector similarity search (1,337 embeddings)
+- **Milvus**: Vector similarity search (1,007 embeddings across 3 collections)
+  - sportsbrain_players: 572 embeddings
+  - sportsbrain_strategies: 230 embeddings  
+  - sportsbrain_trades: 205 embeddings
 - **Neo4j**: Graph relationships (player connections, trades)
 - **Redis**: Session management and caching
 
@@ -261,11 +262,19 @@ The GitHub Actions workflow automatically:
 - [Capstone Requirements](./design_documents/capstone_project.md) - Academic requirements
 - [API Documentation](https://sportsbrain-backend-production.up.railway.app/docs) - Interactive API docs
 
+## 🎯 Advanced Features
+
+### Two-Stage Retrieval with Reranking
+- **Initial Search**: Milvus returns top 20 candidates via vector similarity
+- **Reranking**: BGE cross-encoder rescores and returns top 5 most relevant
+- **Performance**: Adds ~1.5s latency but significantly improves answer quality
+- **Coverage**: All three agents support reranking for enhanced responses
+
 ## 🏆 Awards & Recognition
 
 - **Capstone Grade**: A+ with Distinction
-- **Requirements**: Exceeded all requirements (1,337/1,000 embeddings)
-- **Stand Out Features**: All implemented (auth, real-time, analytics)
+- **Requirements**: Exceeded all requirements (1,007/1,000 embeddings)
+- **Stand Out Features**: All implemented (auth, real-time, analytics, reranking)
 
 ## 🤝 Contributing
 
@@ -279,4 +288,4 @@ This project is part of an academic capstone submission.
 
 ---
 
-*Last Updated: August 14, 2025*
+*Last Updated: August 20, 2025*

@@ -192,7 +192,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                     )
                     
                     # Add reranked insights to response
-                    enhanced_response = base_result + "\n\n**📊 Enhanced Strategy Insights (AI-Powered)**:\n\n"
+                    enhanced_response = base_result + "\n\n**📊 Strategy Insights**:\n\n"
                     
                     for i, result in enumerate(reranked, 1):
                         content = result.content[:200] if result.content else "Strategy insight"
@@ -245,7 +245,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                     )
                     
                     # Add reranked recommendations to response
-                    enhanced_response = base_result + "\n\n**🎯 AI-Enhanced Draft Recommendations**:\n\n"
+                    enhanced_response = base_result + "\n\n**🎯 Draft Recommendations**:\n\n"
                     
                     for i, result in enumerate(reranked, 1):
                         # Parse player info from content if available
@@ -307,7 +307,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                     )
                     
                     # Add reranked insights to response
-                    enhanced_response = base_result + "\n\n**💡 AI-Powered Keeper Insights**:\n\n"
+                    enhanced_response = base_result + "\n\n**💡 Keeper Insights**:\n\n"
                     
                     for i, result in enumerate(reranked, 1):
                         content = result.content[:250] if result.content else "Keeper strategy insight"
@@ -354,7 +354,7 @@ class EnhancedDraftPrepAgent(DraftPrepAgent):
                     )
                     
                     # Add similar players to response
-                    enhanced_response = base_result + "\n\n**🔍 Similar Players by ADP (AI-Enhanced)**:\n\n"
+                    enhanced_response = base_result + "\n\n**🔍 Similar Players by ADP**:\n\n"
                     
                     for i, result in enumerate(reranked, 1):
                         # Extract player info

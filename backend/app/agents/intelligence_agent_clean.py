@@ -133,7 +133,7 @@ class CleanIntelligenceAgent(IntelligenceAgent):
                     })
                 
                 # Build response
-                response = "**Sleeper Centers Similar to Alperen Sengun (AI-Enhanced)**\n\n"
+                response = "**Sleeper Centers Similar to Alperen Sengun**\n\n"
                 
                 # Add SQL centers first
                 response += "**Top Statistical Matches:**\n"
@@ -255,7 +255,7 @@ class CleanIntelligenceAgent(IntelligenceAgent):
                     # Add relevant insights if found
                     good_insights = [r for r in reranked if r.rerank_score > 0.2]
                     if good_insights:
-                        enhanced_response += "\n\n**AI-Enhanced Analysis:**\n"
+                        enhanced_response += "\n\n**Additional Analysis:**\n"
                         for insight in good_insights:
                             content = insight.content[:250] if insight.content else ""
                             if content:
@@ -326,7 +326,7 @@ class CleanIntelligenceAgent(IntelligenceAgent):
                     
                     good_candidates = [r for r in reranked if r.rerank_score > 0.15]
                     if good_candidates:
-                        enhanced_result = base_result + "\n\n**AI-Enhanced Breakout Analysis:**\n"
+                        enhanced_result = base_result + "\n\n**Breakout Analysis:**\n"
                         for candidate in good_candidates:
                             content = candidate.content[:200] if candidate.content else ""
                             if content:
@@ -400,7 +400,7 @@ class CleanIntelligenceAgent(IntelligenceAgent):
                     
                     good_insights = [r for r in reranked if r.rerank_score > 0.2]
                     if good_insights:
-                        enhanced_result = base_result + "\n\n**AI-Enhanced Consistency Insights:**\n"
+                        enhanced_result = base_result + "\n\n**Consistency Insights:**\n"
                         for insight in good_insights:
                             content = insight.content[:200] if insight.content else ""
                             if content:

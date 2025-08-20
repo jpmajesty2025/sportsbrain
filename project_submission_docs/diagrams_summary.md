@@ -23,7 +23,14 @@
   - sportsbrain_strategies: 230 strategy documents
   - sportsbrain_trades: 205 trade analyses
   - Total: 1,007 embeddings (exceeds 1,000 requirement)
-- **Technical Details**: 768-dimensional vectors using SentenceTransformer
+- **Technical Details**: 
+  - 768-dimensional vectors using SentenceTransformer (all-mpnet-base-v2)
+  - Field name: "vector" (not "embedding")
+  - Metric: IP (Inner Product) for all collections
+- **Reranking Integration**:
+  - Initial search returns top 20 candidates
+  - BGE cross-encoder (BAAI/bge-reranker-large) reranks to top 5
+  - Two-stage retrieval process for improved relevance
 
 #### Neo4j Graph Model (`neo4j_graph_model.mermaid`)
 - **Purpose**: Shows graph database nodes and relationships
@@ -38,7 +45,8 @@
 - **Layers**:
   - Client Layer: React frontend with Material-UI
   - API Gateway: FastAPI with authentication
-  - Agent Layer: 3 LangChain agents with 17 total tools
+  - Agent Layer: 3 LangChain agents with 17 total tools + Reranking
+  - Reranking Service: BGE cross-encoder for two-stage retrieval
   - Security Layer: 5-layer defensive AI implementation
   - Data Layer: PostgreSQL, Redis, Milvus, Neo4j
   - External Services: OpenAI API, NBA Stats API
@@ -50,7 +58,8 @@
   - Data sources: NBA Stats API (572 players), synthesized data, hardcoded values, algorithm-generated projections
   - Data loading via Python scripts (no external API connections)
   - Storage distribution across PostgreSQL, Milvus, and Neo4j
-  - Query flow: User → Security → Agent Router → Tools → Direct DB queries → Response
+  - Query flow: User → Security → Agent Router → Tools → Direct DB queries → Reranking → Response
+  - Reranking stage: Vector search results (top 20) → BGE cross-encoder → Top 5 results
   - No caching implemented (Redis configured but unused)
 - **Planned Features** (clearly marked):
   - Daily updates from external sources
@@ -77,7 +86,14 @@ The `.mermaid` files can be viewed in several ways:
 
 ## Key Updates and Accuracy Notes
 
-### What Changed
+### What Changed (August 20, 2025 - Post-Reranking)
+- **Reranking Addition**: All diagrams updated to show BGE cross-encoder integration
+- **Milvus Schema**: Corrected field names (vector not embedding) and metric (IP not L2/Cosine)
+- **Two-Stage Retrieval**: Documented the top-20 → top-5 reranking process
+- **Agent Performance**: Updated success rates (75-95% with reranking)
+- **Performance Metrics**: Added reranking latency (~1.5s) and total response time (~3.7s)
+
+### Previous Updates
 - **Data Sources**: Corrected to show synthesized/generated data instead of live APIs
 - **Neo4j Model**: Updated to reflect actual nodes and relationships in the database
 - **Cache Layer**: Marked as configured but not implemented

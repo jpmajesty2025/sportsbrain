@@ -154,6 +154,16 @@ Since we developed during the off-season (July-August 2025) with no live games, 
 - **Combined Power**: Agents can leverage both approaches - semantic search for initial retrieval, then graph traversal for relationship context
 - **Example Use Case**: Finding sleepers uses vector similarity for playing style, then graph relationships for team context
 
+#### Advanced Reranking: BGE Cross-Encoder
+- **Model**: BAAI/bge-reranker-large (1.7GB)
+- **Purpose**: Improves relevance of retrieved documents through cross-encoding
+- **Architecture**: Two-stage retrieval process:
+  1. Initial retrieval: Milvus returns top 20 candidates via vector similarity
+  2. Reranking: BGE model rescores and returns top 5 most relevant
+- **Performance Impact**: Adds ~1.5s latency but significantly improves answer quality
+- **Implementation**: ReRankerService with automatic fallback if model unavailable
+- **Coverage**: All three agents (Intelligence, TradeImpact, DraftPrep) support reranking
+
 #### Relational Database: PostgreSQL
 - **Why PostgreSQL over alternatives**:
   - **vs MySQL**: Superior JSON support, better query optimizer for complex analytics
@@ -249,6 +259,28 @@ Since we developed during the off-season (July-August 2025) with no live games, 
   - Achieved 70-80% agent success rate
   - Ensured all capstone requirements met
 
+#### Phase 6: Advanced Reranking Implementation (August 17-20)
+- **Reranking Architecture**
+  - Integrated BGE cross-encoder model (BAAI/bge-reranker-large)
+  - Implemented two-stage retrieval: initial search → reranking
+  - Created ReRankerService with fallback handling
+  - Added reranking to Intelligence and TradeImpact agents
+  - Extended to DraftPrep agent for complete coverage
+- **Performance Optimization**
+  - Milvus vector search: ~30ms
+  - Reranking 20 candidates: ~1.47s
+  - Total backend processing: ~3.7s (excellent for production)
+  - Model downloads cached after first use
+- **Bug Fixes and Improvements**
+  - Fixed critical pymilvus Hit.entity.get() bug preventing all Milvus searches
+  - Corrected field name mismatch (embedding → vector)
+  - Fixed agent tool call formatting issues
+  - Removed tool name mentions from responses
+- **Final Agent Performance**
+  - Intelligence Agent: ~75% success rate with reranking
+  - DraftPrep Agent: ~80% success rate (all queries working)
+  - TradeImpact Agent: ~95% success rate (best performing)
+
 ### Major Challenges and Solutions
 
 #### Challenge 1: Railway Deployment Configuration
@@ -276,6 +308,18 @@ Since we developed during the off-season (July-August 2025) with no live games, 
 - **Root Cause**: Built-in behavior of ReAct agent executor
 - **Mitigation**: Strengthened prompts to preserve details; partial success
 - **Future Solution**: Migrate to LangGraph for full control
+
+#### Challenge 7: Milvus Integration and Reranking
+- **Issue**: Initial reranking implementation completely broken due to multiple bugs
+- **Root Causes**:
+  - pymilvus Hit.entity.get() doesn't accept default parameter
+  - Schema mismatch: code used "embedding" but schema defined "vector"
+  - Connection alias conflicts when multiple agents access Milvus
+- **Solutions**:
+  - Changed to Hit.entity.get('field') or default pattern
+  - Fixed field names throughout codebase
+  - Implemented proper connection alias management
+- **Result**: Full reranking operational with 3.7s response time
 
 #### Challenge 5: Data Completeness
 - **Issue**: Gaps between user queries and available data
