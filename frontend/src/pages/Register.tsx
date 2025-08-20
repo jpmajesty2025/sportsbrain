@@ -8,6 +8,7 @@ import {
   Typography,
   Alert,
   CircularProgress,
+  Link as MuiLink,
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -193,7 +194,19 @@ const Register: React.FC = () => {
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="body2">
                 Already have an account?{' '}
-                <Link to="/login">Sign in here</Link>
+                <MuiLink 
+                  component={Link} 
+                  to="/login"
+                  sx={{ 
+                    color: 'primary.main',
+                    textDecoration: 'underline',
+                    '&:hover': {
+                      color: 'primary.light',
+                    }
+                  }}
+                >
+                  Sign in here
+                </MuiLink>
               </Typography>
             </Box>
           </Box>
