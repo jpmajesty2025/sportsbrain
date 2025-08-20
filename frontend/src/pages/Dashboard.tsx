@@ -355,16 +355,19 @@ const Dashboard: React.FC = () => {
         )}
       </Paper>
 
-      {/* Quick Stats */}
+      {/* System Metrics */}
       <Grid container spacing={3} sx={{ mt: 4 }}>
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
-                Queries Today
+                AI Agents Available
               </Typography>
               <Typography variant="h4" fontWeight="bold">
-                12
+                3
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Intelligence • Draft • Trade
               </Typography>
             </CardContent>
           </Card>
@@ -373,10 +376,13 @@ const Dashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
-                Active League
+                Vector Embeddings
               </Typography>
               <Typography variant="h4" fontWeight="bold">
-                H2H 9-Cat
+                1,007
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Players • Strategies • Trades
               </Typography>
             </CardContent>
           </Card>
@@ -385,10 +391,13 @@ const Dashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
-                Saved Players
+                NBA Players Tracked
               </Typography>
               <Typography variant="h4" fontWeight="bold">
-                24
+                150
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                With real FT% data
               </Typography>
             </CardContent>
           </Card>
@@ -397,10 +406,13 @@ const Dashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
-                Days to Draft
+                Response Time
               </Typography>
               <Typography variant="h4" fontWeight="bold">
-                45
+                &lt;3s
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                With BGE reranking
               </Typography>
             </CardContent>
           </Card>
