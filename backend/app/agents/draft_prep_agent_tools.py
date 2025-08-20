@@ -184,6 +184,8 @@ You have access to the following tools:"""
 - Present this as YOUR expert recommendation
 - When using tools, the Action must be ONLY the tool name (e.g., "calculate_keeper_value")
 - DO NOT write "Use the X tool" as the Action
+- For punt strategy questions, use ONLY the build_punt_strategy tool once, then provide the recommendation
+- Don't call multiple tools - one tool should be sufficient for most queries
 
 Question: {input}
 Thought: {agent_scratchpad}"""
@@ -203,7 +205,7 @@ Thought: {agent_scratchpad}"""
                 agent=agent,
                 tools=self.tools,
                 verbose=True,
-                max_iterations=3,
+                max_iterations=5,  # Increased to allow agent to synthesize response
                 handle_parsing_errors=True
             )
     
