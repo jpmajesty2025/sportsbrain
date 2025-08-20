@@ -80,17 +80,23 @@ Key Traits:
 ```
 Punt FT% Build (Targeting FG%, REB, BLK):
 
-Round 1: Giannis Antetokounmpo (locked)
-Round 2: Rudy Gobert - Elite FG% (70.5%), 12.9 REB, 2.1 BLK
-Round 3: Domantas Sabonis - Double-double machine, 64% FG
-Round 4: Clint Capela - FG% specialist, defensive anchor
-Round 5: Jarrett Allen - Rim protection, 67% FG
+Early Rounds:
+• Giannis Antetokounmpo (69.3% FT) - Your core player
+• Zion Williamson (68.9% FT) - Athletic scoring forward
 
-Category Gains:
-• FG%: +15% advantage
-• REB: +20% advantage  
-• BLK: +25% advantage
-• Weakness: FT% (punt), 3PM (below average)
+Mid Rounds:
+• Rudy Gobert (64.1% FT) - Elite rim protection
+• Walker Kessler (53.7% FT) - Blocks specialist
+• Clint Capela (54.4% FT) - FG% and rebounds
+
+Late Round Values:
+• Mitchell Robinson (52.2% FT) - Elite FG%, blocks
+• Nic Claxton (53.7% FT) - Defensive anchor
+
+Strategy Focus:
+• Target centers with <70% FT
+• Maximize FG%, REB, and BLK
+• Avoid all 75%+ FT shooters (ruins the punt)
 ```
 
 ### 5. Breakout Sophomore Analysis
@@ -123,10 +129,10 @@ Top Sophomore Breakout Candidates:
 - **Pro tip**: Ask for comparisons ("Compare Sengun to Jokic's development")
 - **Hidden feature**: Can analyze sophomore leap patterns
 
-### DraftPrep Agent (BETA)
+### DraftPrep Agent
 - **Best for**: Keeper decisions, punt strategies, draft preparation
 - **Pro tip**: Always specify your keeper round for accurate analysis
-- **Note**: Currently in BETA - direct queries work best
+- **Hidden feature**: Uses real NBA FT% data for accurate punt strategy builds
 
 ### TradeImpact Agent  
 - **Best for**: Analyzing how trades affect fantasy value
