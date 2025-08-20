@@ -559,6 +559,26 @@ When agents fail, they now return a professional message:
 All failures are logged with timestamp, agent type, error type, and query for future analysis.
 
 ### Post-Capstone Roadmap (Priority Order)
+
+#### 🔴 CRITICAL: Database Refactoring (HIGH PRIORITY)
+**Problem**: Extensive use of raw SQL queries throughout the codebase instead of ORM
+- **Current State**: All agent tools use raw SQL with `text()` queries
+- **Issues**: 
+  - SQL injection vulnerability (though partially mitigated)
+  - Difficult to maintain and refactor
+  - No type safety or compile-time checking
+  - Database schema changes require finding/updating multiple queries
+- **Solution**:
+  - Migrate to SQLAlchemy ORM models (already defined in `backend/models/`)
+  - Use ORM query builder instead of raw SQL
+  - Keep raw SQL only for complex analytical queries if needed
+- **Estimated Effort**: 3-4 days
+- **Files to refactor**:
+  - `backend/app/agents/intelligence_agent_tools.py`
+  - `backend/app/agents/draft_prep_agent_tools.py`
+  - `backend/app/agents/trade_impact_agent_tools.py`
+  - All scripts in `backend/scripts/`
+
 1. **Monitoring & Analytics** (1 week)
    - Set up proper database logging for failures
    - Implement monitoring dashboard (DataDog/Sentry)
